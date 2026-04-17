@@ -330,11 +330,19 @@ function loadLS(){
     var data=snap.val();
     if(data){for(var k in data)INSTRS[k]=data[k];}
   });
-  // โหลด PHOTOS (localStorage เก็บรูปต่อไป เพราะขนาดใหญ่)
-  try{
-    var c=localStorage.getItem('c1_photos');
-    if(c){var t3=JSON.parse(c);for(var k3 in t3)PHOTOS[k3]=t3[k3];}
-  }catch(e){}
+  // โหลด PHOTOS จาก Firebase
+  db.ref('photos').on('value',function(snap){
+    var data=snap.val();
+    if(data){for(var k in data)PHOTOS[k]=data[k];}
+    // refresh avatars ทั้งหมด
+    var all=document.querySelectorAll('[data-avno]');
+    for(var i=0;i<all.length;i++){
+      var no=parseInt(all[i].getAttribute('data-avno'));
+      var sz=parseInt(all[i].getAttribute('data-avsz'))||36;
+      var fresh=makeAv(no,sz);
+      if(all[i].parentNode) all[i].parentNode.replaceChild(fresh,all[i]);
+    }
+  });
 }
 
 // ── บันทึก APPTS ลง Firebase ──
@@ -345,8 +353,11 @@ function saveLS(){
 
 // ── บันทึกรูปใน localStorage (รูปใหญ่เกิน Firebase ฟรี) ──
 function savePhotos(){
-  try{localStorage.setItem('c1_photos',JSON.stringify(PHOTOS));}
-  catch(e){alert('พื้นที่เก็บรูปเต็ม');}
+  try{
+    db.ref('photos').set(PHOTOS,function(err){
+      if(err) alert('บันทึกรูปไม่สำเร็จ: '+err.message);
+    });
+  }catch(e){alert('เกิดข้อผิดพลาด: '+e);}
 }
 loadLS();
 
