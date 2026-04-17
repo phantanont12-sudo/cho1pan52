@@ -333,15 +333,14 @@ function loadLS(){
   // โหลด PHOTOS จาก Firebase
   db.ref('photos').on('value',function(snap){
     var data=snap.val();
-    if(data){for(var k in data)PHOTOS[k]=data[k];}
-    // refresh avatars ทั้งหมด
-    var all=document.querySelectorAll('[data-avno]');
-    for(var i=0;i<all.length;i++){
-      var no=parseInt(all[i].getAttribute('data-avno'));
-      var sz=parseInt(all[i].getAttribute('data-avsz'))||36;
-      var fresh=makeAv(no,sz);
-      if(all[i].parentNode) all[i].parentNode.replaceChild(fresh,all[i]);
+    if(data){
+      for(var k in data){
+        if(data[k]) PHOTOS[k]=data[k];
+      }
     }
+    // Re-render grid เพื่อให้รูปขึ้นทุกเครื่อง
+    doFilter();
+    renderSquads();
   });
 }
 
