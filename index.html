@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ระบบดูแลทหารใหม่ ช.1 พัน.52 ผลัด 2/68</title>
+<title>ระบบดูแลทหารใหม่ ช.1 พัน.52 ผลัด 1/2569</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Sarabun',sans-serif;background:#f8f7f4;color:#1a1a1a;font-size:13px;position:relative;}
@@ -170,7 +170,7 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
 
 <!-- TOP BAR -->
 <div class="topbar">
-  <span class="topbar-title">ดูแลทหารใหม่ ช.1 พัน.52 ผลัด 2/68</span>
+  <span class="topbar-title">ดูแลทหารใหม่ ช.1 พัน.52 ผลัด 1/2569</span>
   <button class="top-tab on" onclick="gotoView('grid',this)">รายชื่อทั้งหมด</button>
   <button class="top-tab" onclick="gotoView('squads',this)">หมู่ / บัดดี้</button>
   <button class="top-tab" onclick="gotoView('alerts',this)">นัดแพทย์ <span id="abadge"></span></button>
@@ -266,18 +266,18 @@ var firebaseConfig={databaseURL:'https://cho1pan52-default-rtdb.firebaseio.com'}
 firebase.initializeApp(firebaseConfig);
 var db=firebase.database();
 var TG_BOT_TOKEN='8753984007:AAFKapk937MlnaZ6K5tO_YYIDAzBtOSmq-0';
-var TG_CHAT_ID='-4999811177';
+var TG_CHAT_ID='8689396282';
 
 function sendTelegramNow(soldierNo,date,note){
   var s=getS(soldierNo);if(!s)return;
   var months=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
   var d=new Date(date);
-  var ds=d.getDate()+' '+months[d.getMonth()]+' '+(d.getFullYear()-2500+43);
+  var ds=d.getDate()+' '+months[d.getMonth()]+' '+(d.getFullYear()+543);
   var rl={red:'[แดง] งดฝึก',amber:'[เหลือง] ลดปริมาณ',green_watch:'[เขียว] เฝ้าระวัง',none:'[ปกติ]'};
   var nl='\n';
   var msg='----------------------'+nl;
   msg+='[นัด] บันทึกนัดแพทย์ใหม่'+nl;
-  msg+='ช.1 พัน.52 ผลัด 2/68'+nl;
+  msg+='ช.1 พัน.52 ผลัด 1/2569'+nl;
   msg+='----------------------'+nl+nl;
   msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+(s.nickname&&s.nickname!=='-'?' ('+s.nickname+')':'')+nl;
   msg+='[หมู่] หมู่ '+s.squad+' ตำแหน่ง '+s.squad_pos+nl;
@@ -354,7 +354,7 @@ function getS(no){for(var i=0;i<SOLDIERS.length;i++){if(SOLDIERS[i].no===no)retu
 function getAppt(no){return APPTS[String(no)]||{date:'',note:''};}
 function getPhoto(no){return PHOTOS[String(no)]||'';}
 function daysDiff(ds){if(!ds)return null;var d=new Date(ds),n=new Date();n.setHours(0,0,0,0);d.setHours(0,0,0,0);return Math.round((d-n)/86400000);}
-function fmtDate(ds){if(!ds)return'';var d=new Date(ds);var m=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];return d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()-2500+43);}
+function fmtDate(ds){if(!ds)return'';var d=new Date(ds);var m=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];return d.getDate()+' '+m[d.getMonth()]+' '+(d.getFullYear()+543);}
 function rLabel(r){return{red:'งดฝึก',amber:'ลดปริมาณ',green_watch:'เฝ้าระวัง',none:'ปกติ'}[r]||r;}
 function rColor(r){return{red:'#A32D2D',amber:'#854F0B',green_watch:'#3B6D11',none:'#888'}[r]||'#888';}
 function bLabel(b){if(!b||b===0)return'-';return b.toFixed(1)+(b<=18.5?' (ผอม)':b<=28?' (ปกติ)':b<=30?' (เริ่มอ้วน)':' (อ้วน)');}
