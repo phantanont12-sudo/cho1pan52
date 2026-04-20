@@ -749,6 +749,14 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePop();
 buildSqTabs();doFilter();renderSquads();renderStats();updateBadge();
 // โหลด appts/instrs จาก Firebase แล้ว re-render
 loadLS();
+// เปิด popup อัตโนมัติถ้ามี ?no=X ใน URL
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var no=parseInt(params.get('no'));
+  if(no>0){
+    setTimeout(function(){showPop(no);},800);
+  }
+})();
 </script>
 </body>
 </html>
