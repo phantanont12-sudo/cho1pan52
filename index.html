@@ -341,6 +341,17 @@ function loadLS(){
     // Re-render grid เพื่อให้รูปขึ้นทุกเครื่อง
     doFilter();
     renderSquads();
+    // แจ้ง QR handler ว่ารูปโหลดแล้ว
+    if(window._onPhotosLoaded) window._onPhotosLoaded();
+    // ถ้า popup เปิดอยู่แล้ว ให้ refresh รูปใน popup
+    var ov=document.getElementById('overlay');
+    if(ov&&ov.className.indexOf('on')!==-1){
+      var popAv=document.getElementById('pop-av');
+      if(popAv&&popAv.firstChild){
+        var curNo=parseInt(popAv.firstChild.getAttribute('data-avno'));
+        if(curNo>0) buildPopAv(curNo);
+      }
+    }
   });
 }
 
@@ -749,12 +760,27 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePop();
 buildSqTabs();doFilter();renderSquads();renderStats();updateBadge();
 // โหลด appts/instrs จาก Firebase แล้ว re-render
 loadLS();
-// เปิด popup อัตโนมัติถ้ามี ?no=X ใน URL
+// เปิด popup อัตโนมัติถ้ามี ?no=X ใน URL (รอรูปโหลดจาก Firebase ก่อน)
 (function(){
   var params=new URLSearchParams(window.location.search);
   var no=parseInt(params.get('no'));
   if(no>0){
-    setTimeout(function(){showPop(no);},800);
+    // รอให้ Firebase โหลดรูปก่อนเปิด popup
+    var photoLoaded=false;
+    var popupShown=false;
+    function tryShowPop(){
+      if(popupShown) return;
+      popupShown=true;
+      showPop(no);
+    }
+    // เปิด popup เมื่อ photos โหลดแล้ว (max รอ 3 วินาที)
+    var checkInterval=setInterval(function(){
+      if(photoLoaded){clearInterval(checkInterval);tryShowPop();}
+    },100);
+    // fallback: เปิดเลยถ้ารอนานเกิน 3 วินาที
+    setTimeout(function(){clearInterval(checkInterval);tryShowPop();},3000);
+    // ฟังก์ชัน hook รอ photos loaded
+    window._onPhotosLoaded=function(){photoLoaded=true;};
   }
 })();
 </script>
