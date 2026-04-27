@@ -194,6 +194,46 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
 .lock-icon:hover{color:#1a1a1a;}
 .sensitive-wrapper{position:relative;display:inline-block;}
 .reveal-btn{font-size:10px;padding:2px 8px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;margin-left:4px;}
+/* ── 8Q 9Q ASSESSMENT ── */
+.qa-view{padding:14px 16px;}
+.qa-card{background:#fff;border-radius:12px;border:1px solid #e0ddd8;padding:16px;margin-bottom:14px;}
+.qa-title{font-size:14px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.qa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;}
+.qa-soldier-card{border:1px solid #e0ddd8;border-radius:10px;overflow:hidden;}
+.qa-soldier-head{background:#1a1a1a;color:#fff;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;font-size:12px;}
+.qa-soldier-body{padding:10px 12px;}
+.qa-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.qa-label{font-size:11px;color:#666;width:90px;flex-shrink:0;}
+.qa-input{font-family:inherit;font-size:14px;border:2px solid #ddd;border-radius:6px;padding:5px 8px;width:60px;text-align:center;outline:none;font-weight:600;}
+.qa-input:focus{border-color:#534AB7;}
+.qa-result{flex:1;font-size:11px;font-weight:500;}
+.qa-badge-safe{background:#EAF3DE;color:#3B6D11;padding:2px 8px;border-radius:10px;font-size:10px;}
+.qa-badge-low{background:#E6F1FB;color:#185FA5;padding:2px 8px;border-radius:10px;font-size:10px;}
+.qa-badge-mid{background:#FAEEDA;color:#854F0B;padding:2px 8px;border-radius:10px;font-size:10px;}
+.qa-badge-high{background:#FCEBEB;color:#A32D2D;padding:2px 8px;border-radius:10px;font-size:10px;}
+.qa-save-btn{font-size:11px;padding:5px 10px;background:#534AB7;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:inherit;width:100%;margin-top:6px;}
+.qa-week-sel{display:flex;gap:6px;margin-bottom:10px;}
+.qa-week-btn{font-size:12px;padding:6px 16px;border:2px solid #ddd;border-radius:20px;cursor:pointer;background:#fff;font-family:inherit;}
+.qa-week-btn.on{background:#534AB7;color:#fff;border-color:#534AB7;}
+.qa-stat-box{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.qa-stat{text-align:center;background:#f5f4f1;border-radius:8px;padding:10px 16px;}
+.qa-stat-num{font-size:24px;font-weight:700;}
+.qa-stat-lbl{font-size:11px;color:#888;}
+
+/* ── EMERGENCY CHECKLIST ── */
+.emg-card{background:#fff0f0;border:2px solid #E24B4A;border-radius:12px;padding:16px;margin-bottom:14px;}
+.emg-title{font-size:14px;font-weight:700;color:#A32D2D;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.emg-item{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:8px;margin-bottom:6px;cursor:pointer;border:1px solid transparent;transition:all .15s;}
+.emg-item:hover{background:#fff5f5;}
+.emg-item.checked{background:#FCEBEB;border-color:#E24B4A;}
+.emg-cb{width:20px;height:20px;flex-shrink:0;margin-top:1px;cursor:pointer;accent-color:#E24B4A;}
+.emg-text{font-size:13px;flex:1;}
+.emg-level{font-size:10px;padding:1px 6px;border-radius:8px;margin-left:4px;}
+.emg-level-danger{background:#FCEBEB;color:#A32D2D;}
+.emg-level-warn{background:#FAEEDA;color:#854F0B;}
+.emg-alert-btn{width:100%;padding:12px;background:#E24B4A;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.emg-alert-btn:disabled{opacity:.5;cursor:not-allowed;}
+.emg-select-soldier{font-family:inherit;font-size:13px;border:2px solid #ddd;border-radius:8px;padding:8px;width:100%;outline:none;margin-bottom:10px;}
 /* ── WEATHER FETCH ── */
 .weather-bar{background:linear-gradient(135deg,#1a3050,#0d1b2a);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
 .weather-btn{padding:8px 16px;background:#EF9F27;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;}
@@ -297,6 +337,7 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
   <button class="top-tab" onclick="gotoView('squads',this)">หมู่ / บัดดี้</button>
   <button class="top-tab" onclick="gotoView('alerts',this)">นัดแพทย์ <span id="abadge"></span></button>
   <button class="top-tab" onclick="gotoView('health',this)">สุขภาพรายวัน <span id="hbadge" style="font-size:10px;"></span></button>
+  <button class="top-tab" onclick="gotoView('mental',this)">8Q/9Q จิตเวช <span id="qa-badge" style="font-size:10px;"></span></button>
   <button class="top-tab" onclick="gotoView('wbgt',this)">WBGT ธงสัญลักษณ์ <span id="wbgt-badge" style="font-size:10px;"></span></button>
   <span class="topbar-stat" id="nstat"></span><span class="auth-badge" id="auth-badge" onclick="handleAuthBadge()">[LOCK] เข้าสู่ระบบ</span>
 </div>
@@ -371,10 +412,125 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
         <th>เช้า<br><span style="font-size:9px;color:#aaa;">อุณหภูมิ / ปัสสาวะ</span></th>
         <th>กลางวัน<br><span style="font-size:9px;color:#aaa;">อุณหภูมิ / ปัสสาวะ</span></th>
         <th>เย็น<br><span style="font-size:9px;color:#aaa;">อุณหภูมิ / ปัสสาวะ</span></th>
-        <th>AI วิเคราะห์<br><span style="font-size:9px;color:#aaa;">ร่างกาย</span></th><th style="min-width:200px;">ประเมินจิตใจ<br><span style="font-size:9px;color:#aaa;">กด 0-4 ต่อข้อ</span></th><th>ความเสี่ยง<br><span style="font-size:9px;color:#aaa;">ซึมเศร้า</span></th><th>หมายเหตุ</th><th>บันทึก</th>
+        <th>AI วิเคราะห์<br><span style="font-size:9px;color:#aaa;">ร่างกาย</span></th><th>หมายเหตุ</th><th>บันทึก</th>
       </tr></thead>
       <tbody id="health-body"></tbody>
     </table>
+  </div>
+</div>
+
+<!-- MENTAL ASSESSMENT VIEW -->
+<div class="view" id="v-mental">
+  <div class="qa-view">
+
+    <!-- Emergency Checklist -->
+    <div class="emg-card">
+      <div class="emg-title">[ALERT] อาการต้องส่งต่อด่วน — แจ้งเตือน Telegram ทันที</div>
+      <select class="emg-select-soldier" id="emg-soldier-sel">
+        <option value="">-- เลือกชื่อทหาร --</option>
+      </select>
+      <div id="emg-checklist">
+        <!-- Danger items -->
+        <div class="emg-item" onclick="toggleEmg(this)">
+          <input type="checkbox" class="emg-cb"> 
+          <div class="emg-text">ทำร้ายร่างกายผู้อื่น (ชก ต่อย ใช้อาวุธ) <span class="emg-level emg-level-danger">อันตราย</span></div>
+        </div>
+        <div class="emg-item" onclick="toggleEmg(this)">
+          <input type="checkbox" class="emg-cb">
+          <div class="emg-text">ทำร้ายตัวเอง (ใช้ของมีคม หรือวิธีอื่น) <span class="emg-level emg-level-danger">อันตราย</span></div>
+        </div>
+        <div class="emg-item" onclick="toggleEmg(this)">
+          <input type="checkbox" class="emg-cb">
+          <div class="emg-text">พูดถึงการอยากตาย หรืออยากฆ่าตัวตาย <span class="emg-level emg-level-danger">อันตราย</span></div>
+        </div>
+        <div class="emg-item" onclick="toggleEmg(this)">
+          <input type="checkbox" class="emg-cb">
+          <div class="emg-text">ชัก หมดสติ หรือไม่รู้สึกตัว <span class="emg-level emg-level-danger">อันตราย</span></div>
+        </div>
+        <!-- Warning items -->
+        <div class="emg-item" onclick="toggleEmg(this)">
+          <input type="checkbox" class="emg-cb">
+          <div class="emg-text">ควบคุมอารมณ์ไม่ได้ โวยวายรุนแรง <span class="emg-level emg-level-warn">เฝ้าระวัง</span></div>
+        </div>
+        <div class="emg-item" onclick="toggleEmg(this)">
+          <input type="checkbox" class="emg-cb">
+          <div class="emg-text">พูดจาสับสน เพ้อ หวาดระแวง หูแว่ว <span class="emg-level emg-level-warn">เฝ้าระวัง</span></div>
+        </div>
+        <div class="emg-item" onclick="toggleEmg(this)">
+          <input type="checkbox" class="emg-cb">
+          <div class="emg-text">ทำลายข้าวของ ทำลายทรัพย์สิน <span class="emg-level emg-level-warn">เฝ้าระวัง</span></div>
+        </div>
+        <div class="emg-item" onclick="toggleEmg(this)">
+          <input type="checkbox" class="emg-cb">
+          <div class="emg-text">เก็บตัว ไม่พูดคุย ไม่กินข้าว นาน >3 วัน <span class="emg-level emg-level-warn">เฝ้าระวัง</span></div>
+        </div>
+        <div class="emg-item" onclick="toggleEmg(this)">
+          <input type="checkbox" class="emg-cb">
+          <div class="emg-text">นอนไม่หลับ หรือฝันร้ายติดต่อกัน >3 วัน <span class="emg-level emg-level-warn">เฝ้าระวัง</span></div>
+        </div>
+      </div>
+      <button class="emg-alert-btn" id="emg-alert-btn" onclick="sendEmergencyAlert()" disabled>
+        [ALERT] แจ้งเตือน Telegram และบันทึก
+      </button>
+    </div>
+
+    <!-- 8Q 9Q Assessment -->
+    <div class="qa-card">
+      <div class="qa-title">[EVAL] บันทึกผลประเมิน 8Q / 9Q</div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+        <div>
+          <label style="font-size:11px;color:#888;">สัปดาห์ที่ประเมิน</label>
+          <div class="qa-week-sel" style="margin-top:4px;">
+            <button class="qa-week-btn on" onclick="setQAWeek(1,this)">สัปดาห์ที่ 1</button>
+            <button class="qa-week-btn" onclick="setQAWeek(3,this)">สัปดาห์ที่ 3</button>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:11px;color:#888;">ค้นหา</label>
+          <input type="text" id="qa-search" placeholder="ชื่อ..." oninput="renderQAList()" style="font-family:inherit;font-size:12px;border:1px solid #ddd;border-radius:20px;padding:5px 12px;outline:none;width:150px;display:block;margin-top:4px;">
+        </div>
+        <div style="margin-left:auto;">
+          <label style="font-size:11px;color:#888;">กรองสีสัญลักษณ์</label>
+          <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;" id="qa-filter-tabs">
+            <button class="ftab on" onclick="setQAFilter('all',this)">ทั้งหมด</button>
+            <button class="ftab" onclick="setQAFilter('high',this)">เสี่ยงสูง</button>
+            <button class="ftab" onclick="setQAFilter('mid',this)">ปานกลาง</button>
+            <button class="ftab" onclick="setQAFilter('done',this)">ประเมินแล้ว</button>
+            <button class="ftab" onclick="setQAFilter('none',this)">ยังไม่ประเมิน</button>
+          </div>
+        </div>
+      </div>
+      <div id="qa-summary" style="font-size:11px;color:#888;margin-bottom:10px;"></div>
+      <div id="qa-stat-box" class="qa-stat-box"></div>
+      <div class="qa-grid" id="qa-grid"></div>
+    </div>
+
+    <!-- Reference card -->
+    <div class="qa-card">
+      <div class="qa-title">เกณฑ์การแปลผล (ตามประกาศ รพ.ค่ายภาณุรังษี)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12px;">
+        <div style="background:#f5f4f1;border-radius:8px;padding:10px;">
+          <div style="font-weight:600;color:#534AB7;margin-bottom:6px;">แบบ 8Q (ความเสี่ยงฆ่าตัวตาย)</div>
+          <div>0 = ไม่มีความเสี่ยง</div>
+          <div>1–8 = ระดับน้อย (เฝ้าระวัง)</div>
+          <div style="color:#854F0B;">9–16 = ระดับปานกลาง (ส่งพบแพทย์)</div>
+          <div style="color:#A32D2D;">≥17 = ระดับรุนแรง (ส่งด่วน)</div>
+        </div>
+        <div style="background:#f5f4f1;border-radius:8px;padding:10px;">
+          <div style="font-weight:600;color:#534AB7;margin-bottom:6px;">แบบ 9Q (ซึมเศร้า)</div>
+          <div>0–6 = ไม่มีความเสี่ยง</div>
+          <div>7–12 = ระดับน้อย (เฝ้าระวัง)</div>
+          <div style="color:#854F0B;">13–18 = ระดับปานกลาง (ส่งพบแพทย์)</div>
+          <div style="color:#A32D2D;">≥19 = ระดับรุนแรง (ส่งด่วน)</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;background:#fff3f3;border-radius:8px;padding:10px;font-size:12px;border-left:3px solid #E24B4A;">
+        <strong style="color:#A32D2D;">การส่งต่อ รพ.ค่ายภาณุรังษี</strong><br>
+        คลินิกเติมสุข: 032-337406 ต่อ 53056 | 098-5559314<br>
+        วันพฤหัสบดีที่ 1 ของเดือน 08:00-12:00 น. และ วันพฤหัสบดีที่ 3 ของเดือน 13:30-15:30 น.<br>
+        <strong>ฉุกเฉิน ER:</strong> 032-337406 | OPD จิตเวช รพ.ราชบุรี: 032-719600 ต่อ 1307
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1213,6 +1369,310 @@ function renderStats(){
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePop();closeIM();}});
 // ════════════════════════════════════════
+// 8Q/9Q MENTAL ASSESSMENT SYSTEM
+// ════════════════════════════════════════
+var QA_DATA = {}; // {no: {w1:{q8,q9,ts}, w3:{q8,q9,ts}}}
+var qaWeek = 1;
+var qaFilter = 'all';
+
+function loadQA(){
+  db.ref('qa').on('value',function(snap){
+    var data=snap.val();
+    if(data) QA_DATA=data;
+    if(document.getElementById('v-mental')&&document.getElementById('v-mental').className.indexOf('on')!==-1){
+      renderQAList();
+      renderEmgSoldierSelect();
+    }
+    updateQABadge();
+  });
+}
+
+function setQAWeek(w,btn){
+  qaWeek=w;
+  document.querySelectorAll('.qa-week-btn').forEach(function(b){b.className='qa-week-btn';});
+  btn.className='qa-week-btn on';
+  renderQAList();
+}
+
+function setQAFilter(f,btn){
+  qaFilter=f;
+  document.querySelectorAll('#qa-filter-tabs .ftab').forEach(function(b){b.className='ftab';});
+  btn.className='ftab on';
+  renderQAList();
+}
+
+function get8QLevel(score){
+  if(score===null||score==='') return null;
+  var s=parseInt(score);
+  if(s===0) return{level:'safe',text:'ไม่มีความเสี่ยง',cls:'qa-badge-safe'};
+  if(s<=8) return{level:'low',text:'ระดับน้อย',cls:'qa-badge-low'};
+  if(s<=16) return{level:'mid',text:'ระดับปานกลาง',cls:'qa-badge-mid'};
+  return{level:'high',text:'ระดับรุนแรง',cls:'qa-badge-high'};
+}
+
+function get9QLevel(score){
+  if(score===null||score==='') return null;
+  var s=parseInt(score);
+  if(s<=6) return{level:'safe',text:'ไม่มีความเสี่ยง',cls:'qa-badge-safe'};
+  if(s<=12) return{level:'low',text:'ระดับน้อย',cls:'qa-badge-low'};
+  if(s<=18) return{level:'mid',text:'ระดับปานกลาง',cls:'qa-badge-mid'};
+  return{level:'high',text:'ระดับรุนแรง',cls:'qa-badge-high'};
+}
+
+function getOverallQALevel(q8level, q9level){
+  var order=['high','mid','low','safe',null];
+  var l1=q8level?q8level.level:null;
+  var l2=q9level?q9level.level:null;
+  if(l1==='high'||l2==='high') return 'high';
+  if(l1==='mid'||l2==='mid') return 'mid';
+  if(l1==='low'||l2==='low') return 'low';
+  if(l1==='safe'||l2==='safe') return 'safe';
+  return null;
+}
+
+function renderQAList(){
+  var q=(document.getElementById('qa-search').value||'').toLowerCase();
+  var wkey='w'+qaWeek;
+  var grid=document.getElementById('qa-grid');
+  var sumEl=document.getElementById('qa-summary');
+  var statEl=document.getElementById('qa-stat-box');
+  grid.innerHTML='';
+
+  var stats={safe:0,low:0,mid:0,high:0,none:0};
+
+  var filtered=SOLDIERS.filter(function(s){
+    if(q) return(s.fname+s.lname+(s.nickname||'')+s.no).toString().toLowerCase().indexOf(q)>=0;
+    return true;
+  }).filter(function(s){
+    var rec=QA_DATA[String(s.no)]&&QA_DATA[String(s.no)][wkey];
+    if(qaFilter==='done') return !!rec;
+    if(qaFilter==='none') return !rec;
+    if(qaFilter==='high'||qaFilter==='mid'){
+      if(!rec) return false;
+      var l8=get8QLevel(rec.q8);var l9=get9QLevel(rec.q9);
+      var ov=getOverallQALevel(l8,l9);
+      return ov===qaFilter;
+    }
+    return true;
+  });
+
+  filtered.forEach(function(s){
+    var rec=QA_DATA[String(s.no)]&&QA_DATA[String(s.no)][wkey];
+    var l8=rec?get8QLevel(rec.q8):null;
+    var l9=rec?get9QLevel(rec.q9):null;
+    var ov=getOverallQALevel(l8,l9);
+    if(ov) stats[ov]++; else stats.none++;
+
+    var card=document.createElement('div');card.className='qa-soldier-card';
+
+    // Head
+    var hd=document.createElement('div');hd.className='qa-soldier-head';
+    var riskColors={'red':'#E24B4A','amber':'#EF9F27','green_watch':'#4CAF6E','none':'#888'};
+    hd.innerHTML='<span>'+s.no+'. '+s.fname+' '+s.lname+'</span>'+
+      '<span style="font-size:10px;color:'+( riskColors[s.risk]||'#aaa')+';background:rgba(255,255,255,.1);padding:2px 6px;border-radius:8px;">'+(s.risk==='red'?'งดฝึก':s.risk==='amber'?'ลดปริมาณ':s.risk==='green_watch'?'เฝ้าระวัง':'ปกติ')+'</span>';
+    card.appendChild(hd);
+
+    // Body
+    var body=document.createElement('div');body.className='qa-soldier-body';
+
+    // Week tag
+    var weekTag=document.createElement('div');
+    weekTag.style.cssText='font-size:10px;color:#888;margin-bottom:8px;';
+    weekTag.textContent='สัปดาห์ที่ '+qaWeek+(rec?' | ประเมิน '+fmtDate(new Date(rec.ts)):'| ยังไม่ประเมิน');
+    body.appendChild(weekTag);
+
+    // 8Q row
+    function makeQrow(label,inputId,savedVal,level){
+      var row=document.createElement('div');row.className='qa-row';
+      var lbl=document.createElement('span');lbl.className='qa-label';lbl.textContent=label;
+      var inp=document.createElement('input');inp.type='number';inp.className='qa-input';
+      inp.min='0';inp.max=label==='8Q (0-24)'?'24':'27';
+      inp.placeholder='คะแนน';inp.id=inputId;
+      if(savedVal!==undefined&&savedVal!=='') inp.value=savedVal;
+      var res=document.createElement('span');res.className='qa-result';res.id=inputId+'-res';
+      if(level) res.innerHTML='<span class="'+level.cls+'">'+level.text+'</span>';
+      inp.oninput=(function(i,r,isQ8){return function(){
+        var v=parseInt(this.value);
+        var lv=isQ8?get8QLevel(v):get9QLevel(v);
+        if(lv) r.innerHTML='<span class="'+lv.cls+'">'+lv.text+'</span>';
+        else r.innerHTML='';
+      };})(inp,res,label.indexOf('8Q')>=0);
+      row.appendChild(lbl);row.appendChild(inp);row.appendChild(res);
+      return row;
+    }
+
+    body.appendChild(makeQrow('8Q (0-24)',  'q8-'+s.no,  rec?rec.q8:'',  l8));
+    body.appendChild(makeQrow('9Q (0-27)',  'q9-'+s.no,  rec?rec.q9:'',  l9));
+
+    // Overall badge
+    if(ov&&ov!=='safe'){
+      var ovDiv=document.createElement('div');ovDiv.style.cssText='text-align:center;padding:4px;margin-bottom:6px;border-radius:6px;font-size:12px;font-weight:500;';
+      var ovCfg={high:'background:#FCEBEB;color:#A32D2D;',mid:'background:#FAEEDA;color:#854F0B;',low:'background:#E6F1FB;color:#185FA5;'};
+      var ovTxt={high:'[ALERT] ต้องส่งต่อ รพ.ด่วน',mid:'[WARN] นัดพบแพทย์',low:'เฝ้าระวัง'};
+      ovDiv.style.cssText+=ovCfg[ov]||'';
+      ovDiv.textContent=ovTxt[ov]||'';
+      body.appendChild(ovDiv);
+    }
+
+    // Save btn
+    var saveBtn=document.createElement('button');saveBtn.className='qa-save-btn';
+    saveBtn.textContent='บันทึกผลประเมิน';
+    (function(no,wk){saveBtn.onclick=function(){saveQA(no,wk);};})(s.no,wkey);
+    body.appendChild(saveBtn);
+
+    card.appendChild(body);
+    grid.appendChild(card);
+  });
+
+  // Stats
+  statEl.innerHTML=
+    '<div class="qa-stat"><div class="qa-stat-num" style="color:#A32D2D;">'+stats.high+'</div><div class="qa-stat-lbl">เสี่ยงสูง</div></div>'+
+    '<div class="qa-stat"><div class="qa-stat-num" style="color:#854F0B;">'+stats.mid+'</div><div class="qa-stat-lbl">ปานกลาง</div></div>'+
+    '<div class="qa-stat"><div class="qa-stat-num" style="color:#185FA5;">'+stats.low+'</div><div class="qa-stat-lbl">ระดับน้อย</div></div>'+
+    '<div class="qa-stat"><div class="qa-stat-num" style="color:#3B6D11;">'+(stats.safe)+'</div><div class="qa-stat-lbl">ปกติ</div></div>'+
+    '<div class="qa-stat"><div class="qa-stat-num" style="color:#aaa;">'+stats.none+'</div><div class="qa-stat-lbl">ยังไม่ประเมิน</div></div>';
+
+  sumEl.textContent='สัปดาห์ที่ '+qaWeek+' | ประเมินแล้ว '+(SOLDIERS.length-stats.none)+'/'+SOLDIERS.length+' นาย | เสี่ยงสูง '+stats.high+' นาย | ปานกลาง '+stats.mid+' นาย';
+}
+
+function saveQA(no, wkey){
+  var q8=document.getElementById('q8-'+no)?document.getElementById('q8-'+no).value:'';
+  var q9=document.getElementById('q9-'+no)?document.getElementById('q9-'+no).value:'';
+  if(q8===''&&q9===''){alert('กรุณากรอกคะแนนอย่างน้อย 1 แบบ');return;}
+  if(!QA_DATA[String(no)]) QA_DATA[String(no)]={};
+  var l8=get8QLevel(q8);var l9=get9QLevel(q9);var ov=getOverallQALevel(l8,l9);
+  QA_DATA[String(no)][wkey]={q8:q8,q9:q9,ts:new Date().toISOString(),level:ov};
+  db.ref('qa').set(QA_DATA);
+  // Telegram alert if high risk
+  if(ov==='high'||ov==='mid'){
+    var s=getS(no);
+    var nl='\n';
+    var msg='[EVAL] ผลประเมิน 8Q/9Q'+nl;
+    msg+='ช.1 พัน.52 ผลัด 1/2569'+nl;
+    msg+='---------------------------------'+nl;
+    msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+nl;
+    msg+='[หมู่] หมู่ '+s.squad+nl;
+    msg+='[สัปดาห์] สัปดาห์ที่ '+(wkey==='w1'?1:3)+nl;
+    msg+='[8Q] '+(q8||'-')+' คะแนน '+(l8?l8.text:'')+nl;
+    msg+='[9Q] '+(q9||'-')+' คะแนน '+(l9?l9.text:'')+nl;
+    msg+=(ov==='high'?'[ALERT] ต้องส่งต่อ รพ.ด่วน':'[WARN] นัดพบแพทย์')+nl;
+    msg+='---------------------------------'+nl;
+    msg+='CARE-NST | ช.พัน.52';
+    fetch('https://api.telegram.org/bot'+TG_BOT_TOKEN+'/sendMessage',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg})
+    });
+  }
+  renderQAList();
+  updateQABadge();
+  // feedback
+  var btn=event.target;btn.textContent='[OK] บันทึกแล้ว';btn.style.background='#3B6D11';
+  setTimeout(function(){btn.textContent='บันทึกผลประเมิน';btn.style.background='#534AB7';},1500);
+}
+
+function updateQABadge(){
+  var high=0;
+  for(var no in QA_DATA){
+    var recs=QA_DATA[no];
+    for(var wk in recs){if(recs[wk].level==='high') high++;}
+  }
+  var el=document.getElementById('qa-badge');
+  if(el) el.textContent=high?'([ALERT]'+high+')':'';
+}
+
+// ── EMERGENCY CHECKLIST ──
+function toggleEmg(item){
+  var cb=item.querySelector('input');
+  cb.checked=!cb.checked;
+  item.className='emg-item'+(cb.checked?' checked':'');
+  updateEmgBtn();
+}
+
+function updateEmgBtn(){
+  var anyChecked=document.querySelectorAll('.emg-cb:checked').length>0;
+  var hasSoldier=document.getElementById('emg-soldier-sel').value!=='';
+  document.getElementById('emg-alert-btn').disabled=!(anyChecked&&hasSoldier);
+}
+
+function renderEmgSoldierSelect(){
+  var sel=document.getElementById('emg-soldier-sel');
+  if(!sel) return;
+  sel.innerHTML='<option value="">-- เลือกชื่อทหาร --</option>';
+  SOLDIERS.forEach(function(s){
+    var opt=document.createElement('option');opt.value=s.no;
+    opt.textContent=s.no+'. '+s.fname+' '+s.lname+' (หมู่ '+s.squad+')';
+    sel.appendChild(opt);
+  });
+}
+
+function sendEmergencyAlert(){
+  var no=parseInt(document.getElementById('emg-soldier-sel').value);
+  if(!no){alert('กรุณาเลือกชื่อทหาร');return;}
+  var s=getS(no);if(!s) return;
+  var checkedItems=[];var hasDanger=false;
+  document.querySelectorAll('.emg-item.checked .emg-text').forEach(function(el){
+    checkedItems.push(el.textContent.trim());
+    if(el.querySelector('.emg-level-danger')) hasDanger=true;
+  });
+  if(!checkedItems.length){alert('กรุณาเลือกอาการก่อน');return;}
+  var nl='\n';
+  var msg=(hasDanger?'[DANGER] แจ้งเหตุฉุกเฉินด่วน':'[WARN] แจ้งอาการผิดปกติ')+nl;
+  msg+='ช.1 พัน.52 ผลัด 1/2569'+nl;
+  msg+='================================='+nl;
+  msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+nl;
+  msg+='[หมู่] หมู่ '+s.squad+' | '+rLabel(s.risk)+nl;
+  msg+='[เวลา] '+new Date().toLocaleTimeString('th-TH')+nl;
+  msg+='---------------------------------'+nl;
+  msg+='อาการที่พบ:'+nl;
+  checkedItems.forEach(function(item,i){msg+=(i+1)+'. '+item+nl;});
+  msg+='---------------------------------'+nl;
+  if(hasDanger){
+    msg+='[ACTION] นำส่ง ER รพ.ค่ายภาณุรังษี ทันที'+nl;
+    msg+='โทร: 032-337406'+nl;
+  } else {
+    msg+='[ACTION] แจ้งครูฝึก + น.เวชกรรม ทันที'+nl;
+    msg+='ประสานคลินิกเติมสุข: 098-5559314'+nl;
+  }
+  msg+='CARE-NST | ช.พัน.52';
+  // Save to Firebase
+  var date=todayStr();
+  if(!HEALTH[date]) HEALTH[date]={};
+  if(!HEALTH[date][String(no)]) HEALTH[date][String(no)]={};
+  HEALTH[date][String(no)].emergency=checkedItems;
+  HEALTH[date][String(no)].emergencyTs=new Date().toISOString();
+  saveHealth();
+  // Send Telegram
+  fetch('https://api.telegram.org/bot'+TG_BOT_TOKEN+'/sendMessage',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg})
+  }).then(function(){
+    var btn=document.getElementById('emg-alert-btn');
+    btn.textContent='[OK] แจ้งเตือนสำเร็จ';btn.style.background='#3B6D11';
+    setTimeout(function(){
+      btn.textContent='[ALERT] แจ้งเตือน Telegram และบันทึก';
+      btn.style.background='#E24B4A';
+      document.querySelectorAll('.emg-cb').forEach(function(cb){cb.checked=false;});
+      document.querySelectorAll('.emg-item').forEach(function(el){el.className='emg-item';});
+      btn.disabled=true;
+    },2000);
+  });
+}
+
+document.getElementById('emg-soldier-sel')&&document.getElementById('emg-soldier-sel').addEventListener('change',updateEmgBtn);
+
+// override gotoView for mental tab
+var _origGotoView3=gotoView;
+gotoView=function(name,btn){
+  _origGotoView3(name,btn);
+  if(name==='mental'){
+    renderQAList();
+    renderEmgSoldierSelect();
+  }
+};
+
+loadQA();
+
+// ════════════════════════════════════════
 // WBGT SYSTEM — ดัชนีความร้อนและธงสัญลักษณ์
 // ════════════════════════════════════════
 var WBGT_DATA = {}; // {date: [{time, temp, humid, wbgt, flag}]}
@@ -1925,52 +2385,6 @@ function renderHealthList(){
       anaSpan.className='stat-'+a.level;anaSpan.textContent=a.text;
     } else {anaSpan.className='stat-none';anaSpan.textContent='รอข้อมูล';}
     anaTd.appendChild(anaSpan);tr.appendChild(anaTd);
-
-    // Mental Health Assessment
-    var mhTd=document.createElement('td');mhTd.style.minWidth='200px';
-    var mhItems=[
-      {id:'mood',label:'อารมณ์',desc:'ซึมเศร้า/หดหู่'},
-      {id:'sleep',label:'นอนหลับ',desc:'นอนไม่หลับ/ฝันร้าย'},
-      {id:'social',label:'สังคม',desc:'เก็บตัว/ไม่พูด'},
-      {id:'appetite',label:'อาหาร',desc:'เบื่ออาหาร'},
-      {id:'stress',label:'ความเครียด',desc:'วิตกกังวล'}
-    ];
-    var mhWrap=document.createElement('div');
-    mhWrap.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:3px;';
-    mhItems.forEach(function(item){
-      var row2=document.createElement('div');
-      row2.style.cssText='display:flex;align-items:center;gap:3px;';
-      var lbl=document.createElement('span');
-      lbl.style.cssText='font-size:9px;color:#666;width:38px;flex-shrink:0;';
-      lbl.textContent=item.label;
-      row2.appendChild(lbl);
-      for(var v=0;v<=4;v++){
-        var mb=document.createElement('button');
-        var curVal=r&&r.mental&&r.mental[item.id]!==undefined?parseInt(r.mental[item.id]):-1;
-        mb.className='mh-btn mh-'+v+(curVal===v?' on':'');
-        mb.textContent=v;mb.title=item.desc+' ระดับ '+v+(v===0?' (ปกติ)':v===4?' (รุนแรง)':'');
-        mb.setAttribute('data-mhno',s.no);mb.setAttribute('data-mhkey',item.id);mb.setAttribute('data-mhval',v);
-        mb.onclick=(function(no,key,val,wrap){
-          return function(){
-            wrap.querySelectorAll('[data-mhno="'+no+'"][data-mhkey="'+key+'"]').forEach(function(b){b.classList.remove('on');});
-            this.classList.add('on');
-            calcMentalRisk(no);
-          };
-        })(s.no,item.id,v,mhWrap);
-        row2.appendChild(mb);
-      }
-      mhWrap.appendChild(row2);
-    });
-    mhTd.appendChild(mhWrap);tr.appendChild(mhTd);
-
-    // Mental Risk Score display
-    var mrTd=document.createElement('td');mrTd.style.textAlign='center';
-    var mrSpan=document.createElement('span');mrSpan.id='mr-'+s.no;
-    if(r&&r.mental){
-      var ms=getMentalScore(r.mental);
-      mrSpan.innerHTML=getMentalBadge(ms);
-    } else {mrSpan.className='risk-none';mrSpan.textContent='ยังไม่ประเมิน';}
-    mrTd.appendChild(mrSpan);tr.appendChild(mrTd);
 
     // Note
     var noteTd=document.createElement('td');
