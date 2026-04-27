@@ -161,6 +161,128 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
 .btn-cl{font-size:12px;padding:6px 14px;background:none;color:#666;border:1px solid #ddd;border-radius:5px;cursor:pointer;font-family:inherit;}
 .btn-ac{font-size:11px;padding:4px 10px;background:none;color:#185FA5;border:1px solid #185FA5;border-radius:5px;cursor:pointer;font-family:inherit;}
 .btn-rc{font-size:11px;padding:4px 10px;background:none;color:#888;border:1px solid #ddd;border-radius:5px;cursor:pointer;font-family:inherit;}
+
+/* ── AUTH SYSTEM ── */
+.auth-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;align-items:center;justify-content:center;}
+.auth-overlay.on{display:flex;}
+.auth-box{background:#fff;border-radius:14px;padding:28px 24px;width:100%;max-width:360px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.3);}
+.auth-logo{width:60px;height:60px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px;}
+.auth-title{font-size:16px;font-weight:600;margin-bottom:4px;}
+.auth-sub{font-size:12px;color:#888;margin-bottom:16px;}
+.auth-roles{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.auth-role-btn{padding:10px 14px;border:1px solid #e0ddd8;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;text-align:left;background:#fff;transition:all .15s;}
+.auth-role-btn:hover{border-color:#1a1a1a;background:#f5f4f1;}
+.auth-role-btn.sel{border-color:#1a1a1a;background:#1a1a1a;color:#fff;}
+.auth-role-name{font-weight:500;}
+.auth-role-code{font-size:11px;color:#aaa;margin-top:2px;}
+.auth-role-btn.sel .auth-role-code{color:#aaa;}
+.auth-pin-wrap{display:none;margin-bottom:14px;}
+.auth-pin-wrap.on{display:block;}
+.auth-pin-label{font-size:12px;color:#666;margin-bottom:6px;}
+.auth-pin-input{width:100%;font-family:inherit;font-size:18px;letter-spacing:8px;text-align:center;border:2px solid #ddd;border-radius:8px;padding:10px;outline:none;font-weight:600;}
+.auth-pin-input:focus{border-color:#1a1a1a;}
+.auth-pin-input.error{border-color:#E24B4A;animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);};}
+.auth-btn{width:100%;padding:11px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;}
+.auth-btn:disabled{opacity:.5;cursor:not-allowed;}
+.auth-cancel{font-size:12px;color:#aaa;cursor:pointer;text-decoration:underline;margin-top:8px;display:inline-block;}
+.auth-badge{display:inline-flex;align-items:center;gap:6px;background:#1a1a1a;color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;cursor:pointer;margin-left:8px;}
+.auth-badge:hover{background:#333;}
+.sensitive-blur{filter:blur(6px);user-select:none;pointer-events:none;transition:filter .3s;}
+.sensitive-blur.revealed{filter:none;user-select:auto;pointer-events:auto;}
+.lock-icon{font-size:18px;cursor:pointer;color:#aaa;vertical-align:middle;}
+.lock-icon:hover{color:#1a1a1a;}
+.sensitive-wrapper{position:relative;display:inline-block;}
+.reveal-btn{font-size:10px;padding:2px 8px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;margin-left:4px;}
+/* ── WEATHER FETCH ── */
+.weather-bar{background:linear-gradient(135deg,#1a3050,#0d1b2a);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.weather-btn{padding:8px 16px;background:#EF9F27;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;}
+.weather-btn:hover{background:#d4891f;}
+.weather-btn:disabled{opacity:.6;cursor:not-allowed;}
+.weather-info{display:flex;gap:16px;flex-wrap:wrap;flex:1;}
+.weather-stat{text-align:center;}
+.weather-stat-val{font-size:22px;font-weight:700;color:#fff;}
+.weather-stat-lbl{font-size:10px;color:#8A9BB0;margin-top:2px;}
+.weather-time{font-size:10px;color:#8A9BB0;margin-left:auto;}
+.weather-source{font-size:10px;color:#4A9FD4;}
+.auto-fill-indicator{background:#3B6D11;color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;margin-left:6px;}
+/* ── WBGT SYSTEM ── */
+.wbgt-view{padding:14px 16px;}
+.wbgt-card{background:#fff;border-radius:12px;border:1px solid #e0ddd8;padding:16px;margin-bottom:14px;}
+.wbgt-title{font-size:14px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.wbgt-inputs{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;}
+.wbgt-field{display:flex;flex-direction:column;gap:4px;}
+.wbgt-field label{font-size:11px;color:#888;font-weight:500;}
+.wbgt-field input{font-family:inherit;font-size:14px;border:2px solid #ddd;border-radius:8px;padding:8px 12px;outline:none;width:100px;text-align:center;}
+.wbgt-field input:focus{border-color:#1a1a1a;}
+.wbgt-calc-btn{padding:10px 20px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;}
+.flag-display{display:flex;align-items:center;gap:16px;padding:16px;border-radius:12px;margin-top:12px;border:3px solid transparent;}
+.flag-white{background:#f8f8f8;border-color:#ccc;}
+.flag-green{background:#EAF3DE;border-color:#4CAF6E;}
+.flag-yellow{background:#FFFDE7;border-color:#EF9F27;}
+.flag-red{background:#FFEBEE;border-color:#E24B4A;}
+.flag-black{background:#212121;border-color:#000;}
+.flag-pole{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.flag-stick{width:4px;height:60px;background:#8B6914;border-radius:2px;}
+.flag-cloth{width:50px;height:35px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.flag-info{flex:1;}
+.flag-name{font-size:18px;font-weight:700;margin-bottom:4px;}
+.flag-wbgt{font-size:13px;color:#666;margin-bottom:8px;}
+.flag-rules{font-size:12px;}
+.flag-rule{padding:3px 0;display:flex;align-items:flex-start;gap:6px;}
+.flag-rule-icon{flex-shrink:0;width:16px;text-align:center;}
+.wbgt-history{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.wbgt-hist-item{background:#f5f4f1;border-radius:8px;padding:8px 12px;font-size:11px;text-align:center;min-width:70px;}
+.wbgt-hist-time{color:#888;margin-bottom:3px;}
+.wbgt-hist-val{font-weight:600;font-size:13px;}
+.risk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:10px;}
+.risk-item{border-radius:8px;padding:10px 12px;font-size:12px;}
+.risk-item-title{font-weight:600;margin-bottom:4px;font-size:13px;}
+.timer-bar{background:#fff;border-radius:12px;border:1px solid #e0ddd8;padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.timer-big{font-size:36px;font-weight:700;font-family:monospace;}
+.timer-label{font-size:12px;color:#888;}
+.wbgt-log-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;}
+.wbgt-log-table th{padding:6px 8px;background:#f5f4f1;text-align:left;border-bottom:2px solid #e0ddd8;font-size:11px;color:#888;}
+.wbgt-log-table td{padding:6px 8px;border-bottom:1px solid #f0ede8;}
+/* ── ADVICE BOX ── */
+.advice-box{background:#f8f9fa;border-radius:8px;padding:10px 12px;margin-top:8px;border-left:3px solid #ccc;}
+.advice-box.adv-ok{border-left-color:#4CAF6E;background:#f0f7e8;}
+.advice-box.adv-warn{border-left-color:#EF9F27;background:#fff8ec;}
+.advice-box.adv-danger{border-left-color:#E24B4A;background:#fff0f0;}
+.advice-title{font-size:11px;font-weight:600;margin-bottom:4px;}
+.advice-list{font-size:11px;color:#444;padding-left:14px;}
+.advice-list li{margin-bottom:2px;}
+.adv-section{margin-bottom:6px;}
+.adv-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;margin-right:4px;}
+/* ── MENTAL HEALTH ── */
+.mh-score{display:flex;gap:3px;align-items:center;flex-wrap:wrap;}
+.mh-btn{width:22px;height:22px;border-radius:4px;border:1px solid #ddd;cursor:pointer;font-size:9px;font-weight:bold;color:#fff;transition:all .15s;}
+.mh-btn.on{transform:scale(1.15);border-color:#333;}
+.mh-none{background:#e0e0e0;color:#666;}
+.mh-0{background:#4CAF6E;}
+.mh-1{background:#8BC34A;}
+.mh-2{background:#FFC107;}
+.mh-3{background:#FF9800;}
+.mh-4{background:#E24B4A;}
+.risk-low{background:#EAF3DE;color:#3B6D11;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:500;}
+.risk-mid{background:#FFF3CD;color:#854F0B;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:500;}
+.risk-high{background:#FCEBEB;color:#A32D2D;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:500;}
+.risk-none{color:#aaa;font-size:10px;}
+.mh-label{font-size:9px;color:#aaa;display:block;text-align:center;margin-top:1px;}
+/* ── HEALTH VIEW ── */
+.hd-bar{padding:10px 14px;background:#fff;border-bottom:1px solid #e0ddd8;}
+.urine-dot{display:inline-block;width:16px;height:16px;border-radius:50%;border:1px solid #ccc;vertical-align:middle;margin-right:4px;}
+.urine-sel{display:flex;gap:6px;align-items:center;}
+.urine-btn{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:border .15s;}
+.urine-btn.sel{border-color:#1a1a1a;transform:scale(1.2);}
+.temp-inp{width:70px;font-family:inherit;font-size:12px;border:1px solid #ddd;border-radius:5px;padding:4px 6px;outline:none;}
+.stat-ok{color:#3B6D11;font-weight:500;font-size:11px;}
+.stat-warn{color:#854F0B;font-weight:500;font-size:11px;}
+.stat-danger{color:#A32D2D;font-weight:500;font-size:11px;}
+.stat-none{color:#aaa;font-size:11px;}
+.hist-row{padding:7px 0;border-bottom:1px solid #f0ede8;display:flex;gap:10px;align-items:flex-start;font-size:12px;}
+.hist-date{font-weight:500;color:#185FA5;width:80px;flex-shrink:0;}
+.hist-data{flex:1;}
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -174,7 +296,9 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
   <button class="top-tab on" onclick="gotoView('grid',this)">รายชื่อทั้งหมด</button>
   <button class="top-tab" onclick="gotoView('squads',this)">หมู่ / บัดดี้</button>
   <button class="top-tab" onclick="gotoView('alerts',this)">นัดแพทย์ <span id="abadge"></span></button>
-  <span class="topbar-stat" id="nstat"></span>
+  <button class="top-tab" onclick="gotoView('health',this)">สุขภาพรายวัน <span id="hbadge" style="font-size:10px;"></span></button>
+  <button class="top-tab" onclick="gotoView('wbgt',this)">WBGT ธงสัญลักษณ์ <span id="wbgt-badge" style="font-size:10px;"></span></button>
+  <span class="topbar-stat" id="nstat"></span><span class="auth-badge" id="auth-badge" onclick="handleAuthBadge()">[LOCK] เข้าสู่ระบบ</span>
 </div>
 
 <!-- GRID VIEW (original style) -->
@@ -216,6 +340,189 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
     <span style="font-size:11px;color:#888;">กดชื่อเพื่อแก้ไขนัด</span>
   </div>
   <div id="al-wrap" class="al-wrap"></div>
+</div>
+
+<!-- HEALTH VIEW -->
+<div class="view" id="v-health">
+  <div class="hd-bar">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <span style="font-size:14px;font-weight:500;">บันทึกสุขภาพประจำวัน</span>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <label style="font-size:12px;color:#888;">วันที่:</label>
+        <input type="date" id="health-date" onchange="renderHealthList()" style="font-family:inherit;font-size:12px;border:1px solid #ddd;border-radius:6px;padding:5px 8px;outline:none;">
+        <input type="text" id="health-search" placeholder="ค้นหาชื่อ..." oninput="renderHealthList()" style="font-family:inherit;font-size:12px;border:1px solid #ddd;border-radius:20px;padding:5px 12px;outline:none;width:150px;">
+        <button class="btn-p" onclick="showHealthHistory(null)">ประวัติย้อนหลัง</button>
+      </div>
+    </div>
+    <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;" id="health-filter-tabs">
+      <button class="ftab on" onclick="setHF('all',this)">ทั้งหมด</button>
+      <button class="ftab" onclick="setHF('alert',this)">ต้องติดตาม</button>
+      <button class="ftab" onclick="setHF('recorded',this)">บันทึกแล้ว</button>
+      <button class="ftab" onclick="setHF('none',this)">ยังไม่บันทึก</button>
+    </div>
+    <div id="wbgt-health-warn"></div>
+    <div id="health-auth-notice" style="margin-top:6px;padding:6px 10px;border-radius:6px;font-size:11px;"></div>
+    <div id="health-summary" style="margin-top:4px;font-size:11px;color:#888;"></div>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="ltable" style="margin:10px 14px;width:calc(100% - 28px);">
+      <thead><tr>
+        <th>#</th><th>ชื่อ-สกุล</th><th>หมู่</th><th>สีสัญลักษณ์</th>
+        <th>เช้า<br><span style="font-size:9px;color:#aaa;">อุณหภูมิ / ปัสสาวะ</span></th>
+        <th>กลางวัน<br><span style="font-size:9px;color:#aaa;">อุณหภูมิ / ปัสสาวะ</span></th>
+        <th>เย็น<br><span style="font-size:9px;color:#aaa;">อุณหภูมิ / ปัสสาวะ</span></th>
+        <th>AI วิเคราะห์<br><span style="font-size:9px;color:#aaa;">ร่างกาย</span></th><th style="min-width:200px;">ประเมินจิตใจ<br><span style="font-size:9px;color:#aaa;">กด 0-4 ต่อข้อ</span></th><th>ความเสี่ยง<br><span style="font-size:9px;color:#aaa;">ซึมเศร้า</span></th><th>หมายเหตุ</th><th>บันทึก</th>
+      </tr></thead>
+      <tbody id="health-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- WBGT VIEW -->
+<div class="view" id="v-wbgt">
+  <div class="wbgt-view">
+
+    <!-- Calculator Card -->
+    <div class="wbgt-card">
+      <div class="wbgt-title">
+        <span style="font-size:20px;">[TEMP]</span>
+        <span>คำนวณดัชนีความร้อน WBGT และกำหนดสีธง</span>
+        <span style="font-size:11px;color:#888;margin-left:auto;">วัด 5 ครั้ง/วัน ตามประกาศ พบ.</span>
+      </div>
+      <div class="weather-bar">
+        <button class="weather-btn" id="fetch-weather-btn" onclick="fetchWeather()">
+          [FETCH] ดึงข้อมูลสภาพอากาศ ราชบุรี
+        </button>
+        <div class="weather-info" id="weather-info">
+          <div style="color:#8A9BB0;font-size:12px;align-self:center;">กด "ดึงข้อมูล" เพื่อโหลดสภาพอากาศปัจจุบัน</div>
+        </div>
+        <div class="weather-time" id="weather-time"></div>
+      </div>
+      <div class="wbgt-inputs">
+        <div class="wbgt-field">
+          <label>อุณหภูมิอากาศ (°C)</label>
+          <input type="number" id="wbgt-temp" step="0.1" min="20" max="50" placeholder="32.0" oninput="calcWBGT()">
+        </div>
+        <div class="wbgt-field">
+          <label>ความชื้นสัมพัทธ์ (%)</label>
+          <input type="number" id="wbgt-humid" step="1" min="0" max="100" placeholder="70" oninput="calcWBGT()">
+        </div>
+        <div class="wbgt-field">
+          <label>รอบที่</label>
+          <select id="wbgt-round" style="font-family:inherit;font-size:13px;border:2px solid #ddd;border-radius:8px;padding:8px;outline:none;">
+            <option value="06:00">06:00 น.</option>
+            <option value="09:00">09:00 น.</option>
+            <option value="12:00">12:00 น.</option>
+            <option value="15:00">15:00 น.</option>
+            <option value="18:00">18:00 น.</option>
+          </select>
+        </div>
+        <button class="wbgt-calc-btn" onclick="saveWBGT()">บันทึก</button>
+        <div class="wbgt-field">
+          <label>วันที่</label>
+          <input type="date" id="wbgt-date" style="font-family:inherit;font-size:13px;border:2px solid #ddd;border-radius:8px;padding:8px;outline:none;" onchange="renderWBGTHistory()">
+        </div>
+      </div>
+
+      <!-- Flag Display -->
+      <div id="flag-display" class="flag-display flag-white" style="display:none;"></div>
+    </div>
+
+    <!-- Today Summary -->
+    <div class="wbgt-card">
+      <div class="wbgt-title">บันทึกประจำวัน — <span id="wbgt-date-label"></span></div>
+      <div class="wbgt-history" id="wbgt-history-dots"></div>
+      <div id="wbgt-worst-flag" style="margin-top:10px;"></div>
+    </div>
+
+    <!-- Training Rules by Flag -->
+    <div class="wbgt-card">
+      <div class="wbgt-title">แนวทางการฝึก ตามสีธง (ตามประกาศ พบ. 2569)</div>
+      <div class="risk-grid">
+        <div class="risk-item" style="background:#f8f8f8;border:1px solid #ccc;">
+          <div class="risk-item-title" style="color:#555;">⬜ ธงขาว — WBGT ≤25.6°C</div>
+          <div style="color:#444;">ฝึกได้ตามปกติทุกกิจกรรม</div>
+          <div style="color:#888;margin-top:4px;">ดื่มน้ำ 500 มล./ชม.</div>
+        </div>
+        <div class="risk-item" style="background:#EAF3DE;border:1px solid #4CAF6E;">
+          <div class="risk-item-title" style="color:#3B6D11;">ธงเขียว — WBGT 25.6–27.7°C</div>
+          <div style="color:#444;">ฝึกได้ แต่ระวังกลุ่มเสี่ยง</div>
+          <div style="color:#3B6D11;margin-top:4px;">ดื่มน้ำ 500 มล. ทุก 20 นาที</div>
+        </div>
+        <div class="risk-item" style="background:#FFFDE7;border:1px solid #EF9F27;">
+          <div class="risk-item-title" style="color:#854F0B;">ธงเหลือง — WBGT 27.8–29.4°C</div>
+          <div style="color:#444;">ลดความหนักของการฝึก 30%</div>
+          <div style="color:#854F0B;margin-top:4px;">พักทุก 45 นาที / ดื่มน้ำ 750 มล./ชม.</div>
+          <div style="color:#854F0B;">งดออกกำลังสำหรับกลุ่มสีเหลือง-แดง</div>
+        </div>
+        <div class="risk-item" style="background:#FFEBEE;border:1px solid #E24B4A;">
+          <div class="risk-item-title" style="color:#A32D2D;">ธงแดง — WBGT 29.4–32.2°C</div>
+          <div style="color:#444;">งดวิ่ง ลดกิจกรรมกลางแจ้ง</div>
+          <div style="color:#A32D2D;margin-top:4px;">พักทุก 30 นาที / ดื่มน้ำ 1 ลิตร/ชม.</div>
+          <div style="color:#A32D2D;">กลุ่มสีแดง: งดทุกกิจกรรม</div>
+        </div>
+        <div class="risk-item" style="background:#212121;border:1px solid #000;">
+          <div class="risk-item-title" style="color:#fff;">⬛ ธงดำ — WBGT ≥32.2°C</div>
+          <div style="color:#ccc;">งดฝึกกลางแจ้งทุกชนิด</div>
+          <div style="color:#EF9F27;margin-top:4px;">เฉพาะกิจกรรมในร่มเท่านั้น</div>
+          <div style="color:#E24B4A;">แจ้ง ผบ.หน่วยและแพทย์ประจำหน่วยทันที</div>
+        </div>
+        <div class="risk-item" style="background:#fff3f3;border:1px dashed #E24B4A;">
+          <div class="risk-item-title" style="color:#A32D2D;">ข้อห้ามทุกสีธง</div>
+          <div style="color:#444;">ห้ามดื่มน้ำเกิน 1 ลิตร/ชม.</div>
+          <div style="color:#444;">ห้ามดื่มน้ำเกิน 9 ลิตร/วัน</div>
+          <div style="color:#444;">ปัสสาวะเข้มหลังดื่มน้ำ → พบแพทย์</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WBGT Log Table -->
+    <div class="wbgt-card">
+      <div class="wbgt-title">ประวัติการวัด WBGT</div>
+      <div id="wbgt-log-body"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- HEALTH HISTORY MODAL -->
+<div class="im-ov" id="hist-ov" onclick="histBg(event)">
+  <div class="im-box" style="max-width:620px;max-height:85vh;overflow-y:auto;">
+    <h3 id="hist-title">ประวัติสุขภาพ</h3>
+    <div id="hist-body" style="margin-top:10px;"></div>
+    <div class="im-acts" style="margin-top:12px;">
+      <button class="btn-cl" onclick="closeHist()">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH OVERLAY -->
+<div class="auth-overlay" id="auth-ov">
+  <div class="auth-box">
+    <div class="auth-logo">[AUTH]</div>
+    <div class="auth-title">ข้อมูลจำกัดการเข้าถึง</div>
+    <div class="auth-sub" id="auth-sub-text">กรุณาเลือกตำแหน่งและใส่รหัสผ่าน</div>
+    <div class="auth-roles" id="auth-roles">
+      <button class="auth-role-btn" onclick="selectRole('CD01',this)">
+        <div class="auth-role-name">ผบ.ช.1 พัน.52</div>
+        <div class="auth-role-code">ผู้บังคับกองพัน</div>
+      </button>
+      <button class="auth-role-btn" onclick="selectRole('CD03',this)">
+        <div class="auth-role-name">ฝอ.3 ช.1 พัน.52</div>
+        <div class="auth-role-code">ฝ่ายส่งกำลังบำรุง</div>
+      </button>
+      <button class="auth-role-btn" onclick="selectRole('CD51',this)">
+        <div class="auth-role-name">ผฝ.ทหารใหม่</div>
+        <div class="auth-role-code">ผู้ฝึกทหารใหม่</div>
+      </button>
+    </div>
+    <div class="auth-pin-wrap" id="auth-pin-wrap">
+      <div class="auth-pin-label">ใส่รหัสผ่าน</div>
+      <input type="password" class="auth-pin-input" id="auth-pin" maxlength="10" placeholder="รหัส" oninput="authPinInput()">
+    </div>
+    <button class="auth-btn" id="auth-submit-btn" onclick="submitAuth()" disabled>ยืนยัน</button>
+    <div><span class="auth-cancel" onclick="cancelAuth()">ยกเลิก</span></div>
+  </div>
 </div>
 
 <!-- POPUP -->
@@ -314,6 +621,123 @@ function seedSoldiers(){
 seedSoldiers();
 
 // ── โหลดข้อมูลจาก Firebase ──
+
+// ════════════════════════════════════════
+// AUTH SYSTEM — ระบบยืนยันตัวตน
+// ════════════════════════════════════════
+var AUTH_ROLES={
+  'CD01':{name:'ผบ.ช.1 พัน.52', level:1},
+  'CD03':{name:'ฝอ.3 ช.1 พัน.52', level:1},
+  'CD51':{name:'ผฝ.ทหารใหม่', level:1}
+};
+var currentRole=null;
+var selectedRoleCode=null;
+var authCallback=null;
+var authSessionTimeout=null;
+
+// ระดับสิทธิ์ที่เข้าถึงข้อมูลอะไรได้:
+// level 1 (CD51): ดูข้อมูลจิตเวช
+// level 2 (CD03): ดูข้อมูลจิตเวช + บัตรประชาชน
+// level 3 (CD01): ดูได้ทุกอย่าง
+
+function requireAuth(requiredLevel, callback){
+  // ถ้ามี session อยู่แล้วและสิทธิ์พอ
+  if(currentRole&&AUTH_ROLES[currentRole]&&AUTH_ROLES[currentRole].level>=requiredLevel){
+    callback();return;
+  }
+  authCallback=callback;
+  document.getElementById('auth-sub-text').textContent='กรุณาเลือกตำแหน่งและใส่รหัสผ่านเพื่อเข้าถึงข้อมูล';
+  document.getElementById('auth-ov').className='auth-overlay on';
+  document.getElementById('auth-pin').value='';
+  document.getElementById('auth-pin-input-wrap');
+  document.getElementById('auth-pin-wrap').className='auth-pin-wrap';
+  document.getElementById('auth-submit-btn').disabled=true;
+  selectedRoleCode=null;
+  document.querySelectorAll('.auth-role-btn').forEach(function(b){b.className='auth-role-btn';});
+}
+
+function selectRole(code, btn){
+  selectedRoleCode=code;
+  document.querySelectorAll('.auth-role-btn').forEach(function(b){b.className='auth-role-btn';});
+  btn.className='auth-role-btn sel';
+  document.getElementById('auth-pin-wrap').className='auth-pin-wrap on';
+  document.getElementById('auth-pin').focus();
+  document.getElementById('auth-pin').value='';
+  document.getElementById('auth-submit-btn').disabled=true;
+}
+
+function authPinInput(){
+  var pin=document.getElementById('auth-pin').value;
+  document.getElementById('auth-submit-btn').disabled=!selectedRoleCode||pin.length<2;
+}
+
+function submitAuth(){
+  var pin=document.getElementById('auth-pin').value.trim().toUpperCase();
+  if(!selectedRoleCode){alert('กรุณาเลือกตำแหน่งก่อน');return;}
+  if(pin===selectedRoleCode){
+    currentRole=selectedRoleCode;
+    document.getElementById('auth-ov').className='auth-overlay';
+    // Update auth badge in topbar
+    updateAuthBadge();
+    // Auto logout after 30 minutes
+    if(authSessionTimeout) clearTimeout(authSessionTimeout);
+    authSessionTimeout=setTimeout(function(){
+      currentRole=null;updateAuthBadge();
+    },30*60*1000);
+    if(authCallback){authCallback();authCallback=null;}
+  } else {
+    var inp=document.getElementById('auth-pin');
+    inp.className='auth-pin-input error';
+    inp.value='';
+    setTimeout(function(){inp.className='auth-pin-input';},500);
+    document.getElementById('auth-sub-text').textContent='รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่';
+  }
+}
+
+function cancelAuth(){
+  document.getElementById('auth-ov').className='auth-overlay';
+  authCallback=null;selectedRoleCode=null;
+}
+
+function logout(){
+  currentRole=null;
+  if(authSessionTimeout) clearTimeout(authSessionTimeout);
+  updateAuthBadge();
+}
+
+function updateAuthBadge(){
+  var badge=document.getElementById('auth-badge');
+  if(!badge) return;
+  if(currentRole&&AUTH_ROLES[currentRole]){
+    badge.textContent='[UNLOCK] '+AUTH_ROLES[currentRole].name+' [ออก]';
+    badge.style.background='#3B6D11';
+  } else {
+    badge.textContent='[LOCK] เข้าสู่ระบบ';
+    badge.style.background='#1a1a1a';
+  }
+}
+function handleAuthBadge(){
+  if(currentRole){logout();}
+  else{requireAuth(1,function(){});}
+}
+
+
+// ── ฟังก์ชันแสดงข้อมูลลับ ──
+function revealSensitive(type, no){
+  var minLevel = 1;
+  var label = type==='id'?'บัตรประชาชน':'ข้อมูลจิตเวช';
+  requireAuth(minLevel, function(){
+    var el=document.getElementById('sens-'+type+'-'+no);
+    if(el){
+      el.classList.remove('sensitive-blur');
+      el.classList.add('revealed');
+      // log access
+      var s=getS(no);
+      console.log('[ACCESS LOG] '+AUTH_ROLES[currentRole].name+' เข้าถึง '+label+' ของ '+(s?s.fname+' '+s.lname:'no='+no)+' เวลา '+new Date().toLocaleTimeString());
+    }
+  });
+}
+
 function loadLS(){
   // โหลด APPTS จาก Firebase
   db.ref('appts').on('value',function(snap){
@@ -341,17 +765,6 @@ function loadLS(){
     // Re-render grid เพื่อให้รูปขึ้นทุกเครื่อง
     doFilter();
     renderSquads();
-    // แจ้ง QR handler ว่ารูปโหลดแล้ว
-    if(window._onPhotosLoaded) window._onPhotosLoaded();
-    // ถ้า popup เปิดอยู่แล้ว ให้ refresh รูปใน popup
-    var ov=document.getElementById('overlay');
-    if(ov&&ov.className.indexOf('on')!==-1){
-      var popAv=document.getElementById('pop-av');
-      if(popAv&&popAv.firstChild){
-        var curNo=parseInt(popAv.firstChild.getAttribute('data-avno'));
-        if(curNo>0) buildPopAv(curNo);
-      }
-    }
   });
 }
 
@@ -701,6 +1114,49 @@ function showPop(no){
     APPTS[String(n)]={date:d,note:nt};saveLS();showPop(n);renderAlerts();updateBadge();sendTelegramNow(n,d,nt);
   };})(no);
   apf.appendChild(apd);apf.appendChild(apn);apf.appendChild(apsv);apb.appendChild(apf);aps.appendChild(apb);body.appendChild(aps);
+  // ID Card (sensitive - level 2+)
+  var idSec=document.createElement('div');idSec.className='sec';
+  var idSt=document.createElement('div');idSt.className='sec-t';idSt.textContent='ข้อมูลส่วนตัว (จำกัดการเข้าถึง)';idSec.appendChild(idSt);
+  var idBox=document.createElement('div');idBox.style.cssText='background:#fff8ec;border-radius:7px;padding:8px 11px;border:1px dashed #EF9F27;';
+  var idLockRow=document.createElement('div');idLockRow.style.cssText='display:flex;align-items:center;gap:8px;';
+  var idIcon=document.createElement('span');idIcon.textContent='[LOCK]';idIcon.style.cssText='font-size:16px;';
+  var idText=document.createElement('span');idText.style.cssText='font-size:12px;color:#854F0B;';idText.textContent='บัตรประชาชน — ต้องใช้รหัสผู้มีสิทธิ์';
+  var idRevBtn=document.createElement('button');idRevBtn.className='reveal-btn';idRevBtn.textContent='ปลดล็อก';
+  (function(n){idRevBtn.onclick=function(){revealSensitive('id',n);};})(no);
+  var idData=document.createElement('div');idData.id='sens-id-'+no;idData.className='sensitive-blur';
+  idData.style.cssText='margin-top:6px;font-size:12px;';
+  idData.innerHTML='<div>เลขบัตร: '+s.code+'</div><div>จ.ทหาร: '+(s.service||'-')+'</div><div>ประเภท: '+(s.type||'-')+'</div>';
+  idLockRow.appendChild(idIcon);idLockRow.appendChild(idText);idLockRow.appendChild(idRevBtn);
+  idBox.appendChild(idLockRow);idBox.appendChild(idData);idSec.appendChild(idBox);
+  body.appendChild(idSec);
+
+  // Mental Health History (sensitive - level 1+)
+  var mhSec=document.createElement('div');mhSec.className='sec';
+  var mhSt=document.createElement('div');mhSt.className='sec-t';mhSt.textContent='ข้อมูลสุขภาพจิต (จำกัดการเข้าถึง)';mhSec.appendChild(mhSt);
+  var mhBox=document.createElement('div');mhBox.style.cssText='background:#f0f0ff;border-radius:7px;padding:8px 11px;border:1px dashed #534AB7;';
+  var mhLockRow=document.createElement('div');mhLockRow.style.cssText='display:flex;align-items:center;gap:8px;';
+  var mhIcon=document.createElement('span');mhIcon.textContent='[LOCK]';mhIcon.style.cssText='font-size:16px;';
+  var mhText=document.createElement('span');mhText.style.cssText='font-size:12px;color:#534AB7;';mhText.textContent='ประวัติจิตเวช — ต้องใช้รหัสผู้มีสิทธิ์';
+  var mhRevBtn=document.createElement('button');mhRevBtn.className='reveal-btn';mhRevBtn.style.background='#534AB7';mhRevBtn.textContent='ปลดล็อก';
+  (function(n){mhRevBtn.onclick=function(){revealSensitive('mh',n);};})(no);
+  var mhData=document.createElement('div');mhData.id='sens-mh-'+no;mhData.className='sensitive-blur';
+  mhData.style.cssText='margin-top:6px;font-size:12px;';
+  // Get mental health history
+  var mhHistory='';var mhDates=Object.keys(HEALTH).sort().reverse().slice(0,5);
+  if(mhDates.length){
+    mhDates.forEach(function(date){
+      var rec=HEALTH[date]&&HEALTH[date][String(no)];
+      if(rec&&rec.mental){
+        var ms=getMentalScore(rec.mental);
+        mhHistory+='<div style="padding:3px 0;border-bottom:1px solid #e8e8ff;">'+fmtDate(new Date(date+' 00:00'))+': '+getMentalBadge(ms)+'</div>';
+      }
+    });
+  }
+  mhData.innerHTML=mhHistory||'<span style="color:#aaa;">ยังไม่มีประวัติการประเมิน</span>';
+  mhLockRow.appendChild(mhIcon);mhLockRow.appendChild(mhText);mhLockRow.appendChild(mhRevBtn);
+  mhBox.appendChild(mhLockRow);mhBox.appendChild(mhData);mhSec.appendChild(mhBox);
+  body.appendChild(mhSec);
+
   // Contact
   if(s.contact&&s.contact!=='-'){
     var cos=document.createElement('div');cos.className='sec';var cost=document.createElement('div');cost.className='sec-t';cost.textContent='ผู้ติดต่อฉุกเฉิน';cos.appendChild(cost);
@@ -756,31 +1212,1004 @@ function renderStats(){
   document.getElementById('nstat').textContent='งดฝึก '+r+' · ลด '+a+' · เฝ้า '+g+' · รวม '+SOLDIERS.length+' นาย';
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePop();closeIM();}});
+// ════════════════════════════════════════
+// WBGT SYSTEM — ดัชนีความร้อนและธงสัญลักษณ์
+// ════════════════════════════════════════
+var WBGT_DATA = {}; // {date: [{time, temp, humid, wbgt, flag}]}
+
+var FLAG_CONFIG = [
+  {
+    key:'white', name:'ธงขาว', wbgtMax:25.6, color:'#555', bg:'#f8f8f8', border:'#ccc',
+    cloth:'#ffffff', emoji:'⬜',
+    rules:[
+      'ฝึกได้ตามปกติทุกกิจกรรม',
+      'ดื่มน้ำ 500 มล./ชั่วโมง',
+      'สังเกตอาการผิดปกติตามปกติ'
+    ]
+  },
+  {
+    key:'green', name:'ธงเขียว', wbgtMax:27.7, color:'#3B6D11', bg:'#EAF3DE', border:'#4CAF6E',
+    cloth:'#4CAF6E', emoji:'[เขียว]',
+    rules:[
+      'ฝึกได้ตามปกติ ระวังกลุ่มเสี่ยง',
+      'ดื่มน้ำ 500 มล. ทุก 20 นาที',
+      'กลุ่มสีเหลือง-แดง: เฝ้าระวังพิเศษ'
+    ]
+  },
+  {
+    key:'yellow', name:'ธงเหลือง', wbgtMax:29.4, color:'#854F0B', bg:'#FFFDE7', border:'#EF9F27',
+    cloth:'#EF9F27', emoji:'[เหลือง]',
+    rules:[
+      'ลดความหนักการฝึก 30%',
+      'พักทุก 45 นาที ในร่ม',
+      'ดื่มน้ำ 750 มล./ชั่วโมง',
+      'กลุ่มสีเหลือง-แดง: งดออกกำลัง'
+    ]
+  },
+  {
+    key:'red', name:'ธงแดง', wbgtMax:32.2, color:'#A32D2D', bg:'#FFEBEE', border:'#E24B4A',
+    cloth:'#E24B4A', emoji:'[แดง]',
+    rules:[
+      'งดวิ่ง งดกิจกรรมกลางแจ้ง',
+      'พักทุก 30 นาที',
+      'ดื่มน้ำ 1 ลิตร/ชั่วโมง',
+      'กลุ่มสีแดง: งดทุกกิจกรรม'
+    ]
+  },
+  {
+    key:'black', name:'ธงดำ', wbgtMax:999, color:'#fff', bg:'#212121', border:'#000',
+    cloth:'#111', emoji:'⬛',
+    rules:[
+      'งดฝึกกลางแจ้งทุกชนิด',
+      'เฉพาะกิจกรรมในร่มเท่านั้น',
+      'แจ้ง ผบ.หน่วยและแพทย์ทันที',
+      'เพิ่มความถี่วัดอุณหภูมิร่างกาย'
+    ]
+  }
+];
+
+function calcWBGTValue(temp, humid){
+  // Approximate WBGT outdoor formula
+  // WBGT ≈ 0.7*Twb + 0.2*Tg + 0.1*Ta
+  // Simplified: use heat index approximation
+  var T = parseFloat(temp);
+  var H = parseFloat(humid);
+  if(isNaN(T)||isNaN(H)) return null;
+  // Wet bulb approximation: Tw = T * atan(0.151977*(H+8.313659)^0.5) + ...
+  var Tw = T * Math.atan(0.151977 * Math.pow(H + 8.313659, 0.5)) +
+           Math.atan(T + H) - Math.atan(H - 1.676331) +
+           0.00391838 * Math.pow(H, 1.5) * Math.atan(0.023101 * H) - 4.686035;
+  // Globe temp approx (assume full sun)
+  var Tg = T + 5; // rough outdoor estimate
+  var wbgt = 0.7*Tw + 0.2*Tg + 0.1*T;
+  return Math.round(wbgt * 10) / 10;
+}
+
+function getFlag(wbgt){
+  if(wbgt === null) return null;
+  for(var i=0;i<FLAG_CONFIG.length;i++){
+    if(wbgt <= FLAG_CONFIG[i].wbgtMax) return FLAG_CONFIG[i];
+  }
+  return FLAG_CONFIG[FLAG_CONFIG.length-1];
+}
+
+function calcWBGT(){
+  var temp = document.getElementById('wbgt-temp').value;
+  var humid = document.getElementById('wbgt-humid').value;
+  if(!temp||!humid) return;
+  var wbgt = calcWBGTValue(temp, humid);
+  var flag = getFlag(wbgt);
+  if(!flag) return;
+  renderFlagDisplay(flag, wbgt);
+}
+
+function renderFlagDisplay(flag, wbgt){
+  var el = document.getElementById('flag-display');
+  el.style.display = 'flex';
+  el.className = 'flag-display flag-'+flag.key;
+  el.innerHTML =
+    '<div class="flag-pole">'+
+      '<div class="flag-cloth" style="background:'+flag.cloth+';border:2px solid '+flag.border+';font-size:24px;">'+flag.emoji+'</div>'+
+      '<div class="flag-stick"></div>'+
+    '</div>'+
+    '<div class="flag-info">'+
+      '<div class="flag-name" style="color:'+flag.color+';">'+flag.name+'</div>'+
+      '<div class="flag-wbgt" style="color:'+flag.color+';">WBGT = <strong>'+wbgt+'°C</strong></div>'+
+      '<div class="flag-rules">'+
+        flag.rules.map(function(r){
+          return '<div class="flag-rule"><span class="flag-rule-icon" style="color:'+flag.color+';">•</span><span style="color:'+(flag.key==='black'?'#ccc':'#444')+';">'+r+'</span></div>';
+        }).join('')+
+      '</div>'+
+    '</div>';
+}
+
+function saveWBGT(){
+  var temp = document.getElementById('wbgt-temp').value;
+  var humid = document.getElementById('wbgt-humid').value;
+  var round = document.getElementById('wbgt-round').value;
+  var date = document.getElementById('wbgt-date').value || todayStr();
+  if(!temp||!humid){alert('กรุณากรอกอุณหภูมิและความชื้น');return;}
+  var wbgt = calcWBGTValue(temp, humid);
+  var flag = getFlag(wbgt);
+  if(!WBGT_DATA[date]) WBGT_DATA[date]=[];
+  // Remove existing record for same time
+  WBGT_DATA[date] = WBGT_DATA[date].filter(function(r){return r.time!==round;});
+  WBGT_DATA[date].push({time:round,temp:parseFloat(temp),humid:parseFloat(humid),wbgt:wbgt,flag:flag.key,ts:new Date().toISOString()});
+  WBGT_DATA[date].sort(function(a,b){return a.time.localeCompare(b.time);});
+  // Save to Firebase
+  db.ref('wbgt').set(WBGT_DATA);
+  renderWBGTHistory();
+  updateWBGTBadge();
+  // Feedback
+  var btn=event.target;btn.textContent='✓ บันทึกแล้ว';btn.style.background='#3B6D11';
+  setTimeout(function(){btn.textContent='บันทึก';btn.style.background='#1a1a1a';},1500);
+}
+
+function renderWBGTHistory(){
+  var date = document.getElementById('wbgt-date').value || todayStr();
+  document.getElementById('wbgt-date-label').textContent = fmtDate(new Date(date+' 00:00'));
+  var records = WBGT_DATA[date] || [];
+  var dotsEl = document.getElementById('wbgt-history-dots');
+  var worstEl = document.getElementById('wbgt-worst-flag');
+  var logEl = document.getElementById('wbgt-log-body');
+
+  // Dots
+  dotsEl.innerHTML = '';
+  var rounds = ['06:00','09:00','12:00','15:00','18:00'];
+  rounds.forEach(function(t){
+    var rec = records.find(function(r){return r.time===t;});
+    var dot = document.createElement('div');
+    dot.className = 'wbgt-hist-item';
+    if(rec){
+      var f = getFlag(rec.wbgt);
+      dot.style.cssText = 'background:'+f.bg+';border:2px solid '+f.border+';';
+      dot.innerHTML = '<div class="wbgt-hist-time">'+t+'</div>'+
+        '<div class="wbgt-hist-val" style="color:'+f.color+';">'+rec.wbgt+'°C</div>'+
+        '<div style="font-size:10px;color:'+f.color+';">'+f.name+'</div>';
+    } else {
+      dot.innerHTML = '<div class="wbgt-hist-time">'+t+'</div>'+
+        '<div style="color:#ccc;font-size:18px;">—</div>'+
+        '<div style="font-size:10px;color:#ccc;">ยังไม่วัด</div>';
+    }
+    dotsEl.appendChild(dot);
+  });
+
+  // Worst flag of the day
+  worstEl.innerHTML = '';
+  if(records.length){
+    var wbgts = records.map(function(r){return r.wbgt;});
+    var maxWBGT = Math.max.apply(null, wbgts);
+    var worstFlag = getFlag(maxWBGT);
+    var wDiv = document.createElement('div');
+    wDiv.style.cssText = 'font-size:12px;padding:6px 10px;border-radius:8px;background:'+worstFlag.bg+';border:1px solid '+worstFlag.border+';color:'+worstFlag.color+';';
+    wDiv.innerHTML = '<strong>ธงสูงสุดวันนี้: '+worstFlag.name+'</strong> (WBGT สูงสุด '+maxWBGT+'°C) — '+worstFlag.rules[0];
+    worstEl.appendChild(wDiv);
+  }
+
+  // Log table
+  logEl.innerHTML = '';
+  var allDates = Object.keys(WBGT_DATA).sort().reverse();
+  if(!allDates.length){logEl.innerHTML='<div style="text-align:center;padding:20px;color:#aaa;">ยังไม่มีข้อมูล</div>';return;}
+  var tbl = document.createElement('table');tbl.className='wbgt-log-table';
+  tbl.innerHTML = '<thead><tr><th>วันที่</th><th>เวลา</th><th>อุณหภูมิ</th><th>ความชื้น</th><th>WBGT</th><th>ธง</th></tr></thead>';
+  var tbody = document.createElement('tbody');
+  allDates.forEach(function(d){
+    (WBGT_DATA[d]||[]).forEach(function(r){
+      var f = getFlag(r.wbgt);
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>'+fmtDate(new Date(d+' 00:00'))+'</td>'+
+        '<td>'+r.time+'</td>'+
+        '<td>'+r.temp+'°C</td>'+
+        '<td>'+r.humid+'%</td>'+
+        '<td><strong>'+r.wbgt+'°C</strong></td>'+
+        '<td><span style="background:'+f.bg+';color:'+f.color+';border:1px solid '+f.border+';padding:2px 8px;border-radius:10px;font-size:11px;font-weight:500;">'+f.name+'</span></td>';
+      tbody.appendChild(tr);
+    });
+  });
+  tbl.appendChild(tbody);
+  logEl.appendChild(tbl);
+}
+
+function updateWBGTBadge(){
+  var date = todayStr();
+  var records = WBGT_DATA[date]||[];
+  var el = document.getElementById('wbgt-badge');
+  if(!el) return;
+  if(!records.length){el.textContent='';return;}
+  var maxWBGT = Math.max.apply(null,records.map(function(r){return r.wbgt;}));
+  var f = getFlag(maxWBGT);
+  el.textContent = f.emoji;
+}
+
+function fetchWeather(){
+  var btn=document.getElementById('fetch-weather-btn');
+  var infoEl=document.getElementById('weather-info');
+  var timeEl=document.getElementById('weather-time');
+  btn.disabled=true;btn.textContent='[LOAD] กำลังโหลด...';
+
+  // Open-Meteo API — ราชบุรี พิกัด 13.5369, 99.8178
+  var url='https://api.open-meteo.com/v1/forecast?latitude=13.5369&longitude=99.8178&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation,weather_code&timezone=Asia%2FBangkok&wind_speed_unit=kmh';
+
+  fetch(url)
+    .then(function(r){return r.json();})
+    .then(function(data){
+      var c=data.current;
+      var temp=c.temperature_2m;
+      var humid=c.relative_humidity_2m;
+      var feels=c.apparent_temperature;
+      var wind=c.wind_speed_10m;
+      var wbgt=calcWBGTValue(temp,humid);
+      var flag=getFlag(wbgt);
+
+      // Auto-fill inputs
+      document.getElementById('wbgt-temp').value=temp;
+      document.getElementById('wbgt-humid').value=humid;
+      calcWBGT();
+
+      // Show weather info
+      infoEl.innerHTML=
+        '<div class="weather-stat"><div class="weather-stat-val">'+temp+'<span style="font-size:14px;">°C</span></div><div class="weather-stat-lbl">อุณหภูมิ</div></div>'+
+        '<div class="weather-stat"><div class="weather-stat-val">'+humid+'<span style="font-size:14px;">%</span></div><div class="weather-stat-lbl">ความชื้น</div></div>'+
+        '<div class="weather-stat"><div class="weather-stat-val">'+feels+'<span style="font-size:14px;">°C</span></div><div class="weather-stat-lbl">รู้สึกเหมือน</div></div>'+
+        '<div class="weather-stat"><div class="weather-stat-val">'+wind+'<span style="font-size:12px;">km/h</span></div><div class="weather-stat-lbl">ลม</div></div>'+
+        '<div class="weather-stat"><div class="weather-stat-val" style="color:'+flag.color+';">'+wbgt+'<span style="font-size:12px;">°C</span></div><div class="weather-stat-lbl">WBGT (คำนวณ)</div></div>'+
+        '<div class="weather-stat"><div style="padding:4px 10px;background:'+flag.bg+';border:1px solid '+flag.border+';border-radius:8px;color:'+flag.color+';font-weight:700;font-size:13px;">'+flag.name+'</div><div class="weather-stat-lbl">ธงสัญลักษณ์</div></div>';
+
+      var now=new Date();
+      timeEl.innerHTML='อัปเดต '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+' น.<br><span class="weather-source">Open-Meteo API | ราชบุรี</span>';
+
+      btn.disabled=false;btn.innerHTML='[FETCH] ดึงข้อมูลสภาพอากาศ ราชบุรี <span class="auto-fill-indicator">ใส่ค่าอัตโนมัติแล้ว</span>';
+    })
+    .catch(function(e){
+      infoEl.innerHTML='<div style="color:#E24B4A;font-size:12px;">ไม่สามารถดึงข้อมูลได้ กรุณากรอกด้วยตนเอง<br><span style="font-size:10px;color:#888;">'+e.message+'</span></div>';
+      btn.disabled=false;btn.textContent='[FETCH] ดึงข้อมูลสภาพอากาศ ราชบุรี';
+    });
+}
+
+// Auto-fetch weather when WBGT tab opens
+function autoFetchWeather(){
+  var lastFetch=parseInt(localStorage.getItem('wbgt_last_fetch')||'0');
+  var now=Date.now();
+  // Auto-fetch if last fetch > 30 minutes ago
+  if(now-lastFetch>30*60*1000){
+    localStorage.setItem('wbgt_last_fetch',String(now));
+    fetchWeather();
+  }
+}
+
+function loadWBGT(){
+  db.ref('wbgt').on('value',function(snap){
+    var data=snap.val();
+    if(data) WBGT_DATA=data;
+    if(document.getElementById('v-wbgt').className.indexOf('on')!==-1){
+      renderWBGTHistory();
+    }
+    updateWBGTBadge();
+  });
+}
+
+// Override gotoView to handle wbgt tab
+var _origGotoView2=gotoView;
+gotoView=function(name,btn){
+  _origGotoView2(name,btn);
+  if(name==='wbgt'){
+    if(!document.getElementById('wbgt-date').value){
+      document.getElementById('wbgt-date').value=todayStr();
+    }
+    renderWBGTHistory();
+    autoFetchWeather();
+  }
+};
+
+loadWBGT();
+
+// ════════════════════════════════════
+// HEALTH TRACKING SYSTEM
+// ════════════════════════════════════
+var HEALTH={};  // {date: {no: {temp, urine, note, ts}}}
+var healthFilter='all';
+var URINE_COLORS=['#E8F5E9','#C8E6C9','#F9E11C','#F9A81C','#D2691E','#8B4513'];
+var URINE_LABELS=['ใสมาก (ดีมาก)','เหลืองอ่อน (ดี)','เหลืองเข้ม (พอใช้)','เหลืองเข้มมาก (ดื่มน้ำเพิ่ม)','น้ำตาลอ่อน (แจ้งครูฝึก)','น้ำตาลเข้ม (พบแพทย์ด่วน)'];
+
+// Load health data from Firebase
+function getMentalScore(mental){
+  if(!mental) return 0;
+  var keys=['mood','sleep','social','appetite','stress'];
+  var total=0;
+  keys.forEach(function(k){if(mental[k]!==undefined&&mental[k]!==null)total+=parseInt(mental[k])||0;});
+  return total;
+}
+
+function getMentalBadge(score){
+  if(score===0) return '<span class="risk-low">ปกติ (0)</span>';
+  if(score<=4) return '<span class="risk-low">เฝ้าระวังต่ำ ('+score+')</span>';
+  if(score<=9) return '<span class="risk-mid">เสี่ยงปานกลาง ('+score+')</span>';
+  if(score<=14) return '<span class="risk-high">เสี่ยงสูง ('+score+')</span>';
+  return '<span class="risk-high" style="animation:blink 1s infinite;">วิกฤต! ('+score+')</span>';
+}
+
+function getMentalRiskText(score){
+  if(score===0) return 'ปกติ';
+  if(score<=4) return 'เฝ้าระวัง';
+  if(score<=9) return 'เสี่ยงปานกลาง';
+  if(score<=14) return 'เสี่ยงสูง';
+  return 'วิกฤต';
+}
+
+function calcMentalRisk(no){
+  var keys=['mood','sleep','social','appetite','stress'];
+  var mental={};
+  keys.forEach(function(k){
+    var btn=document.querySelector('[data-mhno="'+no+'"][data-mhkey="'+k+'"].on');
+    if(btn) mental[k]=parseInt(btn.getAttribute('data-mhval'));
+  });
+  var score=getMentalScore(mental);
+  var el=document.getElementById('mr-'+no);
+  if(el) el.innerHTML=getMentalBadge(score);
+  // Store temporarily in hidden field
+  var hf=document.getElementById('mh-'+no);
+  if(!hf){hf=document.createElement('input');hf.type='hidden';hf.id='mh-'+no;document.body.appendChild(hf);}
+  hf.value=JSON.stringify(mental);
+}
+
+
+// ════════════════════════════════
+// CARE ADVICE SYSTEM
+// ════════════════════════════════
+function getPhysicalAdvice(temp, urine){
+  var advice=[];var level='ok';
+  var t=parseFloat(temp)||0;
+  var u=parseInt(urine)||0;
+
+  // Temperature advice
+  if(t>=38.5){
+    level='danger';
+    advice.push({cat:'ไข้สูง',color:'#E24B4A',items:[
+      'นำส่งสถานพยาบาลทันที ห้ามฝึกโดยเด็ดขาด',
+      'ให้นอนพักในที่เย็น หลีกเลี่ยงแสงแดด',
+      'ให้ดื่มน้ำทุก 15 นาที อย่างน้อย 250 มล.',
+      'ประคบเย็นบริเวณหน้าผาก คอ รักแร้',
+      'บันทึกอุณหภูมิและรายงานแพทย์ทันที'
+    ]});
+  } else if(t>=37.5){
+    level='warn';
+    advice.push({cat:'มีไข้ต่ำ',color:'#EF9F27',items:[
+      'งดการฝึกกลางแจ้งชั่วคราว เข้าพักในร่ม',
+      'วัดอุณหภูมิซ้ำทุก 1 ชั่วโมง',
+      'เพิ่มปริมาณน้ำดื่ม 500 มล./ชั่วโมง',
+      'สังเกตอาการ ถ้าขึ้นเกิน 38.5°C นำส่งแพทย์'
+    ]});
+  } else if(t>0&&t<36.0){
+    level='warn';
+    advice.push({cat:'อุณหภูมิต่ำ',color:'#185FA5',items:[
+      'ให้ความอบอุ่นร่างกาย ห่มผ้า',
+      'ดื่มน้ำอุ่นหรือเครื่องดื่มอุ่น',
+      'ตรวจสอบว่าไม่มีอาการสั่น หนาวเกินไป',
+      'แจ้งครูฝึกเพื่อพิจารณาพักฝึก'
+    ]});
+  }
+
+  // Urine advice
+  if(u>=6){
+    level='danger';
+    advice.push({cat:'ปัสสาวะสีเข้มมาก',color:'#A32D2D',items:[
+      'นำส่งแพทย์ทันที อาจขาดน้ำรุนแรง',
+      'ให้ดื่มน้ำ ORS หรือน้ำเกลือแร่ทันที',
+      'งดออกกำลังกายทุกชนิด พักนอนในที่เย็น',
+      'ติดตามอาการ วิงเวียน คลื่นไส้ ปัสสาวะน้อย'
+    ]});
+  } else if(u>=5){
+    if(level!=='danger') level='warn';
+    advice.push({cat:'ปัสสาวะน้ำตาล',color:'#854F0B',items:[
+      'แจ้งครูฝึกและแพทย์ประจำหน่วยทันที',
+      'ให้ดื่มน้ำสะอาด 500 มล. ทันที',
+      'งดออกกำลังกายจนกว่าสีปัสสาวะจะดีขึ้น',
+      'วัดซ้ำหลัง 30 นาที ถ้าไม่ดีขึ้นนำส่งแพทย์'
+    ]});
+  } else if(u>=4){
+    if(level==='ok') level='warn';
+    advice.push({cat:'ปัสสาวะเข้ม',color:'#EF9F27',items:[
+      'เพิ่มปริมาณน้ำดื่ม 500-1000 มล. ทันที',
+      'ดื่มน้ำทุก 20 นาทีระหว่างการฝึก',
+      'หลีกเลี่ยงกาแฟ น้ำอัดลม ในช่วงฝึก',
+      'ติดตามสีปัสสาวะครั้งต่อไป'
+    ]});
+  } else if(u>=1&&u<=2){
+    advice.push({cat:'สุขภาพดี',color:'#4CAF6E',items:[
+      'ดื่มน้ำต่อเนื่องทุก 20-30 นาทีระหว่างฝึก',
+      'รักษาระดับการดื่มน้ำ 8-10 แก้วต่อวัน'
+    ]});
+  }
+
+  if(advice.length===0&&t>0){
+    advice.push({cat:'สุขภาพกาย',color:'#4CAF6E',items:[
+      'อุณหภูมิและสีปัสสาวะอยู่ในเกณฑ์ปกติ',
+      'ดื่มน้ำสม่ำเสมอและรักษาสุขอนามัยต่อไป'
+    ]});
+  }
+
+  return {level:level,advice:advice};
+}
+
+function getMentalAdvice(mental, score){
+  var advice=[];
+  if(!mental||score===0) return {advice:[]};
+
+  var m=mental;
+  var mood=parseInt(m.mood)||0;
+  var sleep=parseInt(m.sleep)||0;
+  var social=parseInt(m.social)||0;
+  var appetite=parseInt(m.appetite)||0;
+  var stress=parseInt(m.stress)||0;
+
+  // Critical - immediate action
+  if(score>=15){
+    advice.push({cat:'ต้องดำเนินการทันที',color:'#A32D2D',items:[
+      'แจ้งแพทย์ประจำหน่วยและผู้บังคับบัญชาทันที',
+      'จัดให้มีผู้ดูแลใกล้ชิด 24 ชั่วโมง',
+      'ห้ามอยู่คนเดียวโดยเด็ดขาด ใช้ระบบบัดดี้',
+      'นำส่งพบจิตแพทย์หรือนักจิตวิทยาโดยเร็ว',
+      'ถอนออกจากการฝึกที่มีความเสี่ยงสูงชั่วคราว'
+    ]});
+  } else if(score>=10){
+    advice.push({cat:'ต้องติดตามใกล้ชิด',color:'#E24B4A',items:[
+      'แจ้งครูฝึกและผู้บังคับบัญชารับทราบ',
+      'จัดบัดดี้ดูแลตลอดเวลา',
+      'พูดคุยกับทหารอย่างน้อยวันละ 2 ครั้ง',
+      'ประสานแพทย์ประจำหน่วยเพื่อประเมินเพิ่มเติม'
+    ]});
+  } else if(score>=5){
+    advice.push({cat:'เฝ้าระวัง',color:'#EF9F27',items:[
+      'พูดคุยและรับฟังปัญหาอย่างสม่ำเสมอ',
+      'สังเกตพฤติกรรมเปลี่ยนแปลงทุกวัน',
+      'ให้กำลังใจและสร้างบรรยากาศเชิงบวก'
+    ]});
+  }
+
+  // Specific symptom advice
+  if(mood>=3){
+    advice.push({cat:'จัดการอารมณ์',color:'#534AB7',items:[
+      'พูดคุยถามไถ่ ฟังโดยไม่ตัดสิน',
+      'หากิจกรรมที่ชอบทำในเวลาว่าง',
+      'หลีกเลี่ยงการกดดันหรือตำหนิซ้ำๆ'
+    ]});
+  }
+  if(sleep>=3){
+    advice.push({cat:'ปรับการนอนหลับ',color:'#185FA5',items:[
+      'ตรวจสอบสิ่งแวดล้อมในโรงนอน แสง เสียง อุณหภูมิ',
+      'งดกิจกรรมกระตุ้นก่อนนอน 30 นาที',
+      'ฝึกหายใจลึกหรือผ่อนคลายกล้ามเนื้อก่อนนอน',
+      'หากนอนไม่หลับเกิน 3 คืน แจ้งแพทย์'
+    ]});
+  }
+  if(social>=3){
+    advice.push({cat:'สร้างความสัมพันธ์',color:'#0F6E56',items:[
+      'ให้ทำกิจกรรมกลุ่มมากขึ้น',
+      'บัดดี้คอยชวนพูดคุยและทำกิจกรรมร่วมกัน',
+      'ไม่บังคับแต่สร้างโอกาสให้ได้ปฏิสัมพันธ์'
+    ]});
+  }
+  if(appetite>=3){
+    advice.push({cat:'ดูแลโภชนาการ',color:'#854F0B',items:[
+      'จัดอาหารที่ชอบหรืออาหารย่อยง่าย',
+      'แบ่งมื้ออาหารเป็น 5-6 มื้อเล็กแทน 3 มื้อใหญ่',
+      'ติดตามน้ำหนักและรายงานแพทย์ถ้าลดเร็ว'
+    ]});
+  }
+  if(stress>=3){
+    advice.push({cat:'ลดความเครียด',color:'#993556',items:[
+      'สอนเทคนิคหายใจ 4-7-8 (หายใจเข้า 4 นับ กลั้น 7 นับ หายใจออก 8 นับ)',
+      'พูดคุยหาสาเหตุความเครียด แก้ปัญหาร่วมกัน',
+      'จัดเวลาพักผ่อนที่เหมาะสม',
+      'เปิดโอกาสให้โทรหาครอบครัว'
+    ]});
+  }
+
+  return {advice:advice};
+}
+
+function showAdvicePopup(no){
+  var date=getHealthDate();
+  var rec=HEALTH[date]&&HEALTH[date][String(no)];
+  var s=getS(no);
+  if(!s) return;
+
+  var modal=document.getElementById('hist-ov');
+  var title=document.getElementById('hist-title');
+  var body=document.getElementById('hist-body');
+  title.textContent='คำแนะนำการดูแล — '+s.fname+' '+s.lname;
+  body.innerHTML='';
+
+  // Get current input values if not saved yet
+  var temp=rec?rec.temp:(document.getElementById('temp-'+no)?document.getElementById('temp-'+no).value:'');
+  var urine=rec?rec.urine:(document.getElementById('urine-'+no)?document.getElementById('urine-'+no).value:'');
+  var mental=rec?rec.mental:{};
+  var ms=getMentalScore(mental);
+
+  // Physical advice
+  var pAdv=getPhysicalAdvice(temp,urine);
+  // Mental advice
+  var mAdv=getMentalAdvice(mental,ms);
+
+  var allAdvice=pAdv.advice.concat(mAdv.advice);
+
+  if(allAdvice.length===0){
+    body.innerHTML='<div style="text-align:center;padding:20px;color:#4CAF6E;font-size:14px;">สุขภาพกายและใจอยู่ในเกณฑ์ปกติ<br><span style="font-size:12px;color:#aaa;">ดูแลต่อเนื่องตามมาตรฐาน พบ.</span></div>';
+  } else {
+    allAdvice.forEach(function(adv){
+      var box=document.createElement('div');
+      box.className='adv-section';
+      var titleEl=document.createElement('div');
+      titleEl.innerHTML='<span class="adv-badge" style="background:'+adv.color+';color:#fff;">'+adv.cat+'</span>';
+      box.appendChild(titleEl);
+      var ul=document.createElement('ul');ul.className='advice-list';
+      adv.items.forEach(function(item){
+        var li=document.createElement('li');li.textContent=item;ul.appendChild(li);
+      });
+      box.appendChild(ul);
+      body.appendChild(box);
+    });
+  }
+
+  // Summary box
+  var sumBox=document.createElement('div');
+  sumBox.style.cssText='margin-top:12px;padding:8px 12px;background:#f5f4f1;border-radius:8px;font-size:11px;color:#888;';
+  var physLevel=pAdv.level;var mentLevel=ms>=15?'danger':ms>=10?'danger':ms>=5?'warn':'ok';
+  sumBox.innerHTML='<strong>สรุป:</strong> ร่างกาย <span class="stat-'+physLevel+'">'+(physLevel==='ok'?'ปกติ':physLevel==='warn'?'ต้องติดตาม':'อันตราย')+'</span> | จิตใจ '+getMentalBadge(ms);
+  body.appendChild(sumBox);
+
+  modal.className='im-ov on';
+}
+
+function loadHealth(){
+  db.ref('health').on('value',function(snap){
+    var data=snap.val();
+    if(data){HEALTH=data;}
+    if(document.getElementById('v-health').className.indexOf('on')!==-1){
+      renderHealthList();
+    }
+    updateHBadge();
+  });
+}
+
+function saveHealth(){
+  db.ref('health').set(HEALTH);
+}
+
+function todayStr(){
+  var d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+function getHealthDate(){
+  var d=document.getElementById('health-date');
+  return d&&d.value?d.value:todayStr();
+}
+
+function getHRecord(date,no){
+  if(!HEALTH[date]) return null;
+  return HEALTH[date][String(no)]||null;
+}
+
+function analyzeHealth(temp,urine){
+  var issues=[];var level='ok';
+  // Temperature
+  if(temp){
+    var t=parseFloat(temp);
+    if(t>=38.5){issues.push('ไข้สูง ('+t+'°C)');level='danger';}
+    else if(t>=37.5){issues.push('มีไข้ต่ำๆ ('+t+'°C)');if(level!=='danger')level='warn';}
+  }
+  // Urine color
+  if(urine){
+    var u=parseInt(urine);
+    if(u>=6){issues.push('ปัสสาวะสีเข้มมาก พบแพทย์ด่วน');level='danger';}
+    else if(u>=5){issues.push('ปัสสาวะสีน้ำตาล แจ้งครูฝึก');if(level!=='danger')level='warn';}
+    else if(u>=4){issues.push('ดื่มน้ำเพิ่ม ปัสสาวะเข้ม');if(level==='ok')level='warn';}
+  }
+  if(issues.length===0) return{level:'ok',text:'ปกติ'};
+  return{level:level,text:issues.join(' / ')};
+}
+
+function setHF(f,btn){
+  healthFilter=f;
+  document.querySelectorAll('#health-filter-tabs .ftab').forEach(function(b){b.className='ftab';});
+  btn.className='ftab on';
+  renderHealthList();
+}
+
+function renderHealthList(){
+  var date=getHealthDate();
+  if(!date){
+    var inp=document.getElementById('health-date');
+    inp.value=todayStr();date=todayStr();
+  }
+  var q=(document.getElementById('health-search').value||'').toLowerCase();
+  var tbody=document.getElementById('health-body');tbody.innerHTML='';
+  var rec=HEALTH[date]||{};
+  var total=0,recCnt=0,alertCnt=0;
+
+  SOLDIERS.filter(function(s){
+    if(q)return(s.fname+s.lname+(s.nickname||'')+s.no).toString().toLowerCase().indexOf(q)>=0;
+    return true;
+  }).filter(function(s){
+    var r=rec[String(s.no)];
+    if(healthFilter==='recorded') return !!r;
+    if(healthFilter==='none') return !r;
+    if(healthFilter==='alert'){
+      if(!r) return false;
+      var a=analyzeHealth(r.temp,r.urine);
+      return a.level!=='ok';
+    }
+    return true;
+  }).forEach(function(s){
+    total++;
+    var r=rec[String(s.no)];
+    if(r) recCnt++;
+    var analysis=r?analyzeHealth(r.temp,r.urine):{level:'none',text:''};
+    if(analysis.level==='warn'||analysis.level==='danger') alertCnt++;
+
+    var tr=document.createElement('tr');
+    var rc={red:'#FCEBEB',amber:'#FAEEDA',green_watch:'#EAF3DE',none:''};
+    var rColor={'red':'#A32D2D','amber':'#854F0B','green_watch':'#3B6D11','none':'#888'};
+    var rLabel2={'red':'งดฝึก','amber':'ลดปริมาณ','green_watch':'เฝ้าระวัง','none':'ปกติ'};
+
+    function td(h){var t=document.createElement('td');t.innerHTML=h;return t;}
+    function tdc(el){var t=document.createElement('td');t.appendChild(el);return t;}
+
+    tr.appendChild(td(s.no));
+    tr.appendChild(td('<strong>'+s.fname+' '+s.lname+'</strong><br><span style="font-size:10px;color:#aaa;">'+(s.nickname&&s.nickname!=='-'?'"'+s.nickname+'"':'')+'</span>'));
+    tr.appendChild(td('หมู่ '+s.squad));
+    tr.appendChild(td('<span style="font-size:11px;padding:2px 7px;border-radius:8px;background:'+rc[s.risk]+';color:'+rColor[s.risk]+';">'+rLabel2[s.risk]+'</span>'));
+
+    // 3-round temperature + urine input
+    var rounds=['am','noon','pm'];
+    rounds.forEach(function(round,ri){
+      var roundTd=document.createElement('td');roundTd.style.minWidth='130px';
+      var rData=r&&r[round]?r[round]:{};
+
+      // Temp input
+      var tWrap=document.createElement('div');tWrap.style.cssText='display:flex;align-items:center;gap:3px;margin-bottom:4px;';
+      var tLbl=document.createElement('span');tLbl.style.cssText='font-size:9px;color:#888;width:14px;';tLbl.textContent='T:';
+      var tInp=document.createElement('input');
+      tInp.type='number';tInp.className='temp-inp';
+      tInp.step='0.1';tInp.min='35';tInp.max='42';tInp.placeholder='36.5';
+      tInp.value=rData.temp||'';tInp.id='temp-'+round+'-'+s.no;tInp.style.width='58px';
+      if(rData.temp&&parseFloat(rData.temp)>=37.5) tInp.style.borderColor='#E24B4A';
+      (function(no,rnd){tInp.oninput=function(){autoAnalyzeRound(no,rnd);};})(s.no,round);
+      tWrap.appendChild(tLbl);tWrap.appendChild(tInp);roundTd.appendChild(tWrap);
+
+      // Urine color buttons (small)
+      var uWrap=document.createElement('div');uWrap.style.cssText='display:flex;gap:2px;align-items:center;';
+      var uLbl=document.createElement('span');uLbl.style.cssText='font-size:9px;color:#888;width:14px;';uLbl.textContent='U:';
+      uWrap.appendChild(uLbl);
+      for(var ui=0;ui<6;ui++){
+        var ub=document.createElement('button');
+        var curU=rData.urine?parseInt(rData.urine):-1;
+        ub.style.cssText='background:'+URINE_COLORS[ui]+';width:18px;height:18px;border-radius:50%;border:2px solid '+(curU===(ui+1)?'#333':'#ccc')+';cursor:pointer;flex-shrink:0;';
+        ub.title='สีที่ '+(ui+1)+': '+URINE_LABELS[ui];
+        ub.setAttribute('data-rno',s.no);ub.setAttribute('data-rrnd',round);ub.setAttribute('data-rval',ui+1);
+        ub.onclick=(function(no,rnd,val,wrap){
+          return function(){
+            wrap.querySelectorAll('[data-rno="'+no+'"][data-rrnd="'+rnd+'"]').forEach(function(b){b.style.border='2px solid #ccc';});
+            this.style.border='2px solid #333';
+            document.getElementById('urine-'+rnd+'-'+no).value=val;
+            autoAnalyzeRound(no,rnd);
+          };
+        })(s.no,round,ui+1,uWrap);
+        uWrap.appendChild(ub);
+      }
+      var uHidden=document.createElement('input');
+      uHidden.type='hidden';uHidden.id='urine-'+round+'-'+s.no;uHidden.value=rData.urine||'';
+      uWrap.appendChild(uHidden);roundTd.appendChild(uWrap);
+
+      // Mini AI result per round
+      var aiMini=document.createElement('div');aiMini.id='ana-'+round+'-'+s.no;aiMini.style.cssText='font-size:9px;margin-top:3px;';
+      if(rData.temp||rData.urine){
+        var a2=analyzeHealth(rData.temp,rData.urine);
+        aiMini.className='stat-'+a2.level;aiMini.textContent=a2.level==='ok'?'ปกติ':a2.text;
+      }
+      roundTd.appendChild(aiMini);
+      tr.appendChild(roundTd);
+    });
+    // hidden combined fields
+    var tempHidden=document.createElement('input');tempHidden.type='hidden';tempHidden.id='temp-'+s.no;
+    tempHidden.value=r&&r.am?r.am.temp:'';tr.appendChild(tempHidden);
+    var urineHidden2=document.createElement('input');urineHidden2.type='hidden';urineHidden2.id='urine-'+s.no;
+    urineHidden2.value=r&&r.am?r.am.urine:'';tr.appendChild(urineHidden2);
+
+    // Analysis
+    var anaTd=document.createElement('td');
+    var anaSpan=document.createElement('span');anaSpan.id='ana-'+s.no;
+    if(r){
+      var a=analyzeHealth(r.temp,r.urine);
+      anaSpan.className='stat-'+a.level;anaSpan.textContent=a.text;
+    } else {anaSpan.className='stat-none';anaSpan.textContent='รอข้อมูล';}
+    anaTd.appendChild(anaSpan);tr.appendChild(anaTd);
+
+    // Mental Health Assessment
+    var mhTd=document.createElement('td');mhTd.style.minWidth='200px';
+    var mhItems=[
+      {id:'mood',label:'อารมณ์',desc:'ซึมเศร้า/หดหู่'},
+      {id:'sleep',label:'นอนหลับ',desc:'นอนไม่หลับ/ฝันร้าย'},
+      {id:'social',label:'สังคม',desc:'เก็บตัว/ไม่พูด'},
+      {id:'appetite',label:'อาหาร',desc:'เบื่ออาหาร'},
+      {id:'stress',label:'ความเครียด',desc:'วิตกกังวล'}
+    ];
+    var mhWrap=document.createElement('div');
+    mhWrap.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:3px;';
+    mhItems.forEach(function(item){
+      var row2=document.createElement('div');
+      row2.style.cssText='display:flex;align-items:center;gap:3px;';
+      var lbl=document.createElement('span');
+      lbl.style.cssText='font-size:9px;color:#666;width:38px;flex-shrink:0;';
+      lbl.textContent=item.label;
+      row2.appendChild(lbl);
+      for(var v=0;v<=4;v++){
+        var mb=document.createElement('button');
+        var curVal=r&&r.mental&&r.mental[item.id]!==undefined?parseInt(r.mental[item.id]):-1;
+        mb.className='mh-btn mh-'+v+(curVal===v?' on':'');
+        mb.textContent=v;mb.title=item.desc+' ระดับ '+v+(v===0?' (ปกติ)':v===4?' (รุนแรง)':'');
+        mb.setAttribute('data-mhno',s.no);mb.setAttribute('data-mhkey',item.id);mb.setAttribute('data-mhval',v);
+        mb.onclick=(function(no,key,val,wrap){
+          return function(){
+            wrap.querySelectorAll('[data-mhno="'+no+'"][data-mhkey="'+key+'"]').forEach(function(b){b.classList.remove('on');});
+            this.classList.add('on');
+            calcMentalRisk(no);
+          };
+        })(s.no,item.id,v,mhWrap);
+        row2.appendChild(mb);
+      }
+      mhWrap.appendChild(row2);
+    });
+    mhTd.appendChild(mhWrap);tr.appendChild(mhTd);
+
+    // Mental Risk Score display
+    var mrTd=document.createElement('td');mrTd.style.textAlign='center';
+    var mrSpan=document.createElement('span');mrSpan.id='mr-'+s.no;
+    if(r&&r.mental){
+      var ms=getMentalScore(r.mental);
+      mrSpan.innerHTML=getMentalBadge(ms);
+    } else {mrSpan.className='risk-none';mrSpan.textContent='ยังไม่ประเมิน';}
+    mrTd.appendChild(mrSpan);tr.appendChild(mrTd);
+
+    // Note
+    var noteTd=document.createElement('td');
+    var noteInp=document.createElement('input');
+    noteInp.type='text';noteInp.style.cssText='font-family:inherit;font-size:11px;border:1px solid #ddd;border-radius:5px;padding:4px 6px;outline:none;width:120px;';
+    noteInp.placeholder='หมายเหตุ...';noteInp.id='note-'+s.no;
+    noteInp.value=r?r.note:'';
+    noteTd.appendChild(noteInp);tr.appendChild(noteTd);
+
+    // Save button
+    var saveTd=document.createElement('td');
+    var saveBtn=document.createElement('button');
+    saveBtn.className='btn-p';saveBtn.style.cssText='font-size:10px;padding:4px 8px;';
+    saveBtn.textContent='บันทึก';
+    (function(no){saveBtn.onclick=function(){saveHealthRecord(no);};})(s.no);
+    var histBtn=document.createElement('button');
+    histBtn.className='btn-p';histBtn.style.cssText='font-size:10px;padding:4px 8px;background:#185FA5;margin-left:3px;';
+    histBtn.textContent='ประวัติ';
+    (function(no){histBtn.onclick=function(){showHealthHistory(no);};})(s.no);
+    var advBtn=document.createElement('button');
+    advBtn.className='btn-p';advBtn.style.cssText='font-size:10px;padding:4px 8px;background:#534AB7;margin-left:3px;';
+    advBtn.textContent='คำแนะนำ';
+    (function(no){advBtn.onclick=function(){showAdvicePopup(no);};})(s.no);
+    saveTd.appendChild(saveBtn);saveTd.appendChild(document.createElement('br'));
+    saveTd.appendChild(histBtn);saveTd.appendChild(advBtn);tr.appendChild(saveTd);
+
+    tbody.appendChild(tr);
+  });
+
+  // Summary
+  // Auth notice
+  // Show WBGT warning in health tab
+  var wbgtWarn=document.getElementById('wbgt-health-warn');
+  if(wbgtWarn){
+    var todayRecs=WBGT_DATA[todayStr()]||[];
+    if(todayRecs.length){
+      var maxW=Math.max.apply(null,todayRecs.map(function(r){return r.wbgt;}));
+      var wf=getFlag(maxW);
+      if(wf.key==='red'||wf.key==='black'){
+        wbgtWarn.innerHTML='[WARN] WBGT วันนี้สูงสุด <strong>'+maxW+'°C ('+wf.name+')</strong> — '+wf.rules[0];
+        wbgtWarn.style.cssText='padding:6px 10px;background:'+wf.bg+';border:1px solid '+wf.border+';border-radius:6px;font-size:11px;color:'+wf.color+';margin-top:5px;';
+      } else {
+        wbgtWarn.innerHTML='';
+      }
+    }
+  }
+  var authNotice=document.getElementById('health-auth-notice');
+  if(authNotice){
+    if(currentRole){
+      authNotice.innerHTML='[UNLOCK] เข้าสู่ระบบในฐานะ <strong>'+AUTH_ROLES[currentRole].name+'</strong> | <span style="cursor:pointer;text-decoration:underline;" onclick="logout()">ออก</span>';
+      authNotice.style.background='#EAF3DE';authNotice.style.color='#3B6D11';
+    } else {
+      authNotice.innerHTML='[LOCK] ข้อมูลจำกัดการเข้าถึง — กดปุ่ม <strong>"[LOCK] เข้าสู่ระบบ"</strong> บนแถบด้านบนเพื่อดูข้อมูลจิตเวชในประวัติ';
+      authNotice.style.background='#fff8ec';authNotice.style.color='#854F0B';
+    }
+  }
+  var sumEl=document.getElementById('health-summary');
+  if(sumEl){
+    sumEl.innerHTML='วันที่ '+fmtDate(new Date(date+' 00:00'))+'  |  บันทึกแล้ว <strong style="color:#3B6D11;">'+recCnt+'</strong> / '+total+' นาย  |  ต้องติดตาม <strong style="color:#A32D2D;">'+alertCnt+'</strong> นาย';
+  }
+}
+
+function autoAnalyze(no){
+  // analyze all 3 rounds and show worst
+  var levels=['ok','warn','danger'];
+  var worstLevel=0;var worstText='ปกติ';
+  ['am','noon','pm'].forEach(function(rnd){
+    var t=document.getElementById('temp-'+rnd+'-'+no)?document.getElementById('temp-'+rnd+'-'+no).value:'';
+    var u=document.getElementById('urine-'+rnd+'-'+no)?document.getElementById('urine-'+rnd+'-'+no).value:'';
+    if(t||u){
+      var a=analyzeHealth(t,u);
+      var li=levels.indexOf(a.level);
+      if(li>worstLevel){worstLevel=li;worstText=a.text;}
+    }
+  });
+  var el=document.getElementById('ana-'+no);
+  if(el){el.className='stat-'+levels[worstLevel];el.textContent=worstText;}
+}
+function autoAnalyzeRound(no,round){
+  var t=document.getElementById('temp-'+round+'-'+no)?document.getElementById('temp-'+round+'-'+no).value:'';
+  var u=document.getElementById('urine-'+round+'-'+no)?document.getElementById('urine-'+round+'-'+no).value:'';
+  var a=analyzeHealth(t,u);
+  var el=document.getElementById('ana-'+round+'-'+no);
+  if(el){el.className='stat-'+a.level;el.textContent=a.level==='ok'?'ปกติ':a.text;}
+  var tEl=document.getElementById('temp-'+round+'-'+no);
+  if(tEl){tEl.style.borderColor=parseFloat(t)>=37.5?'#E24B4A':'#ddd';}
+  autoAnalyze(no);
+}
+
+function saveHealthRecord(no){
+  var date=getHealthDate();
+  var rounds2=['am','noon','pm'];
+  var roundData={};var hasAny=false;
+  rounds2.forEach(function(rnd){
+    var t=document.getElementById('temp-'+rnd+'-'+no)?document.getElementById('temp-'+rnd+'-'+no).value:'';
+    var u=document.getElementById('urine-'+rnd+'-'+no)?document.getElementById('urine-'+rnd+'-'+no).value:'';
+    if(t||u){hasAny=true;roundData[rnd]={temp:t,urine:u};}
+    else roundData[rnd]={temp:'',urine:''};
+  });
+  var note=document.getElementById('note-'+no)?document.getElementById('note-'+no).value:'';
+  if(!hasAny){alert('กรุณากรอกข้อมูลอย่างน้อย 1 รอบ (เช้า/กลางวัน/เย็น)');return;}
+  if(!HEALTH[date]) HEALTH[date]={};
+  // Use worst round for main analysis
+  var temp=roundData.am.temp||roundData.noon.temp||roundData.pm.temp;
+  var urine=roundData.am.urine||roundData.noon.urine||roundData.pm.urine;
+  var a=analyzeHealth(temp,urine);
+  // Get mental health data
+  var mhField=document.getElementById('mh-'+no);
+  var mental=mhField&&mhField.value?JSON.parse(mhField.value):{};
+  // Also read directly from buttons
+  var mhKeys=['mood','sleep','social','appetite','stress'];
+  mhKeys.forEach(function(k){
+    var btn=document.querySelector('[data-mhno="'+no+'"][data-mhkey="'+k+'"].on');
+    if(btn) mental[k]=parseInt(btn.getAttribute('data-mhval'));
+  });
+  var ms=getMentalScore(mental);
+  HEALTH[date][String(no)]={temp:temp,urine:urine,am:roundData.am,noon:roundData.noon,pm:roundData.pm,note:note,ts:new Date().toISOString(),level:a.level,mental:mental,mentalScore:ms};
+  saveHealth();
+  autoAnalyze(no);
+  // visual feedback
+  var btn=event.target;btn.textContent='✓ บันทึกแล้ว';btn.style.background='#3B6D11';
+  setTimeout(function(){btn.textContent='บันทึก';btn.style.background='';},1500);
+  updateHBadge();
+}
+
+function showHealthHistory(no){
+  var modal=document.getElementById('hist-ov');
+  var title=document.getElementById('hist-title');
+  var body=document.getElementById('hist-body');
+  body.innerHTML='';
+
+  if(no){
+    var s=getS(no);
+    title.textContent='ประวัติสุขภาพ — '+s.fname+' '+s.lname;
+    // Get all dates for this soldier
+    var dates=Object.keys(HEALTH).sort().reverse();
+    if(!dates.length){body.innerHTML='<div class="no-data">ยังไม่มีประวัติ</div>';return;}
+    dates.forEach(function(date){
+      var r=HEALTH[date]&&HEALTH[date][String(no)];
+      if(!r) return;
+      var a=analyzeHealth(r.temp,r.urine);
+      var row=document.createElement('div');row.className='hist-row';
+      var uLabel=r.urine?URINE_LABELS[parseInt(r.urine)-1]:'ไม่ระบุ';
+      var dot=r.urine?'<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:'+URINE_COLORS[parseInt(r.urine)-1]+';border:1px solid #ccc;vertical-align:middle;margin-right:3px;"></span>':'';
+      var ms2=r.mental?getMentalScore(r.mental):null;
+      var roundsDisp=[{k:'am',l:'เช้า'},{k:'noon',l:'กลางวัน'},{k:'pm',l:'เย็น'}];
+      var roundHtml='';
+      roundsDisp.forEach(function(rr){
+        if(r[rr.k]&&(r[rr.k].temp||r[rr.k].urine)){
+          var uDot=r[rr.k].urine?'<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+URINE_COLORS[parseInt(r[rr.k].urine)-1]+';border:1px solid #ccc;vertical-align:middle;margin-right:2px;"></span>':'';
+          roundHtml+='<span style="margin-right:8px;font-size:11px;"><strong>'+rr.l+':</strong> '+(r[rr.k].temp?r[rr.k].temp+'°C':'')+' '+uDot+'</span>';
+        }
+      });
+      if(!roundHtml) roundHtml='[temp] '+(r.temp?r.temp+'°C':'ไม่ระบุ')+' '+dot+uLabel;
+      row.innerHTML='<div class="hist-date">'+fmtDate(new Date(date+' 00:00'))+'</div>'+
+        '<div class="hist-data">'+roundHtml+
+        '<span class="stat-'+a.level+'">'+a.text+'</span>'+
+        (ms2!==null?'<br><span style="font-size:10px;">จิตใจ: '+getMentalBadge(ms2)+'</span>':'')+
+        (r.note?'<br><span style="color:#888;font-size:10px;">หมายเหตุ: '+r.note+'</span>':'')+
+        '</div>';
+      body.appendChild(row);
+    });
+  } else {
+    // Show all alerts for all dates
+    title.textContent='ประวัติย้อนหลัง — ทหารทุกนาย';
+    var dates2=Object.keys(HEALTH).sort().reverse();
+    if(!dates2.length){body.innerHTML='<div class="no-data">ยังไม่มีประวัติ</div>';return;}
+    dates2.forEach(function(date){
+      var dateRec=HEALTH[date];
+      var alerts=[];var normal=0;var total2=0;
+      for(var no2 in dateRec){
+        total2++;
+        var r2=dateRec[no2];
+        var a2=analyzeHealth(r2.temp,r2.urine);
+        if(a2.level!=='ok'){alerts.push({s:getS(parseInt(no2)),r:r2,a:a2});}
+        else normal++;
+      }
+      var section=document.createElement('div');section.style.cssText='margin-bottom:10px;border:1px solid #e0ddd8;border-radius:8px;overflow:hidden;';
+      var hd=document.createElement('div');
+      hd.style.cssText='background:#f5f4f1;padding:7px 12px;font-size:12px;font-weight:500;display:flex;justify-content:space-between;';
+      hd.innerHTML='<span>'+fmtDate(new Date(date+' 00:00'))+'</span>'+
+        '<span>บันทึก '+total2+' นาย | ต้องติดตาม <span style="color:#A32D2D;">'+alerts.length+'</span></span>';
+      section.appendChild(hd);
+      if(alerts.length){
+        alerts.forEach(function(x){
+          if(!x.s) return;
+          var row=document.createElement('div');row.className='hist-row';row.style.padding='6px 12px';
+          var dot2=x.r.urine?'<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+URINE_COLORS[parseInt(x.r.urine)-1]+';border:1px solid #ccc;vertical-align:middle;margin-right:3px;"></span>':'';
+          row.innerHTML='<div class="hist-date" style="width:60px;">'+x.s.fname+'</div>'+
+            '<div class="hist-data">'+
+            (x.r.temp?'[temp] '+x.r.temp+'°C ':'')+dot2+
+            '<span class="stat-'+x.a.level+'">'+x.a.text+'</span>'+
+            '</div>';
+          section.appendChild(row);
+        });
+      }
+      body.appendChild(section);
+    });
+  }
+  modal.className='im-ov on';
+}
+
+function closeHist(){document.getElementById('hist-ov').className='im-ov';}
+function histBg(e){if(e.target===document.getElementById('hist-ov'))closeHist();}
+
+function updateHBadge(){
+  var date=todayStr();
+  var rec=HEALTH[date]||{};
+  var alerts=0;
+  for(var no in rec){var a=analyzeHealth(rec[no].temp,rec[no].urine);if(a.level!=='ok')alerts++;}
+  var el=document.getElementById('hbadge');
+  if(el) el.textContent=alerts?'(⚠'+alerts+')':'';
+}
+
+// Load health when health tab is opened
+var _origGotoView=gotoView;
+gotoView=function(name,btn){
+  _origGotoView(name,btn);
+  if(name==='health'){
+    if(!document.getElementById('health-date').value){
+      document.getElementById('health-date').value=todayStr();
+    }
+    renderHealthList();
+  }
+};
+
+// Load health data on init
+loadHealth();
+
 // render จาก SOLDIERS array ทันที (ไม่ต้องรอ Firebase)
 buildSqTabs();doFilter();renderSquads();renderStats();updateBadge();
 // โหลด appts/instrs จาก Firebase แล้ว re-render
 loadLS();
-// เปิด popup อัตโนมัติถ้ามี ?no=X ใน URL (รอรูปโหลดจาก Firebase ก่อน)
+// เปิด popup อัตโนมัติถ้ามี ?no=X ใน URL
 (function(){
   var params=new URLSearchParams(window.location.search);
   var no=parseInt(params.get('no'));
   if(no>0){
-    // รอให้ Firebase โหลดรูปก่อนเปิด popup
-    var photoLoaded=false;
-    var popupShown=false;
-    function tryShowPop(){
-      if(popupShown) return;
-      popupShown=true;
-      showPop(no);
-    }
-    // เปิด popup เมื่อ photos โหลดแล้ว (max รอ 3 วินาที)
-    var checkInterval=setInterval(function(){
-      if(photoLoaded){clearInterval(checkInterval);tryShowPop();}
-    },100);
-    // fallback: เปิดเลยถ้ารอนานเกิน 3 วินาที
-    setTimeout(function(){clearInterval(checkInterval);tryShowPop();},3000);
-    // ฟังก์ชัน hook รอ photos loaded
-    window._onPhotosLoaded=function(){photoLoaded=true;};
+    setTimeout(function(){showPop(no);},800);
   }
 })();
 </script>
