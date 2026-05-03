@@ -234,6 +234,29 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
 .emg-alert-btn{width:100%;padding:12px;background:#E24B4A;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;}
 .emg-alert-btn:disabled{opacity:.5;cursor:not-allowed;}
 .emg-select-soldier{font-family:inherit;font-size:13px;border:2px solid #ddd;border-radius:8px;padding:8px;width:100%;outline:none;margin-bottom:10px;}
+/* ── MULTI APPOINTMENT ── */
+.appt-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.appt-item{border-radius:8px;padding:8px 12px;border:1px solid #e0ddd8;background:#f8f7f4;display:flex;align-items:flex-start;gap:8px;}
+.appt-item.overdue{background:#fff0f0;border-color:#E24B4A;}
+.appt-item.today{background:#EAF3DE;border-color:#4CAF6E;}
+.appt-item.upcoming{background:#eef5ff;border-color:#185FA5;}
+.appt-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.appt-dot-red{background:#E24B4A;}
+.appt-dot-green{background:#4CAF6E;}
+.appt-dot-blue{background:#185FA5;}
+.appt-dot-gray{background:#aaa;}
+.appt-item-body{flex:1;font-size:12px;}
+.appt-item-date{font-weight:600;margin-bottom:2px;}
+.appt-item-note{color:#666;font-size:11px;}
+.appt-item-actions{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap;}
+.btn-visited{font-size:10px;padding:3px 8px;background:#3B6D11;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:inherit;font-weight:600;}
+.btn-del-appt{font-size:10px;padding:3px 8px;background:#E24B4A;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:inherit;}
+.appt-add-section{border:1px dashed #ddd;border-radius:8px;padding:10px;margin-top:6px;background:#fafafa;}
+.appt-add-title{font-size:11px;color:#888;margin-bottom:6px;font-weight:500;}
+.appt-add-row{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-end;}
+.appt-add-row input{font-family:inherit;font-size:12px;border:1px solid #ddd;border-radius:5px;padding:5px 8px;outline:none;}
+.appt-add-row input[type=date]{width:130px;}
+.appt-add-row input[type=text]{flex:1;min-width:120px;}
 /* ── MEDICAL HISTORY ── */
 .med-box{border:1px solid #e0ddd8;border-radius:8px;padding:10px 12px;background:#fff;}
 .med-visited-btn{padding:8px 16px;background:#3B6D11;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;width:100%;margin-top:8px;}
@@ -940,6 +963,57 @@ function saveLS(){
   db.ref('instrs').set(INSTRS);
 }
 
+// ── Multi-Appointment helpers ──
+function getAppts(no){
+  var val=APPTS[String(no)];
+  if(!val) return [];
+  if(Array.isArray(val)) return val;
+  // convert เก่า {date,note} → ใหม่ [{id,date,note}]
+  if(val.date) return [{id:'legacy',date:val.date,note:val.note||''}];
+  return [];
+}
+
+function addAppt(no,date,note){
+  var list=getAppts(no);
+  list.push({id:'ap'+Date.now(),date:date,note:note||''});
+  APPTS[String(no)]=list;
+  saveLS();
+  sendTelegramNow(no,date,note);
+}
+
+function deleteApptById(no,id){
+  var list=getAppts(no).filter(function(a){return a.id!==id;});
+  if(list.length===0) delete APPTS[String(no)];
+  else APPTS[String(no)]=list;
+  saveLS();renderAlerts();updateBadge();
+}
+
+function markVisitedById(no,ap){
+  var s=getS(no);if(!s)return;
+  if(!MED_HISTORY[String(no)]) MED_HISTORY[String(no)]=[];
+  MED_HISTORY[String(no)].push({
+    date:ap.date,type:'appt',
+    title:'ไปพบแพทย์ตามนัด',
+    detail:ap.note||'ไม่มีหมายเหตุ',
+    doctor:'',ts:new Date().toISOString()
+  });
+  db.ref('medHistory').set(MED_HISTORY);
+  deleteApptById(no,ap.id);
+  // Telegram
+  var nl='\n';
+  var msg='[OK] ไปพบแพทย์ตามนัดเรียบร้อย'+nl;
+  msg+='ช.1 พัน.52 ผลัด 1/2569'+nl+'---------------------------'+nl;
+  msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+nl;
+  msg+='[หมู่] หมู่ '+s.squad+nl;
+  msg+='[วันนัด] '+fmtDate(new Date(ap.date+' 00:00'))+nl;
+  msg+='[หมายเหตุ] '+(ap.note||'-')+nl+'---------------------------'+nl+'CARE-NST | ช.พัน.52';
+  fetch('https://api.telegram.org/bot'+TG_BOT_TOKEN+'/sendMessage',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg})
+  });
+  showPop(no);
+}
+
 // ── บันทึกรูปใน localStorage (รูปใหญ่เกิน Firebase ฟรี) ──
 function savePhotos(){
   try{
@@ -1037,7 +1111,7 @@ function renderGrid(items){
   var r=0,a=0,gw=0,n=0;
   items.forEach(function(s){
     var c=document.createElement('div');c.className='card risk-'+s.risk;
-    var appt=getAppt(s.no);
+    var appt=(getAppts(s.no)[0]||{});
     // top row: avatar + no
     var top=document.createElement('div');top.className='card-top';
     top.appendChild(makeAv(s.no,28));
@@ -1084,7 +1158,7 @@ function makeSiEl(s){
   var div=document.createElement('div');div.className='si';
   div.appendChild(makeAv(s.no,30));
   var info=document.createElement('div');info.className='si-info';
-  var appt=getAppt(s.no);
+  var appt=(getAppts(s.no)[0]||{});
   var noDiv=document.createElement('div');noDiv.className='si-no';noDiv.textContent=s.no;
   if(appt.date){var dot=document.createElement('span');dot.className='appt-dot';noDiv.appendChild(dot);}
   var nm=document.createElement('div');nm.className='si-name';nm.textContent=s.fname+' '+s.lname;
@@ -1182,7 +1256,7 @@ function makeIG(pairs){var d=document.createElement('div');d.className='ig';pair
 
 function showPop(no){
   var s=getS(no);if(!s)return;
-  var appt=getAppt(no);var buddy=s.buddy_no>0?getS(s.buddy_no):null;var instr=INSTRS[s.squad]||{nst:'',crew:[]};
+  var appts_list=getAppts(no);var appt=appts_list[0]||{};var buddy=s.buddy_no>0?getS(s.buddy_no):null;var instr=INSTRS[s.squad]||{nst:'',crew:[]};
   document.getElementById('pop-name').textContent=s.rank+' '+s.fname+' '+s.lname+(s.nickname&&s.nickname!=='-'?' ('+s.nickname+')':'');
   document.getElementById('pop-sub').textContent='ลำดับ '+s.no+' · รหัส '+s.code+' · '+s.mtb+' · หมู่ '+s.squad+(s.squad_pos?' ตำแหน่ง '+s.squad_pos:'');
   buildPopAv(no);
@@ -1259,39 +1333,68 @@ function showPop(no){
     ['รายได้เดิม',s.income],['ปัญหาทางบ้าน',s.fam_problem,s.fam_problem!=='-'?'iv-amber':''],
     ['ฐานะ',s.fam_finance],['เสาหลักครอบครัว',s.breadwinner]
   ]));body.appendChild(fs);
-  // Appointment + Medical History
+  // Appointment (Multi) + Medical History
   var aps=document.createElement('div');aps.className='sec';
-  var apst=document.createElement('div');apst.className='sec-t';apst.textContent='นัดแพทย์';aps.appendChild(apst);
-  var apb=document.createElement('div');apb.className='appt-box';
-  var apl=document.createElement('div');apl.className='appt-lbl';apl.textContent='บันทึก / แก้ไขวันนัด';apb.appendChild(apl);
-  if(appt.date){
-    var diff=daysDiff(appt.date);
-    var apc=document.createElement('div');apc.className='appt-cur';
-    apc.textContent='วันที่ '+fmtDate(appt.date)+' — '+(appt.note||'ไม่มีหมายเหตุ')+' ';
-    var apdel=document.createElement('button');apdel.className='btn-g';apdel.textContent='ลบนัด';
-    (function(n){apdel.onclick=function(){delete APPTS[String(n)];saveLS();showPop(n);renderAlerts();updateBadge();sendTelegramDelete(n);};})(no);
-    apc.appendChild(apdel);apb.appendChild(apc);
-    // ปุ่ม "ไปพบแพทย์แล้ว" เมื่อถึงหรือเลยวันนัด
-    if(diff!==null&&diff<=0){
-      var visitedRow=document.createElement('div');visitedRow.className='med-visited-row';
-      visitedRow.innerHTML='<span style="font-size:13px;">[DONE]</span><span style="font-size:12px;color:#3B6D11;flex:1;">ถึงวันนัด '+fmtDate(appt.date)+' แล้ว — กดเมื่อไปพบแพทย์เรียบร้อย</span>';
-      var visitBtn=document.createElement('button');visitBtn.className='btn-p';
-      visitBtn.style.cssText='background:#3B6D11;font-size:11px;padding:5px 10px;white-space:nowrap;';
-      visitBtn.textContent='ไปพบแล้ว [OK]';
-      (function(n,appt2){visitBtn.onclick=function(){markVisited(n,appt2);};})(no,appt);
-      visitedRow.appendChild(visitBtn);apb.appendChild(visitedRow);
-    }
+  var apst=document.createElement('div');apst.className='sec-t';
+  var appts=getAppts(no);
+  apst.innerHTML='นัดแพทย์ <span style="font-size:10px;background:#185FA5;color:#fff;padding:1px 7px;border-radius:10px;margin-left:4px;">'+appts.length+' นัด</span>';
+  aps.appendChild(apst);
+
+  // แสดงรายการนัดทั้งหมด
+  var apList=document.createElement('div');apList.className='appt-list';
+  if(appts.length){
+    appts.sort(function(a,b){return a.date.localeCompare(b.date);}).forEach(function(ap){
+      var diff2=daysDiff(ap.date);
+      var cls='appt-item upcoming';var dotCls='appt-dot-blue';
+      var statusTxt='';
+      if(diff2!==null&&diff2<0){cls='appt-item overdue';dotCls='appt-dot-red';statusTxt='<span style="color:#E24B4A;font-size:10px;font-weight:600;">เลยกำหนด '+Math.abs(diff2)+' วัน</span>';}
+      else if(diff2===0){cls='appt-item today';dotCls='appt-dot-green';statusTxt='<span style="color:#3B6D11;font-size:10px;font-weight:600;">วันนี้!</span>';}
+      else{statusTxt='<span style="color:#185FA5;font-size:10px;">อีก '+diff2+' วัน</span>';}
+      var item=document.createElement('div');item.className=cls;
+      var dot=document.createElement('div');dot.className='appt-dot '+dotCls;
+      var ibody=document.createElement('div');ibody.className='appt-item-body';
+      ibody.innerHTML='<div class="appt-item-date">'+fmtDate(ap.date)+' '+statusTxt+'</div>'+
+        '<div class="appt-item-note">'+(ap.note||'ไม่มีหมายเหตุ')+'</div>';
+      var iacts=document.createElement('div');iacts.className='appt-item-actions';
+      // ปุ่มไปพบแล้ว (เมื่อถึงหรือเลยวันนัด)
+      if(diff2!==null&&diff2<=0){
+        var vBtn=document.createElement('button');vBtn.className='btn-visited';vBtn.textContent='ไปพบแล้ว [OK]';
+        (function(n,a){vBtn.onclick=function(){markVisitedById(n,a);};})(no,ap);
+        iacts.appendChild(vBtn);
+      }
+      // ปุ่มลบนัด
+      var dBtn=document.createElement('button');dBtn.className='btn-del-appt';dBtn.textContent='ลบนัด';
+      (function(n,aid){dBtn.onclick=function(){deleteApptById(n,aid);showPop(n);};})(no,ap.id);
+      iacts.appendChild(dBtn);
+      ibody.appendChild(iacts);
+      item.appendChild(dot);item.appendChild(ibody);
+      apList.appendChild(item);
+    });
+  } else {
+    var noAp=document.createElement('div');noAp.style.cssText='font-size:11px;color:#aaa;padding:6px 0;';
+    noAp.textContent='ยังไม่มีนัดแพทย์';apList.appendChild(noAp);
   }
-  var apf=document.createElement('div');apf.className='appt-form';
-  var apd=document.createElement('input');apd.type='date';apd.id='apd-'+no;apd.value=appt.date||'';
-  var apn=document.createElement('input');apn.type='text';apn.id='apn-'+no;apn.placeholder='หมายเหตุ เช่น นัดตรวจซ้ำสารเสพติด';apn.value=appt.note||'';
-  var apsv=document.createElement('button');apsv.className='btn-p';apsv.textContent='บันทึกนัด';
+  aps.appendChild(apList);
+
+  // ฟอร์มเพิ่มนัดใหม่
+  var addSec=document.createElement('div');addSec.className='appt-add-section';
+  addSec.innerHTML='<div class="appt-add-title">+ เพิ่มนัดแพทย์ใหม่</div>';
+  var addRow=document.createElement('div');addRow.className='appt-add-row';
+  var apd=document.createElement('input');apd.type='date';apd.id='apd-'+no;
+  var apn=document.createElement('input');apn.type='text';apn.id='apn-'+no;
+  apn.placeholder='หมายเหตุ เช่น นัดตรวจซ้ำสารเสพติด';
+  var apsv=document.createElement('button');apsv.className='btn-p';
+  apsv.style.cssText='font-size:11px;padding:5px 10px;white-space:nowrap;';
+  apsv.textContent='บันทึกนัด';
   (function(n){apsv.onclick=function(){
-    var d=document.getElementById('apd-'+n).value,nt=document.getElementById('apn-'+n).value;
+    var d=document.getElementById('apd-'+n).value;
+    var nt=document.getElementById('apn-'+n).value;
     if(!d){alert('กรุณาเลือกวันนัด');return;}
-    APPTS[String(n)]={date:d,note:nt};saveLS();showPop(n);renderAlerts();updateBadge();sendTelegramNow(n,d,nt);
+    addAppt(n,d,nt);showPop(n);renderAlerts();updateBadge();
   };})(no);
-  apf.appendChild(apd);apf.appendChild(apn);apf.appendChild(apsv);apb.appendChild(apf);aps.appendChild(apb);body.appendChild(aps);
+  addRow.appendChild(apd);addRow.appendChild(apn);addRow.appendChild(apsv);
+  addSec.appendChild(addRow);aps.appendChild(addSec);
+  body.appendChild(aps);
 
   // ── ประวัติการรักษา ──
   var medSec=document.createElement('div');medSec.className='sec';
@@ -1481,41 +1584,7 @@ function saveMedRecord(no){
   }
 }
 
-function markVisited(no, appt){
-  var s=getS(no);if(!s) return;
-  // บันทึกประวัติการรักษาอัตโนมัติ
-  if(!MED_HISTORY[String(no)]) MED_HISTORY[String(no)]=[];
-  MED_HISTORY[String(no)].push({
-    date:appt.date,
-    type:'appt',
-    title:'ไปพบแพทย์ตามนัด',
-    detail:appt.note||'ไม่มีหมายเหตุ',
-    doctor:'',
-    ts:new Date().toISOString()
-  });
-  db.ref('medHistory').set(MED_HISTORY);
-  // ลบนัดออก
-  delete APPTS[String(no)];
-  saveLS();
-  renderAlerts();updateBadge();
-  // Telegram
-  var nl='\n';
-  var msg='[OK] ไปพบแพทย์ตามนัดเรียบร้อย'+nl;
-  msg+='ช.1 พัน.52 ผลัด 1/2569'+nl;
-  msg+='---------------------------'+nl;
-  msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+nl;
-  msg+='[หมู่] หมู่ '+s.squad+nl;
-  msg+='[วันนัด] '+fmtDate(new Date(appt.date+' 00:00'))+nl;
-  msg+='[หมายเหตุ] '+(appt.note||'-')+nl;
-  msg+='---------------------------'+nl;
-  msg+='CARE-NST | ช.พัน.52';
-  fetch('https://api.telegram.org/bot'+TG_BOT_TOKEN+'/sendMessage',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg})
-  });
-  showPop(no);
-  alert('บันทึกการไปพบแพทย์เรียบร้อยแล้วครับ');
-}
+// markVisited (replaced by markVisitedById)
 
 loadMedHistory();
 
