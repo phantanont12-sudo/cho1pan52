@@ -234,6 +234,27 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
 .emg-alert-btn{width:100%;padding:12px;background:#E24B4A;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;}
 .emg-alert-btn:disabled{opacity:.5;cursor:not-allowed;}
 .emg-select-soldier{font-family:inherit;font-size:13px;border:2px solid #ddd;border-radius:8px;padding:8px;width:100%;outline:none;margin-bottom:10px;}
+/* ── MEDICAL HISTORY ── */
+.med-box{border:1px solid #e0ddd8;border-radius:8px;padding:10px 12px;background:#fff;}
+.med-visited-btn{padding:8px 16px;background:#3B6D11;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;width:100%;margin-top:8px;}
+.med-visited-btn:hover{background:#2D5010;}
+.med-add-btn{padding:6px 12px;background:#185FA5;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:inherit;font-size:11px;}
+.med-hist-item{padding:8px 10px;border-radius:7px;margin-bottom:6px;border-left:3px solid #ccc;background:#f8f7f4;}
+.med-hist-item.type-appt{border-left-color:#185FA5;background:#eef5ff;}
+.med-hist-item.type-sick{border-left-color:#E24B4A;background:#fff0f0;}
+.med-hist-item.type-injury{border-left-color:#EF9F27;background:#fff8ec;}
+.med-hist-item.type-other{border-left-color:#534AB7;background:#f5f4ff;}
+.med-hist-date{font-size:10px;color:#888;margin-bottom:3px;}
+.med-hist-title{font-size:12px;font-weight:600;}
+.med-hist-detail{font-size:11px;color:#666;margin-top:2px;}
+.med-hist-badge{font-size:9px;padding:1px 6px;border-radius:8px;font-weight:500;margin-left:4px;}
+.med-add-form{background:#f5f4f1;border-radius:8px;padding:10px;margin-top:8px;display:none;}
+.med-add-form.on{display:block;}
+.med-field{margin-bottom:6px;}
+.med-field label{font-size:10px;color:#888;display:block;margin-bottom:2px;}
+.med-field input,.med-field select,.med-field textarea{width:100%;font-family:inherit;font-size:12px;border:1px solid #ddd;border-radius:5px;padding:5px 8px;outline:none;}
+.med-field textarea{height:60px;resize:none;}
+.med-visited-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#EAF3DE;border-radius:8px;border:1px solid #4CAF6E;margin-top:6px;}
 /* ── WEATHER FETCH ── */
 .weather-bar{background:linear-gradient(135deg,#1a3050,#0d1b2a);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
 .weather-btn{padding:8px 16px;background:#EF9F27;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;}
@@ -765,17 +786,6 @@ function sendTelegramDelete(soldierNo){
 }
 
 // ── Seed ข้อมูลทหาร 89 นายเข้า Firebase (ครั้งแรกเท่านั้น) ──
-function seedSoldiers(){
-  db.ref('soldiers').once('value',function(snap){
-    if(snap.val()) return; // มีข้อมูลแล้ว ไม่ต้อง seed ซ้ำ
-    var data={"1": {"no": 1,"name": "ชยากร สมบูรณ์ทรัพย์","fname": "ชยากร","lname": "สมบูรณ์ทรัพย์","nickname": "คิม","squad": 1,"squad_pos": 1,"buddy_no": 2,"risk": "none","address": "38 ม.3 ต.วังเย็น อ.บางเเพ จ.ราชบุรี","phone": "0981432302","contact": "อมรรัตน์","contact_rel": "มารดา","contact_tel": "080-7736674"},"2": {"no": 2,"name": "สิทธิพร ยิ้มเชิง","fname": "สิทธิพร","lname": "ยิ้มเชิง","nickname": "เกมส์","squad": 1,"squad_pos": 2,"buddy_no": 1,"risk": "red","address": "3 ม.9 ต.วังเย็น อ.บางเเพ จ.ราชบุรี","phone": "0957459395","contact": "ผ่องศรี","contact_rel": "ยาย","contact_tel": "092-7719558"},"3": {"no": 3,"name": "ธนากร ผ่องอำภรณ์","fname": "ธนากร","lname": "ผ่องอำภรณ์","nickname": "คิิว","squad": 1,"squad_pos": 3,"buddy_no": 4,"risk": "amber","address": "39 ม.2 ต.นางแก้ว อ.โพธาราม จ.ราชบุรี","phone": "0924841408","contact": "อำภรณ์","contact_rel": "ย่า","contact_tel": "088-9076959"},"4": {"no": 4,"name": "สหรัฐ เสนีย์วงค์","fname": "สหรัฐ","lname": "เสนีย์วงค์","nickname": "ตั้น","squad": 1,"squad_pos": 4,"buddy_no": 3,"risk": "red","address": "16 ม.3 ต.คลองข่อย อ.โพธาราม จ.ราชบุรี","phone": "0970315087","contact": "พรธิดา","contact_rel": "มารดา","contact_tel": "095-3848701"},"5": {"no": 5,"name": "ฐากร แก้วประชา","fname": "ฐากร","lname": "แก้วประชา","nickname": "ปอ","squad": 1,"squad_pos": 5,"buddy_no": 6,"risk": "none","address": "34/2 ม.10 ต.ไร่ขิง อ.โพธาราม จ.นครปฐม","phone": "0624377736","contact": "อนุเทพ","contact_rel": "บิดา","contact_tel": "062-8801024"},"6": {"no": 6,"name": "ศุภณัฐ แก้้วแจ้ง","fname": "ศุภณัฐ","lname": "แก้้วแจ้ง","nickname": "นะโม","squad": 1,"squad_pos": 6,"buddy_no": 5,"risk": "red","address": "6 ม.49 ต.ทรงคนอง อ.สามพราน จ.นครปฐม","phone": "0991813284","contact": "จุธาทิพ","contact_rel": "มารดา","contact_tel": "096-9146616"},"7": {"no": 7,"name": "กามนิต เกลียวทอง","fname": "กามนิต","lname": "เกลียวทอง","nickname": "กี","squad": 1,"squad_pos": 7,"buddy_no": 8,"risk": "red","address": "50/4 ม.1 ต.ละหาร อ.บางบัวทอง จ.นนทบุรี","phone": "0635211040","contact": "บุญชู","contact_rel": "บิดา","contact_tel": "063-8062199"},"8": {"no": 8,"name": "พงศภัค อิสมาแอล","fname": "พงศภัค","lname": "อิสมาแอล","nickname": "ดิป","squad": 1,"squad_pos": 8,"buddy_no": 7,"risk": "red","address": "2025-02-17 00:00:00 ม.17 ต.บางพึ่ง อ.พระประแดง จ.สมุทรปราการ","phone": "0638752205","contact": "เรณู","contact_rel": "มารดา","contact_tel": "086-3382879"},"9": {"no": 9,"name": "ภาณุวัฒน์ โพธิจักร์","fname": "ภาณุวัฒน์","lname": "โพธิจักร์","nickname": "ก๊อต","squad": 2,"squad_pos": 1,"buddy_no": 10,"risk": "none","address": "221/20 ม.4 ต.สำโรง อ.พระประแดง จ.สมุทรปราการ","phone": "0922654828","contact": "บรรจง","contact_rel": "บิดา","contact_tel": "081-1713693"},"10": {"no": 10,"name": "ยุทธชัย สาลีศูนย์","fname": "ยุทธชัย","lname": "สาลีศูนย์","nickname": "เต้ย","squad": 2,"squad_pos": 2,"buddy_no": 9,"risk": "red","address": "220/445 ม.4 ต.ในคลองบางปลากด อ.พระสมุทรเจดีย์ จ.สมุทรปราการ","phone": "0614439450","contact": "พิชัย","contact_rel": "บิดา","contact_tel": "084-5045052"},"11": {"no": 11,"name": "พงศธร ทรัพย์สิน","fname": "พงศธร","lname": "ทรัพย์สิน","nickname": "นาย","squad": 2,"squad_pos": 3,"buddy_no": 12,"risk": "amber","address": "117 ม.2 ต.คู้ยายหมี อ.สนามชัยเขต จ.ฉะเชิงเทรา","phone": "0988238424","contact": "ทวี","contact_rel": "บิดา","contact_tel": "087-9423481"},"12": {"no": 12,"name": "ภาคภูมิ โชคบัณฑิต","fname": "ภาคภูมิ","lname": "โชคบัณฑิต","nickname": "เจ","squad": 2,"squad_pos": 4,"buddy_no": 11,"risk": "none","address": "574 ม.19 ต.ท่ากระดาน อ.สนามชัยเขต จ.ฉะเชิงเทรา","phone": "0625190185","contact": "บัวพรม","contact_rel": "ยาย","contact_tel": "062-2143562"},"13": {"no": 13,"name": "ญาณกร สื่อสวัสดิ์วณิชย์","fname": "ญาณกร","lname": "สื่อสวัสดิ์วณิชย์","nickname": "เจ๊ก","squad": 2,"squad_pos": 5,"buddy_no": 14,"risk": "none","address": "54/1 ม.4 ต.ท่ากระดาน อ.สนามชัยเขต จ.ฉะเชิงเทรา","phone": "0990105668","contact": "ชบา","contact_rel": "มารดา","contact_tel": "087-3665450"},"14": {"no": 14,"name": "รัชชานนท์ กรอบจินดา","fname": "รัชชานนท์","lname": "กรอบจินดา","nickname": "นนท์","squad": 2,"squad_pos": 6,"buddy_no": 13,"risk": "none","address": "173 ม.1 ต.ท่ากระดาน อ.สนามชัยเขต จ.ฉะเชิงเทรา","phone": "0938375444","contact": "สมใจ","contact_rel": "มารดา","contact_tel": "080-8811986"},"15": {"no": 15,"name": "สุทธิชัย พิมพ์สอน","fname": "สุทธิชัย","lname": "พิมพ์สอน","nickname": "เปา","squad": 2,"squad_pos": 7,"buddy_no": 16,"risk": "none","address": "149 ม.6 ต.ท่ากระดาน อ.สนามชัยเขต จ.ฉะเชิงเทรา","phone": "0935130127","contact": "สมเสี่ยง","contact_rel": "มารดา","contact_tel": "063-1805201"},"16": {"no": 16,"name": "พงษ์อมร แก่นแก้ว","fname": "พงษ์อมร","lname": "แก่นแก้ว","nickname": "โอ๊ก","squad": 2,"squad_pos": 8,"buddy_no": 15,"risk": "none","address": "84/140 ม.3 ต.เสม็ดเหนือ อ.บางคล้า จ.ฉะเชิงเทรา","phone": "0949244458","contact": "ปานตะวัน","contact_rel": "พี่สาว","contact_tel": "091-7524569"},"17": {"no": 17,"name": "วัชระ ช่วงโชติ","fname": "วัชระ","lname": "ช่วงโชติ","nickname": "กาย","squad": 3,"squad_pos": 1,"buddy_no": 18,"risk": "none","address": "2025-12-08 00:00:00 ต.บางคล้า อ.บางคล้้า จ.ฉะเชิงเทรา","phone": "0992618581","contact": "ปนัฐชฎาภรณ์","contact_rel": "แฟน","contact_tel": "088-8654093"},"18": {"no": 18,"name": "พงระพี โยยิ่ง","fname": "พงระพี","lname": "โยยิ่ง","nickname": "บิ๊ก","squad": 3,"squad_pos": 2,"buddy_no": 17,"risk": "none","address": "71 ม.2 ต.แสนภูดาษ อ.บ้านโพธิ์ จ.ฉะเชิงเทรา","phone": "0825899529","contact": "กวาง","contact_rel": "พี่สาว","contact_tel": "061-2199270"},"19": {"no": 19,"name": "นราธิป สุขอยู่","fname": "นราธิป","lname": "สุขอยู่","nickname": "เวฟ","squad": 3,"squad_pos": 3,"buddy_no": 20,"risk": "none","address": "33/15 ม.1 ต.คลองประเวศ อ.บ้านโพธิ์ จ.ฉะเชิงเทรา","phone": "0970362367","contact": "นิตยา","contact_rel": "พี่สาว","contact_tel": "095-2503486"},"20": {"no": 20,"name": "กิตติกร ฮาเซะ","fname": "กิตติกร","lname": "ฮาเซะ","nickname": "มี่","squad": 3,"squad_pos": 4,"buddy_no": 19,"risk": "amber","address": "55 ม.92 ต.สามวาตะวันออก อ.คลองสามวา จ.กรุงเทพมหานคร","phone": "0993508503","contact": "สุชาติิ","contact_rel": "บิดา","contact_tel": "081-6955495"},"21": {"no": 21,"name": "ธนดล ยะมามัง","fname": "ธนดล","lname": "ยะมามัง","nickname": "มัท","squad": 3,"squad_pos": 5,"buddy_no": 22,"risk": "amber","address": "5/19 ม.1 ต.โคกแฝด อ.หนองจอก จ.กรุงเทพมหานคร","phone": "0867759230","contact": "มยุรฉัตร์","contact_rel": "มารดา","contact_tel": "089-9261311"},"22": {"no": 22,"name": "ชัยพจน์ อภิธนพงา์เจริญ","fname": "ชัยพจน์","lname": "อภิธนพงา์เจริญ","nickname": "ป๋อ","squad": 3,"squad_pos": 6,"buddy_no": 21,"risk": "green_watch","address": "82/4 ม.3 ต.เกาะจันทร์ อ.เกาะจันทร์ จ.ชลบุรี","phone": "0933029893","contact": "สำรวย","contact_rel": "มารดา","contact_tel": "860759825"},"23": {"no": 23,"name": "เอกรัฐ แสวงเพ็ชร์","fname": "เอกรัฐ","lname": "แสวงเพ็ชร์","nickname": "บิูม","squad": 3,"squad_pos": 7,"buddy_no": 24,"risk": "red","address": "149/6 ม.2 ต.เหมือง อ.เมือง จ.ชลบุรี","phone": "0956505072","contact": "แดง","contact_rel": "ย่า","contact_tel": "816537210"},"24": {"no": 24,"name": "วราโชติ หวังสุข","fname": "วราโชติ","lname": "หวังสุข","nickname": "ซัน","squad": 3,"squad_pos": 8,"buddy_no": 23,"risk": "none","address": "111/11 ม.6 ซ.1 ต.หนองตำลึง อ.พานทอง จ.ชลบุรี","phone": "0988559500","contact": "นิธิชญา","contact_rel": "มารดา","contact_tel": "943416669"},"25": {"no": 25,"name": "เกรียงไกล นาควง","fname": "เกรียงไกล","lname": "นาควง","nickname": "ต้า","squad": 4,"squad_pos": 1,"buddy_no": 26,"risk": "amber","address": "93 ม.2 ต.พานทอง อ.หนองตำลึง จ.ชลบุรี","phone": "0963161681","contact": "อรรวรรณ","contact_rel": "มารดา","contact_tel": "-"},"26": {"no": 26,"name": "นรังสรรค์ วงษ์จันทร์","fname": "นรังสรรค์","lname": "วงษ์จันทร์","nickname": "รักษ์","squad": 4,"squad_pos": 2,"buddy_no": 25,"risk": "amber","address": "80 ม.6 ต.บ้านเก่า อ.พานทอง จ.ชลบุรี","phone": "0958515775","contact": "สุพตา","contact_rel": "มารดา","contact_tel": "613088215"},"27": {"no": 27,"name": "รณวิทย์ โดดเเช","fname": "รณวิทย์","lname": "โดดเเช","nickname": "แบงค์","squad": 4,"squad_pos": 3,"buddy_no": 28,"risk": "green_watch","address": "2025-04-16 00:00:00 ม.4 ต.บ้านเก่า อ.พ่านทอง จ.ชลบุรี","phone": "084-0600947","contact": "มนัส","contact_rel": "บิดา","contact_tel": "081-3407167"},"28": {"no": 28,"name": "ธนาธิป ชูนารอง","fname": "ธนาธิป","lname": "ชูนารอง","nickname": "ถู","squad": 4,"squad_pos": 4,"buddy_no": 27,"risk": "green_watch","address": "98/6 ม.3 ต.คลองกิ่ว อ.บ้านบึง จ.ชลบุรี","phone": "0889816439","contact": "พงศธร","contact_rel": "น้อง","contact_tel": "-"},"29": {"no": 29,"name": "ณัฐพล เชิดแสง","fname": "ณัฐพล","lname": "เชิดแสง","nickname": "โอม","squad": 4,"squad_pos": 5,"buddy_no": 30,"risk": "green_watch","address": "199/83 ม.1 ต.คลองกิ่ว อ.บ้านบึง จ.ชลบุรี","phone": "0807428873","contact": "ญาดา","contact_rel": "แฟน","contact_tel": "659028751"},"30": {"no": 30,"name": "ธงชัย อิ่มสุขใจ","fname": "ธงชัย","lname": "อิ่มสุขใจ","nickname": "ยีน","squad": 4,"squad_pos": 6,"buddy_no": 29,"risk": "none","address": "216/1 ม.2 ต.หนองบอนแดง อ.บ้้านบึง จ.ชลบุรี","phone": "0831709867","contact": "วรยุทธ","contact_rel": "บิดา","contact_tel": "-"},"31": {"no": 31,"name": "กิติภพ วันมา","fname": "กิติภพ","lname": "วันมา","nickname": "แม็ค","squad": 4,"squad_pos": 7,"buddy_no": 32,"risk": "green_watch","address": "137/39 ม.2 ต.หนองอิรุณ อ.บ้านบึง จ.ชลบุรี","phone": "0809142543","contact": "ตุ้มคลอง","contact_rel": "ยาย","contact_tel": "911846488"},"32": {"no": 32,"name": "สุธี แสงชู","fname": "สุธี","lname": "แสงชู","nickname": "ที","squad": 4,"squad_pos": 8,"buddy_no": 31,"risk": "red","address": "142 ม.4 ต.บ้านบึึง อ.หนองชาก จ.ชลบุรี","phone": "0637493052","contact": "-","contact_rel": "-","contact_tel": "-"},"33": {"no": 33,"name": "วายุ บุตรชุมแสง","fname": "วายุ","lname": "บุตรชุมแสง","nickname": "ขวัญ","squad": 5,"squad_pos": 1,"buddy_no": 34,"risk": "green_watch","address": "138/2 ม.4 ต.บ้านบึง อ.บ้านบึง จ.ชลบุรี","phone": "0646643891","contact": "กิตติชัย","contact_rel": "บิดา","contact_tel": "831267097"},"34": {"no": 34,"name": "พลวัชร กลมกล่อม","fname": "พลวัชร","lname": "กลมกล่อม","nickname": "เบีย","squad": 5,"squad_pos": 2,"buddy_no": 33,"risk": "green_watch","address": "102 ซ.เทศประสาท ต.บ้านบึง อ.บ้านบึึง จ.ชลบุรี","phone": "0953944527","contact": "นันทนา","contact_rel": "มารดา","contact_tel": "-"},"35": {"no": 35,"name": "ณภัทร์พล บำเพ็ญบุญ","fname": "ณภัทร์พล","lname": "บำเพ็ญบุญ","nickname": "ทิว","squad": 5,"squad_pos": 3,"buddy_no": 36,"risk": "amber","address": "92/2 ม.4 ต.บ้านบึง อ.บ้านบึง จ.ชลบุรี","phone": "0612291798","contact": "อนงค์","contact_rel": "มารดา","contact_tel": "085-6992580"},"36": {"no": 36,"name": "เอกภพ ทีแพง","fname": "เอกภพ","lname": "ทีแพง","nickname": "แฮ่ม","squad": 5,"squad_pos": 4,"buddy_no": 35,"risk": "none","address": "39 ม.11 ต.พนัสนิคม อ.นาวังหิน จ.ชลบุรี","phone": "0990028309","contact": "กรการ","contact_rel": "ป้า","contact_tel": "-"},"37": {"no": 37,"name": "ปานเทพ สมบัติเมธากุลย์","fname": "ปานเทพ","lname": "สมบัติเมธากุลย์","nickname": "เกมส์","squad": 5,"squad_pos": 5,"buddy_no": 38,"risk": "none","address": "137 ม.9 ต.ธาตุทอง อ.บ่อทอง จ.ชลบุรี","phone": "0650694897","contact": "กุศริน","contact_rel": "บิดา","contact_tel": "064-9966959"},"38": {"no": 38,"name": "ยศวรรธน์ ไกรยสินธุ์","fname": "ยศวรรธน์","lname": "ไกรยสินธุ์","nickname": "อิง","squad": 5,"squad_pos": 6,"buddy_no": 37,"risk": "none","address": "197 ม.8 ต.ธาตุทอง อ.บ่อทอง จ.ชลบุรี","phone": "0644608386","contact": "กัญญาภัทร","contact_rel": "มารดา","contact_tel": "084-3266232"},"39": {"no": 39,"name": "บัณฑิต จ้อยมาก","fname": "บัณฑิต","lname": "จ้อยมาก","nickname": "เวฟ","squad": 5,"squad_pos": 7,"buddy_no": 40,"risk": "none","address": "392 ม.6 ต.ธาตุทอง อ.บ่อทอง จ.ชลบุรี","phone": "-","contact": "สุวภัทร","contact_rel": "มารดา","contact_tel": "098-9147277"},"40": {"no": 40,"name": "สำเนียง เจียมเจริญ","fname": "สำเนียง","lname": "เจียมเจริญ","nickname": "หิน","squad": 5,"squad_pos": 8,"buddy_no": 39,"risk": "none","address": "63/1 ม.2 ต.ธาตุทอง อ.บ่อทอง จ.ชลบุรี","phone": "-","contact": "สุุพิน","contact_rel": "มารดา","contact_tel": "-"},"41": {"no": 41,"name": "อนุพงศ์ พุ่มสูงเนิน","fname": "อนุพงศ์","lname": "พุ่มสูงเนิน","nickname": "เก๋า","squad": 6,"squad_pos": 1,"buddy_no": 42,"risk": "none","address": "248 ม.3 ต.บ่อกวางทอง อ.บ่อทอง จ.ชลบุรี","phone": "0640485358","contact": "วรรณภารัตร","contact_rel": "แฟน","contact_tel": "096-3753169"},"42": {"no": 42,"name": "สืบศักดิ์ ฉิมวิเศษ","fname": "สืบศักดิ์","lname": "ฉิมวิเศษ","nickname": "ซอส","squad": 6,"squad_pos": 2,"buddy_no": 41,"risk": "none","address": "51 ม.11 ต.หนองปรืือ อ.บางละมุุง จ.ชลบุรี","phone": "0958415210","contact": "วาสนา","contact_rel": "มารดา","contact_tel": "093-9679225"},"43": {"no": 43,"name": "ไตรภพ บุญวิเทียน","fname": "ไตรภพ","lname": "บุญวิเทียน","nickname": "วิน","squad": 6,"squad_pos": 3,"buddy_no": 44,"risk": "none","address": "44/80 ม.9 ต.หนองปรือ อ.บางละมุง จ.ชลบุรี","phone": "0960045087","contact": "พัดวริน","contact_rel": "มารดา","contact_tel": "064-8973959"},"44": {"no": 44,"name": "วชิระ ชูเนตร","fname": "วชิระ","lname": "ชูเนตร","nickname": "อาม","squad": 6,"squad_pos": 4,"buddy_no": 43,"risk": "amber","address": "16/65 ม.6 ต.หนองปรือ อ.บางละมุง จ.ชลบุรี","phone": "0989407812","contact": "ไพรฑูร","contact_rel": "บิดา","contact_tel": "098-6828947"},"45": {"no": 45,"name": "วรรธนัย สมใจ","fname": "วรรธนัย","lname": "สมใจ","nickname": "เจม","squad": 6,"squad_pos": 5,"buddy_no": 46,"risk": "red","address": "546/4 ม.11 ต.หนองขาม อ.ศรีราชา จ.ชลบุรี","phone": "0615540787","contact": "สุมาลี","contact_rel": "มารดา","contact_tel": "081-4294830"},"46": {"no": 46,"name": "ชุติการย์ โตเหมือน","fname": "ชุติการย์","lname": "โตเหมือน","nickname": "บีม","squad": 6,"squad_pos": 6,"buddy_no": 45,"risk": "none","address": "83 ม.6 ต.บ่่อวิน อ.ศรีีราชา จ.ชลบุรี","phone": "0840850622","contact": "ปฑิตตา","contact_rel": "แฟน","contact_tel": "063-2528036"},"47": {"no": 47,"name": "จีรพัฒน์ นามโคตร","fname": "จีรพัฒน์","lname": "นามโคตร","nickname": "ต้อม","squad": 6,"squad_pos": 7,"buddy_no": 48,"risk": "none","address": "456 ม.3 ต.ลาดตะเคียน อ.กบินทร์บุรี จ.ปราจีนบุรี","phone": "0659768278","contact": "อำนวย","contact_rel": "มารดา","contact_tel": "-"},"48": {"no": 48,"name": "ไพรฑูรย์ บัวจำปา","fname": "ไพรฑูรย์","lname": "บัวจำปา","nickname": "โอ๊ต","squad": 6,"squad_pos": 8,"buddy_no": 47,"risk": "none","address": "128 ม.3 ต.ลาดตะเคียน อ.กบินทร์บุรี จ.ปราจีนบุรี","phone": "0619122452","contact": "ญาดา","contact_rel": "แฟน","contact_tel": "082-2906995"},"49": {"no": 49,"name": "ธงเฉลิมชัย สาป้อง","fname": "ธงเฉลิมชัย","lname": "สาป้อง","nickname": "ก้อง","squad": 7,"squad_pos": 1,"buddy_no": 50,"risk": "none","address": "152 ม.19 ต.เมืองเก่า อ.กบินทร์บุรี จ.ปราจีนบุรี","phone": "0809393294","contact": "พัฒนพงษ์","contact_rel": "บิดา","contact_tel": "061-9971561"},"50": {"no": 50,"name": "หฤษฏ์ เหล็กศรี","fname": "หฤษฏ์","lname": "เหล็กศรี","nickname": "โอ๊๊ค","squad": 7,"squad_pos": 2,"buddy_no": 49,"risk": "green_watch","address": "311 ม.20 ต.เมืองเก่า อ.กบินทร์บุรี จ.ปราจีนบุรี","phone": "098572651","contact": "วันเพ็ญ","contact_rel": "มารดา","contact_tel": "093-7520755"},"51": {"no": 51,"name": "จักรพล เจริญสุข","fname": "จักรพล","lname": "เจริญสุข","nickname": "เฟริส","squad": 7,"squad_pos": 3,"buddy_no": 52,"risk": "amber","address": "58/3 ม.7 ต.โคกไม้ลาย อ.เมือง จ.ปราจีนบุรี","phone": "0830922490","contact": "บังอร","contact_rel": "มารดา","contact_tel": "084-7813932"},"52": {"no": 52,"name": "บุญสืบ คำเชียงเงิน","fname": "บุญสืบ","lname": "คำเชียงเงิน","nickname": "ใหม่","squad": 7,"squad_pos": 4,"buddy_no": 51,"risk": "amber","address": "31/4 ม.3 ต.รอบเมือง อ.เมืือง จ.ปราจีนบุรี","phone": "0622540641","contact": "เนตรนภา","contact_rel": "พี่สาว","contact_tel": "061-3846990"},"53": {"no": 53,"name": "ปฏิภาณ ฤทธิแรง","fname": "ปฏิภาณ","lname": "ฤทธิแรง","nickname": "อิคคิว","squad": 7,"squad_pos": 5,"buddy_no": 54,"risk": "none","address": "28 ม.3 ต.เนินหอม อ.เมือง จ.ปราจีนบุรี","phone": "0808067390","contact": "สุนทร","contact_rel": "บิดา","contact_tel": "098-5159825"},"54": {"no": 54,"name": "เจษฏาพงษ์ ยะทา","fname": "เจษฏาพงษ์","lname": "ยะทา","nickname": "เจษ","squad": 7,"squad_pos": 6,"buddy_no": 53,"risk": "none","address": "13/100 ม.6 ซ.1 ต.เชิงเนิน อ.เมือง จ.ระยอง","phone": "0983575762","contact": "วิโรจน์","contact_rel": "บิดา","contact_tel": "087-0621012"},"55": {"no": 55,"name": "อัครชัย บัวเล็ก","fname": "อัครชัย","lname": "บัวเล็ก","nickname": "เจมส์","squad": 7,"squad_pos": 7,"buddy_no": 56,"risk": "red","address": "2025-01-11 00:00:00 ม.4 ต.เชิงเนิน อ.เมือง จ.ระยอง","phone": "0837817896","contact": "อังคณา","contact_rel": "มารดา","contact_tel": "086-8232333"},"56": {"no": 56,"name": "สิทธิิชัย อ่อนโต","fname": "สิทธิิชัย","lname": "อ่อนโต","nickname": "แม็ก","squad": 7,"squad_pos": 8,"buddy_no": 55,"risk": "amber","address": "49/98 ม.3 ต.ทับมา อ.เมือง จ.ระยอง","phone": "0963294027","contact": "กาญจนา","contact_rel": "มารดา","contact_tel": "087-3358555"},"57": {"no": 57,"name": "จิรวัฒน์ หอมเทียน","fname": "จิรวัฒน์","lname": "หอมเทียน","nickname": "เกี๊ยว","squad": 8,"squad_pos": 1,"buddy_no": 58,"risk": "none","address": "175/48 ต.ท่าประดู่ อ.เมือง จ.ระยอง","phone": "0870377786","contact": "ชรินทร์","contact_rel": "บิดา","contact_tel": "081-7625697"},"58": {"no": 58,"name": "ทัตพงศ์ บัวขาว","fname": "ทัตพงศ์","lname": "บัวขาว","nickname": "แม็ก","squad": 8,"squad_pos": 2,"buddy_no": 57,"risk": "none","address": "146/1 ต.ท่าประดู่ อ.เมือง จ.ระยอง","phone": "0952120251","contact": "นัจวา","contact_rel": "มารดา","contact_tel": "094-8275069"},"59": {"no": 59,"name": "ชยารพ ชูชุ่ม","fname": "ชยารพ","lname": "ชูชุ่ม","nickname": "มาย","squad": 8,"squad_pos": 3,"buddy_no": 60,"risk": "red","address": "26/14 ซ.2025-06-01 00:00:00 ต.เชิิงเนิน อ.เมือง จ.ระยอง","phone": "0614417067","contact": "สมพิิศ","contact_rel": "มารดา","contact_tel": "087-4799311"},"60": {"no": 60,"name": "เดชาธร พินไธสง","fname": "เดชาธร","lname": "พินไธสง","nickname": "เก่ง","squad": 8,"squad_pos": 4,"buddy_no": 59,"risk": "none","address": "19/73 ต.ท่าประดู่ อ.เมือง จ.ระยอง","phone": "0984756729","contact": "สมพิศ","contact_rel": "ป้า","contact_tel": "092-8730925"},"61": {"no": 61,"name": "ธนกร แก้วเยื้อง","fname": "ธนกร","lname": "แก้วเยื้อง","nickname": "พัฟ","squad": 8,"squad_pos": 5,"buddy_no": 62,"risk": "red","address": "111 ต.ท่าประดู่ อ.เมือง จ.ระยอง","phone": "0969735104","contact": "อมรรัตน์","contact_rel": "มารดา","contact_tel": "082-2180231"},"62": {"no": 62,"name": "ศุุภกร ภิระบัน","fname": "ศุุภกร","lname": "ภิระบัน","nickname": "นาย","squad": 8,"squad_pos": 6,"buddy_no": 61,"risk": "none","address": "21/45 ต.เนิินพระ อ.เมือง จ.ระยอง","phone": "0991084190","contact": "พันธ์ทิพย์","contact_rel": "มารดา","contact_tel": "063-3963388"},"63": {"no": 63,"name": "ธนวัฒน์ ธรรมสุข","fname": "ธนวัฒน์","lname": "ธรรมสุข","nickname": "กอล์ฟ","squad": 8,"squad_pos": 7,"buddy_no": 64,"risk": "amber","address": "38/14 ม.3 ต.เนินพระ อ.เมือง จ.ระยอง","phone": "0943473586","contact": "จรินยา","contact_rel": "มารดา","contact_tel": "092-2541368"},"64": {"no": 64,"name": "พรีพัฒน์ สมปาน","fname": "พรีพัฒน์","lname": "สมปาน","nickname": "สกาย","squad": 8,"squad_pos": 8,"buddy_no": 63,"risk": "amber","address": "308/5 ม.1 ต.มะขามคู่ อ.นิคมพัฒนา จ.ระยอง","phone": "0991459077","contact": "อภินันท์","contact_rel": "บิดา","contact_tel": "082-4738975"},"65": {"no": 65,"name": "ปิยะวัฒน์ แก้วสิงห์","fname": "ปิยะวัฒน์","lname": "แก้วสิงห์","nickname": "มิน","squad": 9,"squad_pos": 1,"buddy_no": 66,"risk": "amber","address": "483/1 ม.8 ต.พนานิคม อ.นิคมพัฒนา จ.ระยอง","phone": "0864828961","contact": "ณวัฒน์","contact_rel": "บิดา","contact_tel": "098-9869894"},"66": {"no": 66,"name": "ระพีพัฒน์ สังข์แก้ว","fname": "ระพีพัฒน์","lname": "สังข์แก้ว","nickname": "พี","squad": 9,"squad_pos": 2,"buddy_no": 65,"risk": "amber","address": "290 ม.2 ต.มะขามคู่ อ.นิคมพัฒนา จ.ระยอง","phone": "0813126549","contact": "จรัสดาว","contact_rel": "พี่สาว","contact_tel": "080-1267939"},"67": {"no": 67,"name": "พุฒิพงศ์ แป๊ะมั้ว","fname": "พุฒิพงศ์","lname": "แป๊ะมั้ว","nickname": "พุ","squad": 9,"squad_pos": 3,"buddy_no": 68,"risk": "amber","address": "68/6 ม.3 ต.กองดิน อ.แกลง จ.ระยอง","phone": "0926531635","contact": "กัลยา","contact_rel": "มารดา","contact_tel": "092-6158756"},"68": {"no": 68,"name": "ธีรภัทร์ รื่นรมย์","fname": "ธีรภัทร์","lname": "รื่นรมย์","nickname": "น๊อต","squad": 9,"squad_pos": 4,"buddy_no": 67,"risk": "none","address": "44 ม.8 ต.วัังหว้า อ.แกลง จ.ระยอง","phone": "0610936474","contact": "จุธารัตน์","contact_rel": "มารดา","contact_tel": "087-9423940"},"69": {"no": 69,"name": "สหัรฐ จันทร์พราหมณ์","fname": "สหัรฐ","lname": "จันทร์พราหมณ์","nickname": "โอ๊ค","squad": 9,"squad_pos": 5,"buddy_no": 70,"risk": "amber","address": "106/3 ต.ชากพง อ.แกลง จ.ระยอง","phone": "0800981772","contact": "สุระโชติ","contact_rel": "บิดา","contact_tel": "092-8499735"},"70": {"no": 70,"name": "เมฆนิมิตร บำรุงภักดี","fname": "เมฆนิมิตร","lname": "บำรุงภักดี","nickname": "จา","squad": 9,"squad_pos": 6,"buddy_no": 69,"risk": "red","address": "35/4 ม.4 ต.สองสลึง อ.แกลง จ.ระยอง","phone": "0616764467","contact": "ดวงใจ","contact_rel": "มารดา","contact_tel": "081-0168986"},"76": {"no": 76,"name": "ธนพล เพ็ชรเกิด","fname": "ธนพล","lname": "เพ็ชรเกิด","nickname": "โฟ๊ค","squad": 9,"squad_pos": 7,"buddy_no": 77,"risk": "amber","address": "ม.5 ต.น้ำพุ อ.เมือง จ.ราชบุรี","phone": "0942806383","contact": "กิมล้วน","contact_rel": "ยาย","contact_tel": "089-8063545"},"77": {"no": 77,"name": "ธนกร ศรีนวล","fname": "ธนกร","lname": "ศรีนวล","nickname": "เต้","squad": 9,"squad_pos": 8,"buddy_no": 76,"risk": "none","address": "21 ม.1 ต.พิกุลทอง อ.เมืือง จ.ราชบุรี","phone": "0661576098","contact": "พิไลรักษ์","contact_rel": "ป้า","contact_tel": "094-5356899"},"78": {"no": 78,"name": "กิตติศักดิ์ บุญเรือน","fname": "กิตติศักดิ์","lname": "บุญเรือน","nickname": "มาติน","squad": 10,"squad_pos": 1,"buddy_no": 79,"risk": "amber","address": "38/4 ซ.เพชรเกษม 2 ต.หน้าเมือง อ.เมือง จ.ราชบุรี","phone": "0961674082","contact": "อัมรินทร์","contact_rel": "แฟน","contact_tel": "064-1320060"},"79": {"no": 79,"name": "ธีณภัทร์ นพรัตน์","fname": "ธีณภัทร์","lname": "นพรัตน์","nickname": "อ้วน","squad": 10,"squad_pos": 2,"buddy_no": 78,"risk": "none","address": "76/1 ม.4 ต.เกาะพลับพลา อ.เมือง จ.ราชบุรี","phone": "0937247937","contact": "คณา","contact_rel": "ป้า","contact_tel": "081-1948147"},"80": {"no": 80,"name": "เขมรัฐ ไชยโชค","fname": "เขมรัฐ","lname": "ไชยโชค","nickname": "อามร์","squad": 10,"squad_pos": 3,"buddy_no": 81,"risk": "green_watch","address": "5 ม.10 ต.คุ้มพยอม อ.บ้านโป่ง จ.ราชบุรี","phone": "0655503218","contact": "ธนบดี","contact_rel": "พี่ชาย","contact_tel": "-"},"81": {"no": 81,"name": "อนุชิต คำพุก","fname": "อนุชิต","lname": "คำพุก","nickname": "ฟิว","squad": 10,"squad_pos": 4,"buddy_no": 80,"risk": "amber","address": "56/1 ม.5 ต.เจ็ดเสมียน อ.โพธาราม จ.ราชบุรี","phone": "0991739694","contact": "ชลนิภา","contact_rel": "ญาติ","contact_tel": "092-8852198"},"82": {"no": 82,"name": "ชณทัต สกุลเชยชิต","fname": "ชณทัต","lname": "สกุลเชยชิต","nickname": "เคน","squad": 10,"squad_pos": 6,"buddy_no": 82,"risk": "none","address": "2025-01-01 00:00:00 ม.12 ต.เกาะพลับพลา อ.เมือง จ.ราชบุรี","phone": "0918260192","contact": "ธนวัฒน์","contact_rel": "บิดา","contact_tel": "083-9929985"},"84": {"no": 84,"name": "นฤธร แย้มวันเพ็ญ","fname": "นฤธร","lname": "แย้มวันเพ็ญ","nickname": "ปาล์ม","squad": 10,"squad_pos": 7,"buddy_no": 85,"risk": "red","address": "187/6 ม.3 ต.บางพูด อ.ปากเกร็ด จ.นนทบุรี","phone": "0800873165","contact": "วิภา","contact_rel": "แฟน","contact_tel": "064-1807658"},"85": {"no": 85,"name": "พิสิษฐ์ ภิรมย์สุข","fname": "พิสิษฐ์","lname": "ภิรมย์สุข","nickname": "โบ๊๊ท","squad": 10,"squad_pos": 8,"buddy_no": 84,"risk": "amber","address": "88/446 ม.4 ต.คลองสาม อ.คลองหลวง จ.ปทุมธานี","phone": "0824150846","contact": "อุมาพร","contact_rel": "มารดา","contact_tel": "084-5450626"},"86": {"no": 86,"name": "อัครวินท์ จินตรารักษ์","fname": "อัครวินท์","lname": "จินตรารักษ์","nickname": "กาย","squad": 11,"squad_pos": 1,"buddy_no": 87,"risk": "green_watch","address": "8/92 ม.6 ต.ศีรษะจรเข้ใหญ่ อ.บางเสาธง จ.สมุทรปราการ","phone": "0802270589","contact": "ณัฐกาญจน์","contact_rel": "ญาติ","contact_tel": "644269374"},"87": {"no": 87,"name": "ชนะโชค บุญรักษา","fname": "ชนะโชค","lname": "บุญรักษา","nickname": "บอส","squad": 11,"squad_pos": 2,"buddy_no": 86,"risk": "amber","address": "62/2 ม.6 ต.หน้องตำลึง อ.พานทอง จ.ชลบุรี","phone": "0935243934","contact": "ทิพรดา","contact_rel": "มารดา","contact_tel": "657145494"},"88": {"no": 88,"name": "เหมรัศมิ์ หล้าสมบูรณ์","fname": "เหมรัศมิ์","lname": "หล้าสมบูรณ์","nickname": "โอม","squad": 11,"squad_pos": 3,"buddy_no": 89,"risk": "amber","address": "147 ม.2 ต.หนองแสง อ.ประจันตคาม จ.ปราจีนบุรี","phone": "0889993985","contact": "ธิติรัตน์","contact_rel": "มารดา","contact_tel": "895426655"},"89": {"no": 89,"name": "ชิษณุพงศ์ นิพล","fname": "ชิษณุพงศ์","lname": "นิพล","nickname": "อั๋น","squad": 11,"squad_pos": 4,"buddy_no": 88,"risk": "amber","address": "2025-02-03 00:00:00 ม.5 ต.พลงตาเอี่ยม อ.วังจันทร์ จ.ระยอง","phone": "0923561134","contact": "เสาวลักษ์","contact_rel": "มารดา","contact_tel": "843980341"},"90": {"no": 90,"name": "ธันวา ทรัพย์ประเสริฐ","fname": "ธันวา","lname": "ทรัพย์ประเสริฐ","nickname": "ทัน","squad": 11,"squad_pos": 5,"buddy_no": 91,"risk": "red","address": "66/1 ม.2 ต.ละหาร อ.บางบัวทอง จ.นนทบุรี","phone": "0958653360","contact": "สมรักษ์","contact_rel": "มารดา","contact_tel": "092-9249727"},"91": {"no": 91,"name": "เอกดนัย หอมสุคนธ์","fname": "เอกดนัย","lname": "หอมสุคนธ์","nickname": "โอ๊ต","squad": 11,"squad_pos": 6,"buddy_no": 90,"risk": "red","address": "143 ม.12 ต.ศรีจุฬา อ.เมือง จ.นครนายก","phone": "0927096816","contact": "จำเนียง","contact_rel": "มารดา","contact_tel": "094-6013912"},"92": {"no": 92,"name": "กฤษดา ระดมกิจ","fname": "กฤษดา","lname": "ระดมกิจ","nickname": "โบ๊ท","squad": 11,"squad_pos": 7,"buddy_no": 93,"risk": "amber","address": "202/19 ม.8 ต.หน้าไม้ อ.ลาดหลุมแก้ว จ.ปทุมธานี","phone": "0616840115","contact": "สุริยัน","contact_rel": "บิดา","contact_tel": "093-1906357"},"93": {"no": 93,"name": "อัฑฒกร แซ่ก๊วย","fname": "อัฑฒกร","lname": "แซ่ก๊วย","nickname": "ปู้","squad": 11,"squad_pos": 8,"buddy_no": 92,"risk": "none","address": "223/10 ม.6 ซ.สยาม ต.หนองปรือ อ.บางละมุง จ.ชลบุรี","phone": "0858071405","contact": "พณวัรย์","contact_rel": "มารดา","contact_tel": "063-7373202"},"94": {"no": 94,"name": "หิรัณย์ คงเพ็ชร","fname": "หิรัณย์","lname": "คงเพ็ชร","nickname": "น๊อต","squad": 12,"squad_pos": 1,"buddy_no": -1,"risk": "none","address": "95/1 ม.2 ต.พลงตาเอี่ยม อ.วังจันทร์ จ.ระยอง","phone": "0627482960","contact": "วรากร","contact_rel": "พี่ชาย","contact_tel": "098-7477741"}};
-    db.ref('soldiers').set(data,function(err){
-      if(!err) console.log('Seeded 88 soldiers to Firebase!');
-    });
-  });
-}
-seedSoldiers();
-
 // ── โหลดข้อมูลจาก Firebase ──
 
 // ════════════════════════════════════════
@@ -938,7 +948,6 @@ function savePhotos(){
     });
   }catch(e){alert('เกิดข้อผิดพลาด: '+e);}
 }
-loadLS();
 
 function getS(no){for(var i=0;i<SOLDIERS.length;i++){if(SOLDIERS[i].no===no)return SOLDIERS[i];}return null;}
 function getAppt(no){return APPTS[String(no)]||{date:'',note:''};}
@@ -1250,15 +1259,28 @@ function showPop(no){
     ['รายได้เดิม',s.income],['ปัญหาทางบ้าน',s.fam_problem,s.fam_problem!=='-'?'iv-amber':''],
     ['ฐานะ',s.fam_finance],['เสาหลักครอบครัว',s.breadwinner]
   ]));body.appendChild(fs);
-  // Appointment
-  var aps=document.createElement('div');aps.className='sec';var apst=document.createElement('div');apst.className='sec-t';apst.textContent='นัดแพทย์';aps.appendChild(apst);
+  // Appointment + Medical History
+  var aps=document.createElement('div');aps.className='sec';
+  var apst=document.createElement('div');apst.className='sec-t';apst.textContent='นัดแพทย์';aps.appendChild(apst);
   var apb=document.createElement('div');apb.className='appt-box';
   var apl=document.createElement('div');apl.className='appt-lbl';apl.textContent='บันทึก / แก้ไขวันนัด';apb.appendChild(apl);
   if(appt.date){
-    var apc=document.createElement('div');apc.className='appt-cur';apc.textContent='วันที่ '+fmtDate(appt.date)+' — '+(appt.note||'ไม่มีหมายเหตุ')+' ';
+    var diff=daysDiff(appt.date);
+    var apc=document.createElement('div');apc.className='appt-cur';
+    apc.textContent='วันที่ '+fmtDate(appt.date)+' — '+(appt.note||'ไม่มีหมายเหตุ')+' ';
     var apdel=document.createElement('button');apdel.className='btn-g';apdel.textContent='ลบนัด';
     (function(n){apdel.onclick=function(){delete APPTS[String(n)];saveLS();showPop(n);renderAlerts();updateBadge();sendTelegramDelete(n);};})(no);
     apc.appendChild(apdel);apb.appendChild(apc);
+    // ปุ่ม "ไปพบแพทย์แล้ว" เมื่อถึงหรือเลยวันนัด
+    if(diff!==null&&diff<=0){
+      var visitedRow=document.createElement('div');visitedRow.className='med-visited-row';
+      visitedRow.innerHTML='<span style="font-size:13px;">[DONE]</span><span style="font-size:12px;color:#3B6D11;flex:1;">ถึงวันนัด '+fmtDate(appt.date)+' แล้ว — กดเมื่อไปพบแพทย์เรียบร้อย</span>';
+      var visitBtn=document.createElement('button');visitBtn.className='btn-p';
+      visitBtn.style.cssText='background:#3B6D11;font-size:11px;padding:5px 10px;white-space:nowrap;';
+      visitBtn.textContent='ไปพบแล้ว [OK]';
+      (function(n,appt2){visitBtn.onclick=function(){markVisited(n,appt2);};})(no,appt);
+      visitedRow.appendChild(visitBtn);apb.appendChild(visitedRow);
+    }
   }
   var apf=document.createElement('div');apf.className='appt-form';
   var apd=document.createElement('input');apd.type='date';apd.id='apd-'+no;apd.value=appt.date||'';
@@ -1270,6 +1292,45 @@ function showPop(no){
     APPTS[String(n)]={date:d,note:nt};saveLS();showPop(n);renderAlerts();updateBadge();sendTelegramNow(n,d,nt);
   };})(no);
   apf.appendChild(apd);apf.appendChild(apn);apf.appendChild(apsv);apb.appendChild(apf);aps.appendChild(apb);body.appendChild(aps);
+
+  // ── ประวัติการรักษา ──
+  var medSec=document.createElement('div');medSec.className='sec';
+  var medSt=document.createElement('div');medSt.className='sec-t';medSt.textContent='ประวัติการเจ็บป่วย / การรักษา';medSec.appendChild(medSt);
+  var medBox=document.createElement('div');medBox.className='med-box';
+  // History list
+  var medHist=getMedHistory(no);
+  if(medHist.length){
+    var typeColor={appt:'#185FA5',sick:'#E24B4A',injury:'#EF9F27',other:'#534AB7'};
+    var typeLabel={appt:'นัดแพทย์',sick:'เจ็บป่วย',injury:'บาดเจ็บ',other:'อื่นๆ'};
+    medHist.slice().reverse().forEach(function(m){
+      var item=document.createElement('div');item.className='med-hist-item type-'+(m.type||'other');
+      var badge='<span class="med-hist-badge" style="background:'+(typeColor[m.type]||'#888')+'22;color:'+(typeColor[m.type]||'#888')+';">'+(typeLabel[m.type]||'อื่นๆ')+'</span>';
+      item.innerHTML='<div class="med-hist-date">'+fmtDate(new Date(m.date+' 00:00'))+'</div>'+
+        '<div class="med-hist-title">'+m.title+badge+'</div>'+
+        (m.detail?'<div class="med-hist-detail">'+m.detail+'</div>':'')+
+        (m.doctor?'<div class="med-hist-detail" style="color:#185FA5;">แพทย์/สถานพยาบาล: '+m.doctor+'</div>':'');
+      medBox.appendChild(item);
+    });
+  } else {
+    var noMed=document.createElement('div');noMed.style.cssText='text-align:center;padding:12px;color:#aaa;font-size:12px;';
+    noMed.textContent='ยังไม่มีประวัติการรักษา';medBox.appendChild(noMed);
+  }
+  // Add record button
+  var addMedBtn=document.createElement('button');addMedBtn.className='med-add-btn';addMedBtn.textContent='+ เพิ่มประวัติการรักษา';
+  var addMedForm=document.createElement('div');addMedForm.className='med-add-form';
+  addMedForm.innerHTML=
+    '<div class="med-field"><label>วันที่</label><input type="date" id="med-date-'+no+'" value="'+todayStr()+'"></div>'+
+    '<div class="med-field"><label>ประเภท</label><select id="med-type-'+no+'"><option value="sick">เจ็บป่วย</option><option value="injury">บาดเจ็บ</option><option value="appt">นัดแพทย์</option><option value="other">อื่นๆ</option></select></div>'+
+    '<div class="med-field"><label>อาการ / การวินิจฉัย</label><input type="text" id="med-title-'+no+'" placeholder="เช่น ไข้ หวัด บาดแผลถลอก"></div>'+
+    '<div class="med-field"><label>รายละเอียด</label><textarea id="med-detail-'+no+'" placeholder="รายละเอียดเพิ่มเติม ยาที่ได้รับ..."></textarea></div>'+
+    '<div class="med-field"><label>แพทย์ / สถานพยาบาล</label><input type="text" id="med-doctor-'+no+'" placeholder="เช่น รพ.ค่ายภาณุรังษี"></div>'+
+    '<div style="display:flex;gap:6px;margin-top:6px;">'+
+    '<button class="btn-p" style="flex:1;font-size:11px;" onclick="saveMedRecord('+no+')">บันทึก</button>'+
+    '<button class="btn-g" style="font-size:11px;" onclick="this.parentNode.parentNode.className='med-add-form'">ยกเลิก</button>'+
+    '</div>';
+  addMedBtn.onclick=function(){addMedForm.className='med-add-form on';};
+  medBox.appendChild(addMedBtn);medBox.appendChild(addMedForm);
+  medSec.appendChild(medBox);body.appendChild(medSec);
   // ID Card (sensitive - level 2+)
   var idSec=document.createElement('div');idSec.className='sec';
   var idSt=document.createElement('div');idSt.className='sec-t';idSt.textContent='ข้อมูลส่วนตัว (จำกัดการเข้าถึง)';idSec.appendChild(idSt);
@@ -1368,6 +1429,96 @@ function renderStats(){
   document.getElementById('nstat').textContent='งดฝึก '+r+' · ลด '+a+' · เฝ้า '+g+' · รวม '+SOLDIERS.length+' นาย';
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePop();closeIM();}});
+// ════════════════════════════════════════
+// MEDICAL HISTORY SYSTEM
+// ════════════════════════════════════════
+var MED_HISTORY = {}; // {no: [{date,type,title,detail,doctor,ts}]}
+
+function loadMedHistory(){
+  db.ref('medHistory').on('value',function(snap){
+    var data=snap.val();
+    if(data) MED_HISTORY=data;
+  });
+}
+
+function getMedHistory(no){
+  return (MED_HISTORY[String(no)]||[]).sort(function(a,b){return a.date.localeCompare(b.date);});
+}
+
+function saveMedRecord(no){
+  var date=document.getElementById('med-date-'+no)?document.getElementById('med-date-'+no).value:'';
+  var type=document.getElementById('med-type-'+no)?document.getElementById('med-type-'+no).value:'other';
+  var title=document.getElementById('med-title-'+no)?document.getElementById('med-title-'+no).value.trim():'';
+  var detail=document.getElementById('med-detail-'+no)?document.getElementById('med-detail-'+no).value.trim():'';
+  var doctor=document.getElementById('med-doctor-'+no)?document.getElementById('med-doctor-'+no).value.trim():'';
+  if(!title){alert('กรุณากรอกอาการ/การวินิจฉัย');return;}
+  if(!date) date=todayStr();
+  if(!MED_HISTORY[String(no)]) MED_HISTORY[String(no)]=[];
+  MED_HISTORY[String(no)].push({date:date,type:type,title:title,detail:detail,doctor:doctor,ts:new Date().toISOString()});
+  db.ref('medHistory').set(MED_HISTORY);
+  showPop(no);
+  // Telegram notify
+  var s=getS(no);
+  if(s){
+    var nl='\n';
+    var typeLabel={appt:'นัดแพทย์',sick:'เจ็บป่วย',injury:'บาดเจ็บ',other:'อื่นๆ'};
+    var msg='[MED] บันทึกประวัติการรักษา'+nl;
+    msg+='ช.1 พัน.52 ผลัด 1/2569'+nl;
+    msg+='---------------------------'+nl;
+    msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+nl;
+    msg+='[หมู่] หมู่ '+s.squad+nl;
+    msg+='[วันที่] '+fmtDate(new Date(date+' 00:00'))+nl;
+    msg+='[ประเภท] '+(typeLabel[type]||type)+nl;
+    msg+='[อาการ] '+title+nl;
+    if(detail) msg+='[รายละเอียด] '+detail+nl;
+    if(doctor) msg+='[สถานพยาบาล] '+doctor+nl;
+    msg+='---------------------------'+nl;
+    msg+='CARE-NST | ช.พัน.52';
+    fetch('https://api.telegram.org/bot'+TG_BOT_TOKEN+'/sendMessage',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg})
+    });
+  }
+}
+
+function markVisited(no, appt){
+  var s=getS(no);if(!s) return;
+  // บันทึกประวัติการรักษาอัตโนมัติ
+  if(!MED_HISTORY[String(no)]) MED_HISTORY[String(no)]=[];
+  MED_HISTORY[String(no)].push({
+    date:appt.date,
+    type:'appt',
+    title:'ไปพบแพทย์ตามนัด',
+    detail:appt.note||'ไม่มีหมายเหตุ',
+    doctor:'',
+    ts:new Date().toISOString()
+  });
+  db.ref('medHistory').set(MED_HISTORY);
+  // ลบนัดออก
+  delete APPTS[String(no)];
+  saveLS();
+  renderAlerts();updateBadge();
+  // Telegram
+  var nl='\n';
+  var msg='[OK] ไปพบแพทย์ตามนัดเรียบร้อย'+nl;
+  msg+='ช.1 พัน.52 ผลัด 1/2569'+nl;
+  msg+='---------------------------'+nl;
+  msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+nl;
+  msg+='[หมู่] หมู่ '+s.squad+nl;
+  msg+='[วันนัด] '+fmtDate(new Date(appt.date+' 00:00'))+nl;
+  msg+='[หมายเหตุ] '+(appt.note||'-')+nl;
+  msg+='---------------------------'+nl;
+  msg+='CARE-NST | ช.พัน.52';
+  fetch('https://api.telegram.org/bot'+TG_BOT_TOKEN+'/sendMessage',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg})
+  });
+  showPop(no);
+  alert('บันทึกการไปพบแพทย์เรียบร้อยแล้วครับ');
+}
+
+loadMedHistory();
+
 // ════════════════════════════════════════
 // 8Q/9Q MENTAL ASSESSMENT SYSTEM
 // ════════════════════════════════════════
@@ -1660,17 +1811,6 @@ function sendEmergencyAlert(){
 
 document.getElementById('emg-soldier-sel')&&document.getElementById('emg-soldier-sel').addEventListener('change',updateEmgBtn);
 
-// override gotoView for mental tab
-var _origGotoView3=gotoView;
-gotoView=function(name,btn){
-  _origGotoView3(name,btn);
-  if(name==='mental'){
-    renderQAList();
-    renderEmgSoldierSelect();
-  }
-};
-
-loadQA();
 
 // ════════════════════════════════════════
 // WBGT SYSTEM — ดัชนีความร้อนและธงสัญลักษณ์
@@ -1949,19 +2089,6 @@ function loadWBGT(){
 }
 
 // Override gotoView to handle wbgt tab
-var _origGotoView2=gotoView;
-gotoView=function(name,btn){
-  _origGotoView2(name,btn);
-  if(name==='wbgt'){
-    if(!document.getElementById('wbgt-date').value){
-      document.getElementById('wbgt-date').value=todayStr();
-    }
-    renderWBGTHistory();
-    autoFetchWeather();
-  }
-};
-
-loadWBGT();
 
 // ════════════════════════════════════
 // HEALTH TRACKING SYSTEM
@@ -2600,22 +2727,60 @@ function updateHBadge(){
 }
 
 // Load health when health tab is opened
-var _origGotoView=gotoView;
-gotoView=function(name,btn){
-  _origGotoView(name,btn);
-  if(name==='health'){
-    if(!document.getElementById('health-date').value){
-      document.getElementById('health-date').value=todayStr();
-    }
-    renderHealthList();
-  }
-};
 
 // Load health data on init
 loadHealth();
 
 // render จาก SOLDIERS array ทันที (ไม่ต้องรอ Firebase)
 buildSqTabs();doFilter();renderSquads();renderStats();updateBadge();
+// ── Unified gotoView ──
+var _baseGotoView = gotoView;
+gotoView = function(name, btn){
+  _baseGotoView(name, btn);
+  if(name==='health'){
+    if(!document.getElementById('health-date').value){
+      document.getElementById('health-date').value = todayStr();
+    }
+    renderHealthList();
+    autoFetchWeather&&autoFetchWeather();
+    // WBGT warning in health
+    var wbgtWarn=document.getElementById('wbgt-health-warn');
+    if(wbgtWarn){
+      var todayRecs=WBGT_DATA[todayStr()]||[];
+      if(todayRecs.length){
+        var maxW=Math.max.apply(null,todayRecs.map(function(r){return r.wbgt;}));
+        var wf=getFlag(maxW);
+        if(wf.key==='red'||wf.key==='black'){
+          wbgtWarn.innerHTML='[WARN] WBGT วันนี้สูงสุด <strong>'+maxW+'°C ('+wf.name+')</strong> — '+wf.rules[0];
+          wbgtWarn.style.cssText='padding:6px 10px;background:'+wf.bg+';border:1px solid '+wf.border+';border-radius:6px;font-size:11px;color:'+wf.color+';margin-top:5px;';
+        } else { wbgtWarn.innerHTML=''; }
+      }
+    }
+    // Auth notice
+    var authNotice=document.getElementById('health-auth-notice');
+    if(authNotice){
+      if(currentRole&&AUTH_ROLES[currentRole]){
+        authNotice.innerHTML='[UNLOCK] เข้าสู่ระบบในฐานะ <strong>'+AUTH_ROLES[currentRole].name+'</strong> | <span style="cursor:pointer;text-decoration:underline;" onclick="logout()">ออก</span>';
+        authNotice.style.background='#EAF3DE';authNotice.style.color='#3B6D11';
+      } else {
+        authNotice.innerHTML='[LOCK] กดปุ่ม [LOCK] เข้าสู่ระบบ เพื่อดูประวัติจิตเวช';
+        authNotice.style.background='#fff8ec';authNotice.style.color='#854F0B';
+      }
+    }
+  }
+  if(name==='wbgt'){
+    if(!document.getElementById('wbgt-date').value){
+      document.getElementById('wbgt-date').value = todayStr();
+    }
+    renderWBGTHistory();
+    autoFetchWeather();
+  }
+  if(name==='mental'){
+    renderQAList();
+    renderEmgSoldierSelect();
+  }
+};
+
 // โหลด appts/instrs จาก Firebase แล้ว re-render
 loadLS();
 // เปิด popup อัตโนมัติถ้ามี ?no=X ใน URL
