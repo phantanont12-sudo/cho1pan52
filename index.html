@@ -1426,7 +1426,7 @@ function showPop(no){
     '<div class="med-field"><label>แพทย์ / สถานพยาบาล</label><input type="text" id="med-doctor-'+no+'" placeholder="เช่น รพ.ค่ายภาณุรังษี"></div>'+
     '<div style="display:flex;gap:6px;margin-top:6px;">'+
     '<button class="btn-p" style="flex:1;font-size:11px;" onclick="saveMedRecord('+no+')">บันทึก</button>'+
-    '<button class="btn-g" style="font-size:11px;" onclick="this.parentNode.parentNode.className='med-add-form'">ยกเลิก</button>'+
+    '<button class="btn-g" style="font-size:11px;" onclick="closeMedForm(this)">ยกเลิก</button>'+
     '</div>';
   addMedBtn.onclick=function(){addMedForm.className='med-add-form on';};
   medBox.appendChild(addMedBtn);medBox.appendChild(addMedForm);
@@ -1545,6 +1545,10 @@ function getMedHistory(no){
   return (MED_HISTORY[String(no)]||[]).sort(function(a,b){return a.date.localeCompare(b.date);});
 }
 
+function closeMedForm(btn){
+  var form=btn.parentNode.parentNode;
+  if(form) form.className='med-add-form';
+}
 function saveMedRecord(no){
   var date=document.getElementById('med-date-'+no)?document.getElementById('med-date-'+no).value:'';
   var type=document.getElementById('med-type-'+no)?document.getElementById('med-type-'+no).value:'other';
