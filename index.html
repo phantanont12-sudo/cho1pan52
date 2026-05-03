@@ -1418,16 +1418,18 @@ function showPop(no){
   // Add record button
   var addMedBtn=document.createElement('button');addMedBtn.className='med-add-btn';addMedBtn.textContent='+ เพิ่มประวัติการรักษา';
   var addMedForm=document.createElement('div');addMedForm.className='med-add-form';
-  addMedForm.innerHTML=
-    '<div class="med-field"><label>วันที่</label><input type="date" id="med-date-'+no+'" value="'+todayStr()+'"></div>'+
-    '<div class="med-field"><label>ประเภท</label><select id="med-type-'+no+'"><option value="sick">เจ็บป่วย</option><option value="injury">บาดเจ็บ</option><option value="appt">นัดแพทย์</option><option value="other">อื่นๆ</option></select></div>'+
-    '<div class="med-field"><label>อาการ / การวินิจฉัย</label><input type="text" id="med-title-'+no+'" placeholder="เช่น ไข้ หวัด บาดแผลถลอก"></div>'+
-    '<div class="med-field"><label>รายละเอียด</label><textarea id="med-detail-'+no+'" placeholder="รายละเอียดเพิ่มเติม ยาที่ได้รับ..."></textarea></div>'+
-    '<div class="med-field"><label>แพทย์ / สถานพยาบาล</label><input type="text" id="med-doctor-'+no+'" placeholder="เช่น รพ.ค่ายภาณุรังษี"></div>'+
-    '<div style="display:flex;gap:6px;margin-top:6px;">'+
-    '<button class="btn-p" style="flex:1;font-size:11px;" onclick="saveMedRecord('+no+')">บันทึก</button>'+
-    '<button class="btn-g" style="font-size:11px;" onclick="closeMedForm(this)">ยกเลิก</button>'+
-    '</div>';
+  var medHTML=[
+    '<div class="med-field"><label>วันที่</label><input type="date" id="med-date-'+no+'" value="'+todayStr()+'"></div>',
+    '<div class="med-field"><label>ประเภท</label><select id="med-type-'+no+'"><option value="sick">เจ็บป่วย</option><option value="injury">บาดเจ็บ</option><option value="appt">นัดแพทย์</option><option value="other">อื่นๆ</option></select></div>',
+    '<div class="med-field"><label>อาการ / การวินิจฉัย</label><input type="text" id="med-title-'+no+'" placeholder="เช่น ไข้ หวัด บาดแผลถลอก"></div>',
+    '<div class="med-field"><label>รายละเอียด</label><textarea id="med-detail-'+no+'" placeholder="รายละเอียดเพิ่มเติม ยาที่ได้รับ..."></textarea></div>',
+    '<div class="med-field"><label>แพทย์ / สถานพยาบาล</label><input type="text" id="med-doctor-'+no+'" placeholder="เช่น รพ.ค่ายภาณุรังษี"></div>',
+    '<div style="display:flex;gap:6px;margin-top:6px;">',
+    '<button class="btn-p" style="flex:1;font-size:11px;" onclick="saveMedRecord('+no+')">บันทึก</button>',
+    '<button class="btn-g" style="font-size:11px;" onclick="closeMedForm(this)">ยกเลิก</button>',
+    '</div>'
+  ];
+  addMedForm.innerHTML=medHTML.join('');
   addMedBtn.onclick=function(){addMedForm.className='med-add-form on';};
   medBox.appendChild(addMedBtn);medBox.appendChild(addMedForm);
   medSec.appendChild(medBox);body.appendChild(medSec);
