@@ -234,27 +234,6 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
 .emg-alert-btn{width:100%;padding:12px;background:#E24B4A;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;}
 .emg-alert-btn:disabled{opacity:.5;cursor:not-allowed;}
 .emg-select-soldier{font-family:inherit;font-size:13px;border:2px solid #ddd;border-radius:8px;padding:8px;width:100%;outline:none;margin-bottom:10px;}
-/* ── MEDICAL HISTORY ── */
-.med-box{border:1px solid #e0ddd8;border-radius:8px;padding:10px 12px;background:#fff;}
-.med-visited-btn{padding:8px 16px;background:#3B6D11;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;width:100%;margin-top:8px;}
-.med-visited-btn:hover{background:#2D5010;}
-.med-add-btn{padding:6px 12px;background:#185FA5;color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:inherit;font-size:11px;}
-.med-hist-item{padding:8px 10px;border-radius:7px;margin-bottom:6px;border-left:3px solid #ccc;background:#f8f7f4;}
-.med-hist-item.type-appt{border-left-color:#185FA5;background:#eef5ff;}
-.med-hist-item.type-sick{border-left-color:#E24B4A;background:#fff0f0;}
-.med-hist-item.type-injury{border-left-color:#EF9F27;background:#fff8ec;}
-.med-hist-item.type-other{border-left-color:#534AB7;background:#f5f4ff;}
-.med-hist-date{font-size:10px;color:#888;margin-bottom:3px;}
-.med-hist-title{font-size:12px;font-weight:600;}
-.med-hist-detail{font-size:11px;color:#666;margin-top:2px;}
-.med-hist-badge{font-size:9px;padding:1px 6px;border-radius:8px;font-weight:500;margin-left:4px;}
-.med-add-form{background:#f5f4f1;border-radius:8px;padding:10px;margin-top:8px;display:none;}
-.med-add-form.on{display:block;}
-.med-field{margin-bottom:6px;}
-.med-field label{font-size:10px;color:#888;display:block;margin-bottom:2px;}
-.med-field input,.med-field select,.med-field textarea{width:100%;font-family:inherit;font-size:12px;border:1px solid #ddd;border-radius:5px;padding:5px 8px;outline:none;}
-.med-field textarea{height:60px;resize:none;}
-.med-visited-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#EAF3DE;border-radius:8px;border:1px solid #4CAF6E;margin-top:6px;}
 /* ── WEATHER FETCH ── */
 .weather-bar{background:linear-gradient(135deg,#1a3050,#0d1b2a);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
 .weather-btn{padding:8px 16px;background:#EF9F27;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;}
@@ -1271,28 +1250,15 @@ function showPop(no){
     ['รายได้เดิม',s.income],['ปัญหาทางบ้าน',s.fam_problem,s.fam_problem!=='-'?'iv-amber':''],
     ['ฐานะ',s.fam_finance],['เสาหลักครอบครัว',s.breadwinner]
   ]));body.appendChild(fs);
-  // Appointment + Medical History
-  var aps=document.createElement('div');aps.className='sec';
-  var apst=document.createElement('div');apst.className='sec-t';apst.textContent='นัดแพทย์';aps.appendChild(apst);
+  // Appointment
+  var aps=document.createElement('div');aps.className='sec';var apst=document.createElement('div');apst.className='sec-t';apst.textContent='นัดแพทย์';aps.appendChild(apst);
   var apb=document.createElement('div');apb.className='appt-box';
   var apl=document.createElement('div');apl.className='appt-lbl';apl.textContent='บันทึก / แก้ไขวันนัด';apb.appendChild(apl);
   if(appt.date){
-    var diff=daysDiff(appt.date);
-    var apc=document.createElement('div');apc.className='appt-cur';
-    apc.textContent='วันที่ '+fmtDate(appt.date)+' — '+(appt.note||'ไม่มีหมายเหตุ')+' ';
+    var apc=document.createElement('div');apc.className='appt-cur';apc.textContent='วันที่ '+fmtDate(appt.date)+' — '+(appt.note||'ไม่มีหมายเหตุ')+' ';
     var apdel=document.createElement('button');apdel.className='btn-g';apdel.textContent='ลบนัด';
     (function(n){apdel.onclick=function(){delete APPTS[String(n)];saveLS();showPop(n);renderAlerts();updateBadge();sendTelegramDelete(n);};})(no);
     apc.appendChild(apdel);apb.appendChild(apc);
-    // ปุ่ม "ไปพบแพทย์แล้ว" เมื่อถึงหรือเลยวันนัด
-    if(diff!==null&&diff<=0){
-      var visitedRow=document.createElement('div');visitedRow.className='med-visited-row';
-      visitedRow.innerHTML='<span style="font-size:13px;">[DONE]</span><span style="font-size:12px;color:#3B6D11;flex:1;">ถึงวันนัด '+fmtDate(appt.date)+' แล้ว — กดเมื่อไปพบแพทย์เรียบร้อย</span>';
-      var visitBtn=document.createElement('button');visitBtn.className='btn-p';
-      visitBtn.style.cssText='background:#3B6D11;font-size:11px;padding:5px 10px;white-space:nowrap;';
-      visitBtn.textContent='ไปพบแล้ว [OK]';
-      (function(n,appt2){visitBtn.onclick=function(){markVisited(n,appt2);};})(no,appt);
-      visitedRow.appendChild(visitBtn);apb.appendChild(visitedRow);
-    }
   }
   var apf=document.createElement('div');apf.className='appt-form';
   var apd=document.createElement('input');apd.type='date';apd.id='apd-'+no;apd.value=appt.date||'';
@@ -1304,45 +1270,6 @@ function showPop(no){
     APPTS[String(n)]={date:d,note:nt};saveLS();showPop(n);renderAlerts();updateBadge();sendTelegramNow(n,d,nt);
   };})(no);
   apf.appendChild(apd);apf.appendChild(apn);apf.appendChild(apsv);apb.appendChild(apf);aps.appendChild(apb);body.appendChild(aps);
-
-  // ── ประวัติการรักษา ──
-  var medSec=document.createElement('div');medSec.className='sec';
-  var medSt=document.createElement('div');medSt.className='sec-t';medSt.textContent='ประวัติการเจ็บป่วย / การรักษา';medSec.appendChild(medSt);
-  var medBox=document.createElement('div');medBox.className='med-box';
-  // History list
-  var medHist=getMedHistory(no);
-  if(medHist.length){
-    var typeColor={appt:'#185FA5',sick:'#E24B4A',injury:'#EF9F27',other:'#534AB7'};
-    var typeLabel={appt:'นัดแพทย์',sick:'เจ็บป่วย',injury:'บาดเจ็บ',other:'อื่นๆ'};
-    medHist.slice().reverse().forEach(function(m){
-      var item=document.createElement('div');item.className='med-hist-item type-'+(m.type||'other');
-      var badge='<span class="med-hist-badge" style="background:'+(typeColor[m.type]||'#888')+'22;color:'+(typeColor[m.type]||'#888')+';">'+(typeLabel[m.type]||'อื่นๆ')+'</span>';
-      item.innerHTML='<div class="med-hist-date">'+fmtDate(new Date(m.date+' 00:00'))+'</div>'+
-        '<div class="med-hist-title">'+m.title+badge+'</div>'+
-        (m.detail?'<div class="med-hist-detail">'+m.detail+'</div>':'')+
-        (m.doctor?'<div class="med-hist-detail" style="color:#185FA5;">แพทย์/สถานพยาบาล: '+m.doctor+'</div>':'');
-      medBox.appendChild(item);
-    });
-  } else {
-    var noMed=document.createElement('div');noMed.style.cssText='text-align:center;padding:12px;color:#aaa;font-size:12px;';
-    noMed.textContent='ยังไม่มีประวัติการรักษา';medBox.appendChild(noMed);
-  }
-  // Add record button
-  var addMedBtn=document.createElement('button');addMedBtn.className='med-add-btn';addMedBtn.textContent='+ เพิ่มประวัติการรักษา';
-  var addMedForm=document.createElement('div');addMedForm.className='med-add-form';
-  addMedForm.innerHTML=
-    '<div class="med-field"><label>วันที่</label><input type="date" id="med-date-'+no+'" value="'+todayStr()+'"></div>'+
-    '<div class="med-field"><label>ประเภท</label><select id="med-type-'+no+'"><option value="sick">เจ็บป่วย</option><option value="injury">บาดเจ็บ</option><option value="appt">นัดแพทย์</option><option value="other">อื่นๆ</option></select></div>'+
-    '<div class="med-field"><label>อาการ / การวินิจฉัย</label><input type="text" id="med-title-'+no+'" placeholder="เช่น ไข้ หวัด บาดแผลถลอก"></div>'+
-    '<div class="med-field"><label>รายละเอียด</label><textarea id="med-detail-'+no+'" placeholder="รายละเอียดเพิ่มเติม ยาที่ได้รับ..."></textarea></div>'+
-    '<div class="med-field"><label>แพทย์ / สถานพยาบาล</label><input type="text" id="med-doctor-'+no+'" placeholder="เช่น รพ.ค่ายภาณุรังษี"></div>'+
-    '<div style="display:flex;gap:6px;margin-top:6px;">'+
-    '<button class="btn-p" style="flex:1;font-size:11px;" onclick="saveMedRecord('+no+')">บันทึก</button>'+
-    '<button class="btn-g" style="font-size:11px;" onclick="this.parentNode.parentNode.className='med-add-form'">ยกเลิก</button>'+
-    '</div>';
-  addMedBtn.onclick=function(){addMedForm.className='med-add-form on';};
-  medBox.appendChild(addMedBtn);medBox.appendChild(addMedForm);
-  medSec.appendChild(medBox);body.appendChild(medSec);
   // ID Card (sensitive - level 2+)
   var idSec=document.createElement('div');idSec.className='sec';
   var idSt=document.createElement('div');idSt.className='sec-t';idSt.textContent='ข้อมูลส่วนตัว (จำกัดการเข้าถึง)';idSec.appendChild(idSt);
@@ -1441,96 +1368,6 @@ function renderStats(){
   document.getElementById('nstat').textContent='งดฝึก '+r+' · ลด '+a+' · เฝ้า '+g+' · รวม '+SOLDIERS.length+' นาย';
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePop();closeIM();}});
-// ════════════════════════════════════════
-// MEDICAL HISTORY SYSTEM
-// ════════════════════════════════════════
-var MED_HISTORY = {}; // {no: [{date,type,title,detail,doctor,ts}]}
-
-function loadMedHistory(){
-  db.ref('medHistory').on('value',function(snap){
-    var data=snap.val();
-    if(data) MED_HISTORY=data;
-  });
-}
-
-function getMedHistory(no){
-  return (MED_HISTORY[String(no)]||[]).sort(function(a,b){return a.date.localeCompare(b.date);});
-}
-
-function saveMedRecord(no){
-  var date=document.getElementById('med-date-'+no)?document.getElementById('med-date-'+no).value:'';
-  var type=document.getElementById('med-type-'+no)?document.getElementById('med-type-'+no).value:'other';
-  var title=document.getElementById('med-title-'+no)?document.getElementById('med-title-'+no).value.trim():'';
-  var detail=document.getElementById('med-detail-'+no)?document.getElementById('med-detail-'+no).value.trim():'';
-  var doctor=document.getElementById('med-doctor-'+no)?document.getElementById('med-doctor-'+no).value.trim():'';
-  if(!title){alert('กรุณากรอกอาการ/การวินิจฉัย');return;}
-  if(!date) date=todayStr();
-  if(!MED_HISTORY[String(no)]) MED_HISTORY[String(no)]=[];
-  MED_HISTORY[String(no)].push({date:date,type:type,title:title,detail:detail,doctor:doctor,ts:new Date().toISOString()});
-  db.ref('medHistory').set(MED_HISTORY);
-  showPop(no);
-  // Telegram notify
-  var s=getS(no);
-  if(s){
-    var nl='\n';
-    var typeLabel={appt:'นัดแพทย์',sick:'เจ็บป่วย',injury:'บาดเจ็บ',other:'อื่นๆ'};
-    var msg='[MED] บันทึกประวัติการรักษา'+nl;
-    msg+='ช.1 พัน.52 ผลัด 1/2569'+nl;
-    msg+='---------------------------'+nl;
-    msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+nl;
-    msg+='[หมู่] หมู่ '+s.squad+nl;
-    msg+='[วันที่] '+fmtDate(new Date(date+' 00:00'))+nl;
-    msg+='[ประเภท] '+(typeLabel[type]||type)+nl;
-    msg+='[อาการ] '+title+nl;
-    if(detail) msg+='[รายละเอียด] '+detail+nl;
-    if(doctor) msg+='[สถานพยาบาล] '+doctor+nl;
-    msg+='---------------------------'+nl;
-    msg+='CARE-NST | ช.พัน.52';
-    fetch('https://api.telegram.org/bot'+TG_BOT_TOKEN+'/sendMessage',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg})
-    });
-  }
-}
-
-function markVisited(no, appt){
-  var s=getS(no);if(!s) return;
-  // บันทึกประวัติการรักษาอัตโนมัติ
-  if(!MED_HISTORY[String(no)]) MED_HISTORY[String(no)]=[];
-  MED_HISTORY[String(no)].push({
-    date:appt.date,
-    type:'appt',
-    title:'ไปพบแพทย์ตามนัด',
-    detail:appt.note||'ไม่มีหมายเหตุ',
-    doctor:'',
-    ts:new Date().toISOString()
-  });
-  db.ref('medHistory').set(MED_HISTORY);
-  // ลบนัดออก
-  delete APPTS[String(no)];
-  saveLS();
-  renderAlerts();updateBadge();
-  // Telegram
-  var nl='\n';
-  var msg='[OK] ไปพบแพทย์ตามนัดเรียบร้อย'+nl;
-  msg+='ช.1 พัน.52 ผลัด 1/2569'+nl;
-  msg+='---------------------------'+nl;
-  msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+nl;
-  msg+='[หมู่] หมู่ '+s.squad+nl;
-  msg+='[วันนัด] '+fmtDate(new Date(appt.date+' 00:00'))+nl;
-  msg+='[หมายเหตุ] '+(appt.note||'-')+nl;
-  msg+='---------------------------'+nl;
-  msg+='CARE-NST | ช.พัน.52';
-  fetch('https://api.telegram.org/bot'+TG_BOT_TOKEN+'/sendMessage',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg})
-  });
-  showPop(no);
-  alert('บันทึกการไปพบแพทย์เรียบร้อยแล้วครับ');
-}
-
-loadMedHistory();
-
 // ════════════════════════════════════════
 // 8Q/9Q MENTAL ASSESSMENT SYSTEM
 // ════════════════════════════════════════
