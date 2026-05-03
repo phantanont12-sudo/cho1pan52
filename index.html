@@ -933,10 +933,7 @@ function loadLS(){
     var data=snap.val();
     if(data){for(var k in data)APPTS[k]=data[k];}
     renderAlerts();updateBadge();
-    // อัปเดต appt dots บน card
-    var g=document.getElementById('grid');
-    if(g&&g.children.length===0) doFilter();
-    else doFilter();
+    doFilter();
   });
   // โหลด INSTRS จาก Firebase
   db.ref('instrs').on('value',function(snap){
@@ -2797,11 +2794,20 @@ function updateHBadge(){
 
 // Load health when health tab is opened
 
-// Load health data on init
-loadHealth();
-
 // render จาก SOLDIERS array ทันที (ไม่ต้องรอ Firebase)
-buildSqTabs();doFilter();renderSquads();renderStats();updateBadge();
+buildSqTabs();
+doFilter();
+renderSquads();
+renderStats();
+updateBadge();
+
+// โหลด Firebase data หลัง render เสร็จแล้ว
+setTimeout(function(){
+  loadHealth();
+  loadWBGT();
+  loadQA();
+  loadMedHistory();
+}, 100);
 // ── Unified gotoView ──
 var _baseGotoView = gotoView;
 gotoView = function(name, btn){
