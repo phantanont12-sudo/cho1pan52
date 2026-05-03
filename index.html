@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ระบบดูแลทหารใหม่ ช.1 พัน.52 ผลัด 1/2569</title>
+<title>ระบบดูแลทหารใหม่ ช.1 พัน.52 ผลัด 1/2569 [v5.3]</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Sarabun',sans-serif;background:#f8f7f4;color:#1a1a1a;font-size:13px;position:relative;}
@@ -17,7 +17,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url('data:image/
 .topbar-stat{margin-left:auto;font-size:11px;color:#666;padding:10px 0;white-space:nowrap;}
 
 /* ── VIEWS ── */
-.view{display:none;} .view.on{display:block;}
+.view{display:none;}
+   .view.on{display:block;}
 
 /* ── GRID VIEW (original style) ── */
 .controls{display:flex;border-bottom:1px solid #e0ddd8;background:#fff;padding:10px 16px;flex-wrap:wrap;gap:8px;align-items:center;}
@@ -381,7 +382,7 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
   <button class="top-tab" onclick="gotoView('squads',this)">หมู่ / บัดดี้</button>
   <button class="top-tab" onclick="gotoView('alerts',this)">นัดแพทย์ <span id="abadge"></span></button>
   <button class="top-tab" onclick="gotoView('health',this)">สุขภาพรายวัน <span id="hbadge" style="font-size:10px;"></span></button>
-  <button class="top-tab" onclick="gotoView('mental',this)">8Q/9Q จิตเวช <span id="qa-badge" style="font-size:10px;"></span></button>
+  <button class="top-tab" id="mental-tab-btn" onclick="openMentalTab(this)">8Q/9Q จิตเวช <span id="qa-badge" style="font-size:10px;"></span></button>
   <button class="top-tab" onclick="gotoView('wbgt',this)">WBGT ธงสัญลักษณ์ <span id="wbgt-badge" style="font-size:10px;"></span></button>
   <span class="topbar-stat" id="nstat"></span><span class="auth-badge" id="auth-badge" onclick="handleAuthBadge()">[LOCK] เข้าสู่ระบบ</span>
 </div>
@@ -464,7 +465,14 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
 </div>
 
 <!-- MENTAL ASSESSMENT VIEW -->
-<div class="view" id="v-mental">
+<div class="view" id="v-mental" style="display:none;">
+  <!-- LOCK OVERLAY — แสดงเมื่อไม่ได้ login -->
+  <div id="mental-lock-overlay" style="position:absolute;inset:0;background:rgba(26,26,26,0.92);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:400px;">
+    <div style="font-size:48px;">[LOCK]</div>
+    <div style="color:#fff;font-size:18px;font-weight:600;">ข้อมูลจำกัดการเข้าถึง</div>
+    <div style="color:#aaa;font-size:13px;text-align:center;">กรุณาเข้าสู่ระบบด้วยรหัสผ่านที่ได้รับมอบหมาย</div>
+    <button onclick="requireAuth(1,function(){document.getElementById('mental-lock-overlay').style.display='none';})" style="padding:12px 32px;background:#185FA5;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;">เข้าสู่ระบบ</button>
+  </div>
   <div class="qa-view">
 
     <!-- Emergency Checklist -->
@@ -866,12 +874,22 @@ function submitAuth(){
   if(pin===selectedRoleCode){
     currentRole=selectedRoleCode;
     document.getElementById('auth-ov').className='auth-overlay';
+    // ซ่อน lock overlay ถ้ามี
+    var lockOv=document.getElementById('mental-lock-overlay');
+    if(lockOv) lockOv.style.display='none';
     // Update auth badge in topbar
     updateAuthBadge();
     // Auto logout after 30 minutes
     if(authSessionTimeout) clearTimeout(authSessionTimeout);
     authSessionTimeout=setTimeout(function(){
       currentRole=null;updateAuthBadge();
+      var vm=document.getElementById('v-mental');
+      if(vm){ vm.style.display='none'; vm.className='view'; }
+      var mentalTab=document.getElementById('mental-tab-btn');
+      if(mentalTab&&mentalTab.classList.contains('on')){
+        var gridBtn=document.querySelector('.top-tab');
+        if(gridBtn) gotoView('grid',gridBtn);
+      }
     },30*60*1000);
     if(authCallback){authCallback();authCallback=null;}
   } else {
@@ -892,6 +910,17 @@ function logout(){
   currentRole=null;
   if(authSessionTimeout) clearTimeout(authSessionTimeout);
   updateAuthBadge();
+  // ล็อก mental กลับ
+  var vm=document.getElementById('v-mental');
+  if(vm){ vm.style.display='none'; vm.className='view'; }
+  var lockOv=document.getElementById('mental-lock-overlay');
+  if(lockOv) lockOv.style.display='flex';
+  // ถ้าอยู่หน้า mental ให้กลับไปหน้า grid
+  var mentalTab=document.getElementById('mental-tab-btn');
+  if(mentalTab&&mentalTab.classList.contains('on')){
+    var gridBtn=document.querySelector('.top-tab');
+    if(gridBtn) gotoView('grid',gridBtn);
+  }
 }
 
 function updateAuthBadge(){
@@ -2800,6 +2829,7 @@ function updateHBadge(){
 
 // Load health when health tab is opened
 
+console.log('CARE-NST v5.3 loaded - Mental tab auth active');
 // render จาก SOLDIERS array ทันที (ไม่ต้องรอ Firebase)
 buildSqTabs();
 doFilter();
@@ -2862,8 +2892,40 @@ gotoView = function(name, btn){
   }
 };
 
+function openMentalTab(btn){
+  requireAuth(1,function(){
+    // ปลดล็อก v-mental ด้วย inline style (override CSS)
+    var vm=document.getElementById('v-mental');
+    if(vm) vm.style.display='';  // reset inline → ปล่อยให้ .view.on ทำงาน
+    gotoView('mental',btn);
+  });
+}
+
 // โหลด appts/instrs จาก Firebase แล้ว re-render
 loadLS();
+
+// ── Mental Tab Auth Interceptor ──
+(function(){
+  var _orig = gotoView;
+  gotoView = function(name, btn){
+    if(name === 'mental'){
+      if(!currentRole){
+        requireAuth(1, function(){
+          var vm=document.getElementById('v-mental');
+          if(vm) vm.style.display='';
+          _orig('mental', btn);
+        });
+        return;
+      }
+      var vm=document.getElementById('v-mental');
+      if(vm) vm.style.display='';
+    } else {
+      var vm=document.getElementById('v-mental');
+      if(vm) vm.style.display='none';
+    }
+    _orig(name, btn);
+  };
+})();
 // เปิด popup อัตโนมัติถ้ามี ?no=X ใน URL
 (function(){
   var params=new URLSearchParams(window.location.search);
