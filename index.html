@@ -1180,7 +1180,7 @@ function renderSquads(){
     if(!filtered.length)return;
     var instr=INSTRS[sq]||{nst:'',crew:[]};
     var rc={r:0,a:0,g:0};members.forEach(function(s){if(s.risk==='red')rc.r++;else if(s.risk==='amber')rc.a++;else if(s.risk==='green_watch')rc.g++;});
-    var apptC=members.filter(function(s){return getAppt(s.no).date;}).length;
+    var apptC=members.filter(function(s){var _ap=getAppts(s.no);return _ap.length>0&&_ap[0].date;}).length;
     var dom=rc.r?'red':rc.a?'amber':rc.g?'green':'none';
     var card=document.createElement('div');card.className='sq-card';
     var rb=document.createElement('div');rb.className='rbar rbar-'+dom;card.appendChild(rb);
@@ -1215,7 +1215,7 @@ function renderSquads(){
 
 // Alerts View
 function renderAlerts(){
-  var items=[];SOLDIERS.forEach(function(s){var a=getAppt(s.no);if(a.date)items.push({s:s,a:a,diff:daysDiff(a.date)});});
+  var items=[];SOLDIERS.forEach(function(s){getAppts(s.no).forEach(function(a){if(a.date)items.push({s:s,a:a,diff:daysDiff(a.date)});});});
   items.sort(function(a,b){return a.diff-b.diff;});
   var cnt=items.filter(function(x){return x.diff!==null&&x.diff>=0&&x.diff<=7;}).length;
   document.getElementById('abadge').textContent=cnt?'('+cnt+')':'';
