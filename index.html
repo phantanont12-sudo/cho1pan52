@@ -2419,26 +2419,11 @@ var _pwaPrompt = null;
 
 // Service Worker
 if('serviceWorker' in navigator){
-  var swCode = `
-const CACHE = 'care-nst-v1';
-const OFFLINE_URLS = [self.location.href];
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE_URLS)));
-  self.skipWaiting();
-});
-self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));
-  self.clients.claim();
-});
-self.addEventListener('fetch', e => {
-  if(e.request.mode==='navigate'){
-    e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));
-  }
-});
-`;
-  var swBlob = new Blob([swCode], {type:'application/javascript'});
-  var swUrl  = URL.createObjectURL(swBlob);
-  navigator.serviceWorker.register(swUrl).catch(function(){});
+  navigator.serviceWorker.register('./sw.js').then(function(reg){
+    console.log('SW registered:', reg.scope);
+  }).catch(function(err){
+    console.log('SW error:', err);
+  });
 }
 
 // Install prompt
