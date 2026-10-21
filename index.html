@@ -882,6 +882,19 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
 .hist-row{padding:7px 0;border-bottom:1px solid #f0ede8;display:flex;gap:10px;align-items:flex-start;font-size:12px;}
 .hist-date{font-weight:500;color:#185FA5;width:80px;flex-shrink:0;}
 .hist-data{flex:1;}
+
+/* ── UNIT SELECTOR ──────────────────── */
+.unit-ov{position:fixed;inset:0;background:linear-gradient(135deg,#1a1a1a 0%,#1B4332 100%);z-index:500;display:flex;align-items:center;justify-content:center;}
+.unit-ov.hidden{display:none;}
+.unit-box{text-align:center;padding:32px 24px;width:100%;max-width:420px;}
+.unit-logo{font-size:40px;margin-bottom:12px;}
+.unit-title{color:#fff;font-size:18px;font-weight:700;margin-bottom:4px;}
+.unit-sub{color:#aaa;font-size:12px;margin-bottom:28px;}
+.unit-btn{display:block;width:100%;padding:14px 16px;margin-bottom:12px;border:1px solid rgba(255,255,255,.15);border-radius:10px;background:rgba(255,255,255,.06);color:#fff;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;text-align:left;transition:all .2s;}
+.unit-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4);}
+.unit-btn .ub-name{font-weight:600;font-size:15px;}
+.unit-btn .ub-sub{font-size:11px;color:#aaa;margin-top:3px;}
+
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -891,7 +904,7 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
 
 <!-- TOP BAR -->
 <div class="topbar">
-  <span class="topbar-title">ดูแลทหารใหม่ ช.1 พัน.52 ผลัด 1/2569</span>
+  <span class="topbar-title" id="topbar-unit-label">ดูแลทหารใหม่ ช.1 พัน.52 ผลัด 1/2569</span>
   <button class="top-tab on" onclick="gotoView('grid',this)">รายชื่อทั้งหมด</button>
   <button class="top-tab" onclick="gotoView('squads',this)">หมู่ / บัดดี้</button>
   <button class="top-tab" onclick="gotoView('alerts',this)">นัดแพทย์ <span id="abadge"></span></button>
@@ -1308,7 +1321,7 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
       <div class="db-topbar-inner">
         <div class="db-topbar-left">
           <div class="db-logo">CARE<span>-NST</span></div>
-          <div class="db-subtitle">ช.1 พัน.52 &nbsp;|&nbsp; ผลัด 1/2569 &nbsp;|&nbsp; <span class="db-live" style="color:#52C97A;">&#9679;</span> LIVE</div>
+          <div class="db-subtitle" id="db-unit-subtitle-wrap">ช.1 พัน.52 &nbsp;|&nbsp; ผลัด 1/2569 &nbsp;|&nbsp; <span class="db-live" style="color:#52C97A;">&#9679;</span> LIVE</div>
         </div>
         <div class="db-topbar-stats" id="db-topbar-stats"></div>
         <button class="db-refresh-btn" onclick="renderDashboard()">&#8635; รีเฟรช</button>
@@ -1556,6 +1569,27 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
   </div>
 </div>
 
+<!-- UNIT SELECTOR -->
+<div class="unit-ov" id="unit-ov">
+  <div class="unit-box">
+    <div class="unit-logo">🪖</div>
+    <div class="unit-title">CARE-NST</div>
+    <div class="unit-sub">เลือกหน่วยของคุณ</div>
+    <button class="unit-btn" onclick="selectUnit('cho1pan52')">
+      <div class="ub-name">ช.1 พัน.52</div>
+      <div class="ub-sub">กองพันทหารช่างที่ 1 กรมทหารช่างที่ 1 รักษาพระองค์</div>
+    </button>
+    <button class="unit-btn" onclick="selectUnit('cho1pan112')">
+      <div class="ub-name">ช.1 พัน.112</div>
+      <div class="ub-sub">กองพันทหารช่างที่ 1 กรมทหารช่างที่ 112</div>
+    </button>
+    <button class="unit-btn" onclick="selectUnit('phanpattana1')">
+      <div class="ub-name">พันพัฒนา 1</div>
+      <div class="ub-sub">กองพันพัฒนาที่ 1</div>
+    </button>
+  </div>
+</div>
+
 <!-- AUTH OVERLAY -->
 <div class="auth-overlay" id="auth-ov">
   <div class="auth-box">
@@ -1632,6 +1666,74 @@ for(var _q=1;_q<=maxSq;_q++)INSTRS[_q]={nst:'',crew:['','']};
 var firebaseConfig={databaseURL:'https://cho1pan52-default-rtdb.firebaseio.com'};
 firebase.initializeApp(firebaseConfig);
 var db=firebase.database();
+
+// ── MULTI-UNIT SUPPORT ────────────────────────────────────────────────────
+var UNIT_ID=null;
+var UNIT_NAMES={
+  'cho1pan52':'ช.1 พัน.52',
+  'cho1pan112':'ช.1 พัน.112',
+  'phanpattana1':'พันพัฒนา 1'
+};
+var UNIT_BATCH=  { // ผลัดล่าสุดของแต่ละหน่วย
+  'cho1pan52':'ผลัด 1/2569',
+  'cho1pan112':'ผลัด 1/2569',
+  'phanpattana1':'ผลัด 1/2569'
+};
+
+function unitRef(path){
+  if(!UNIT_ID){ console.error('UNIT_ID not set'); return db.ref('error'); }
+  return path ? db.ref('units/'+UNIT_ID+'/'+path) : db.ref('units/'+UNIT_ID);
+}
+
+function selectUnit(uid){
+  UNIT_ID=uid;
+  try{ localStorage.setItem('care_unit',uid); }catch(e){}
+  document.getElementById('unit-ov').className='unit-ov hidden';
+  // Update page texts
+  var uname=UNIT_NAMES[uid]||uid;
+  var ubatch=UNIT_BATCH[uid]||'';
+  document.title='CARE-NST | '+uname+' '+ubatch;
+  var ttl=document.getElementById('topbar-unit-label');
+  if(ttl) ttl.textContent='ดูแลทหารใหม่ '+uname+' '+ubatch;
+  var dbs=document.getElementById('db-unit-subtitle');
+  if(dbs) dbs.textContent=uname+'  |  '+ubatch+'  |  ';
+  // Seed soldiers from hardcoded array for cho1pan52 only
+  if(uid==='cho1pan52'){
+    unitRef('soldiers').once('value',function(snap){
+      if(!snap.exists()||!snap.val()||Object.keys(snap.val()).length<5){
+        var seedData={};
+        SOLDIERS.forEach(function(s){ seedData[s.no]=s; });
+        unitRef('soldiers').set(seedData);
+      }
+    });
+  }
+  // Load soldiers from DB for current unit
+  loadSoldiersFromDB();
+  startListeners();
+}
+
+function loadSoldiersFromDB(){
+  unitRef('soldiers').on('value',function(snap){
+    var data=snap.val();
+    if(data){
+      SOLDIERS=Object.values(data).sort(function(a,b){return (a.no||0)-(b.no||0);});
+    }
+    renderGrid();
+    renderDashboard();
+  });
+}
+
+// Auto-select unit from localStorage
+(function(){
+  var saved=null;
+  try{ saved=localStorage.getItem('care_unit'); }catch(e){}
+  if(saved&&UNIT_NAMES[saved]){
+    selectUnit(saved);
+  } else {
+    document.getElementById('unit-ov').className='unit-ov';
+  }
+})();
+// ─────────────────────────────────────────────────────────────────────────────
 var TG_BOT_TOKEN='8753984007:AAFKapk937MlnaZ6K5tO_YYIDAzBtOSmq-0';
 var TG_CHAT_ID='8689396282';
 
@@ -1644,7 +1746,7 @@ function sendTelegramNow(soldierNo,date,note){
   var nl='\n';
   var msg='----------------------'+nl;
   msg+='[นัด] บันทึกนัดแพทย์ใหม่'+nl;
-  msg+='ช.1 พัน.52 ผลัด 1/2569'+nl;
+  msg+=(UNIT_NAMES[UNIT_ID]||'ช.1 พัน.52')+' '+(UNIT_BATCH[UNIT_ID]||'ผลัด 1/2569')+nl;
   msg+='----------------------'+nl+nl;
   msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+(s.nickname&&s.nickname!=='-'?' ('+s.nickname+')':'')+nl;
   msg+='[หมู่] หมู่ '+s.squad+' ตำแหน่ง '+s.squad_pos+nl;
@@ -1810,19 +1912,19 @@ function revealSensitive(type, no){
 
 function loadLS(){
   // โหลด APPTS จาก Firebase
-  db.ref('appts').on('value',function(snap){
+  unitRef('appts').on('value',function(snap){
     var data=snap.val();
     if(data){for(var k in data)APPTS[k]=data[k];}
     renderAlerts();updateBadge();
     doFilter();
   });
   // โหลด INSTRS จาก Firebase
-  db.ref('instrs').on('value',function(snap){
+  unitRef('instrs').on('value',function(snap){
     var data=snap.val();
     if(data){for(var k in data)INSTRS[k]=data[k];}
   });
   // โหลด PHOTOS จาก Firebase
-  db.ref('photos').on('value',function(snap){
+  unitRef('photos').on('value',function(snap){
     var data=snap.val();
     if(data){
       for(var k in data){
@@ -1837,8 +1939,8 @@ function loadLS(){
 
 // ── บันทึก APPTS ลง Firebase ──
 function saveLS(){
-  db.ref('appts').set(APPTS);
-  db.ref('instrs').set(INSTRS);
+  unitRef('appts').set(APPTS);
+  unitRef('instrs').set(INSTRS);
 }
 
 // ── Multi-Appointment helpers ──
@@ -1875,7 +1977,7 @@ function markVisitedById(no,ap){
     detail:ap.note||'ไม่มีหมายเหตุ',
     doctor:'',ts:new Date().toISOString()
   });
-  db.ref('medHistory').set(MED_HISTORY);
+  unitRef('medHistory').set(MED_HISTORY);
   deleteApptById(no,ap.id);
   // Telegram
   var nl='\n';
@@ -1895,7 +1997,7 @@ function markVisitedById(no,ap){
 // ── บันทึกรูปใน localStorage (รูปใหญ่เกิน Firebase ฟรี) ──
 function savePhotos(){
   try{
-    db.ref('photos').set(PHOTOS,function(err){
+    unitRef('photos').set(PHOTOS,function(err){
       if(err) alert('บันทึกรูปไม่สำเร็จ: '+err.message);
     });
   }catch(e){alert('เกิดข้อผิดพลาด: '+e);}
@@ -2593,7 +2695,7 @@ function _importSoldiers(rows, btn){
     count++;
   });
   if(count===0){ showImportResult(1,'err','ไม่พบข้อมูลที่ถูกต้อง'); btn.disabled=false; btn.textContent='\u21a9 นำเข้าข้อมูลทหาร'; return; }
-  db.ref().update(updates).then(function(){
+  unitRef().update(updates).then(function(){
     showImportResult(1,'ok','&#10003; นำเข้าสำเร็จ '+count+' นาย'+(errors.length?' | ข้อผิดพลาด: '+errors.slice(0,3).join(', '):''));
     btn.className='import-btn success'; btn.textContent='&#10003; สำเร็จ!';
     setTimeout(function(){ btn.className='import-btn'; btn.disabled=false; btn.textContent='\u21a9 นำเข้าข้อมูลทหาร'; },2500);
@@ -2620,7 +2722,7 @@ function _importHealth(rows, btn){
     updates[path] = {temp:temp, urine:urine, ts:date+'T00:00:00.000Z'};
     count++;
   });
-  db.ref().update(updates).then(function(){
+  unitRef().update(updates).then(function(){
     showImportResult(2,'ok','&#10003; นำเข้าสำเร็จ '+count+' รายการ');
     btn.className='import-btn success'; btn.textContent='&#10003; สำเร็จ!';
     setTimeout(function(){btn.className='import-btn';btn.disabled=false;btn.textContent='\u21a9 นำเข้าข้อมูลสุขภาพ';},2500);
@@ -2646,13 +2748,13 @@ function _importAppts(rows, btn){
   if(count===0){showImportResult(3,'err','ไม่พบข้อมูลที่ถูกต้อง');btn.disabled=false;return;}
   var noList=Object.keys(byNo), done=0, allUp={};
   noList.forEach(function(n){
-    db.ref('appts/'+n).once('value',function(snap){
+    unitRef('appts/'+n).once('value',function(snap){
       var ex=snap.val()||[];
       if(!Array.isArray(ex)) ex=ex.date?[ex]:[];
       allUp['appts/'+n]=ex.concat(byNo[n]);
       done++;
       if(done===noList.length){
-        db.ref().update(allUp).then(function(){
+        unitRef().update(allUp).then(function(){
           showImportResult(3,'ok','&#10003; นำเข้าสำเร็จ '+count+' นัด');
           btn.className='import-btn success';btn.textContent='&#10003; สำเร็จ!';
           setTimeout(function(){btn.className='import-btn';btn.disabled=false;btn.textContent='↩ นำเข้านัดแพทย์';},2500);
@@ -2676,7 +2778,7 @@ function _importWeight(rows, btn){
     updates['weight/'+no+'/'+week]={weight:wt,ts:new Date().toISOString()};
     count++;
   });
-  db.ref().update(updates).then(function(){
+  unitRef().update(updates).then(function(){
     showImportResult(4,'ok','&#10003; นำเข้าสำเร็จ '+count+' รายการ');
     btn.className='import-btn success';btn.textContent='&#10003; สำเร็จ!';
     setTimeout(function(){btn.className='import-btn';btn.disabled=false;btn.textContent='\u21a9 นำเข้าน้ำหนัก';},2500);
@@ -2963,14 +3065,24 @@ function _dbDateKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStar
 
 // Load Firebase data for dashboard
 function loadDashboardData(){
-  db.ref('appts').on('value',function(s){window._dbAppts=s.val()||{};});
-  db.ref('health').on('value',function(s){window._dbHealth=s.val()||{};});
-  db.ref('weight').on('value',function(s){window._dbWeight=s.val()||{};});
-  db.ref('wbgt').on('value',function(s){window._dbWBGT=s.val()||{};});
-  db.ref('qa').on('value',function(s){window._dbQA=s.val()||{};});
-  db.ref('medHistory').on('value',function(s){window._dbMedH=s.val()||{};});
+  unitRef('appts').on('value',function(s){window._dbAppts=s.val()||{};renderDashboard();});
+  unitRef('health').on('value',function(s){window._dbHealth=s.val()||{};renderDashboard();});
+  unitRef('weight').on('value',function(s){window._dbWeight=s.val()||{};renderDashboard();});
+  unitRef('wbgt').on('value',function(s){window._dbWBGT=s.val()||{};});
+  unitRef('qa').on('value',function(s){window._dbQA=s.val()||{};});
+  unitRef('medHistory').on('value',function(s){window._dbMedH=s.val()||{};});
 }
-loadDashboardData();
+
+// startListeners — called by selectUnit() after UNIT_ID is set
+function startListeners(){
+  loadDashboardData();
+  loadWeightData();
+  loadMedHistory();
+  loadQA();
+  loadWBGT();
+  loadHealth();
+  loadLS();
+}
 
 // ════════════════════════════════════════
 // WEIGHT TRACKING SYSTEM — น้ำหนักรายสัปดาห์
@@ -2979,7 +3091,7 @@ var WEIGHT_DATA = {}; // {no: {w1:{weight,ts}, w2:{weight,ts}, ...}}
 var wtFilter = 'all';
 
 function loadWeightData(){
-  db.ref('weight').on('value',function(snap){
+  unitRef('weight').on('value',function(snap){
     var data=snap.val();
     if(data) WEIGHT_DATA=data;
     if(document.getElementById('v-weight')&&
@@ -3123,7 +3235,7 @@ function renderWeightList(){
       if(!w){alert('กรุณากรอกน้ำหนัก');return;}
       if(!WEIGHT_DATA[String(no)]) WEIGHT_DATA[String(no)]={};
       WEIGHT_DATA[String(no)][wk]={weight:parseFloat(w),ts:new Date().toISOString()};
-      db.ref('weight').set(WEIGHT_DATA);
+      unitRef('weight').set(WEIGHT_DATA);
       renderWeightList();
       var btn=this;btn.textContent='✓ บันทึกแล้ว';btn.style.background='#3B6D11';
       setTimeout(function(){btn.textContent='บันทึก';btn.style.background='#1a1a1a';},1500);
@@ -3182,7 +3294,7 @@ loadWeightData();
 var MED_HISTORY = {}; // {no: [{date,type,title,detail,doctor,ts}]}
 
 function loadMedHistory(){
-  db.ref('medHistory').on('value',function(snap){
+  unitRef('medHistory').on('value',function(snap){
     var data=snap.val();
     if(data) MED_HISTORY=data;
   });
@@ -3206,7 +3318,7 @@ function saveMedRecord(no){
   if(!date) date=todayStr();
   if(!MED_HISTORY[String(no)]) MED_HISTORY[String(no)]=[];
   MED_HISTORY[String(no)].push({date:date,type:type,title:title,detail:detail,doctor:doctor,ts:new Date().toISOString()});
-  db.ref('medHistory').set(MED_HISTORY);
+  unitRef('medHistory').set(MED_HISTORY);
   showPop(no);
   // Telegram notify
   var s=getS(no);
@@ -3214,7 +3326,7 @@ function saveMedRecord(no){
     var nl='\n';
     var typeLabel={appt:'นัดแพทย์',sick:'เจ็บป่วย',injury:'บาดเจ็บ',other:'อื่นๆ'};
     var msg='[MED] บันทึกประวัติการรักษา'+nl;
-    msg+='ช.1 พัน.52 ผลัด 1/2569'+nl;
+    msg+=(UNIT_NAMES[UNIT_ID]||'ช.1 พัน.52')+' '+(UNIT_BATCH[UNIT_ID]||'ผลัด 1/2569')+nl;
     msg+='---------------------------'+nl;
     msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+nl;
     msg+='[หมู่] หมู่ '+s.squad+nl;
@@ -3244,7 +3356,7 @@ var qaWeek = 1;
 var qaFilter = 'all';
 
 function loadQA(){
-  db.ref('qa').on('value',function(snap){
+  unitRef('qa').on('value',function(snap){
     var data=snap.val();
     if(data) QA_DATA=data;
     if(document.getElementById('v-mental')&&document.getElementById('v-mental').className.indexOf('on')!==-1){
@@ -3410,13 +3522,13 @@ function saveQA(no, wkey){
   if(!QA_DATA[String(no)]) QA_DATA[String(no)]={};
   var l8=get8QLevel(q8);var l9=get9QLevel(q9);var ov=getOverallQALevel(l8,l9);
   QA_DATA[String(no)][wkey]={q8:q8,q9:q9,ts:new Date().toISOString(),level:ov};
-  db.ref('qa').set(QA_DATA);
+  unitRef('qa').set(QA_DATA);
   // Telegram alert if high risk
   if(ov==='high'||ov==='mid'){
     var s=getS(no);
     var nl='\n';
     var msg='[EVAL] ผลประเมิน 8Q/9Q'+nl;
-    msg+='ช.1 พัน.52 ผลัด 1/2569'+nl;
+    msg+=(UNIT_NAMES[UNIT_ID]||'ช.1 พัน.52')+' '+(UNIT_BATCH[UNIT_ID]||'ผลัด 1/2569')+nl;
     msg+='---------------------------------'+nl;
     msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+nl;
     msg+='[หมู่] หมู่ '+s.squad+nl;
@@ -3485,7 +3597,7 @@ function sendEmergencyAlert(){
   if(!checkedItems.length){alert('กรุณาเลือกอาการก่อน');return;}
   var nl='\n';
   var msg=(hasDanger?'[DANGER] แจ้งเหตุฉุกเฉินด่วน':'[WARN] แจ้งอาการผิดปกติ')+nl;
-  msg+='ช.1 พัน.52 ผลัด 1/2569'+nl;
+  msg+=(UNIT_NAMES[UNIT_ID]||'ช.1 พัน.52')+' '+(UNIT_BATCH[UNIT_ID]||'ผลัด 1/2569')+nl;
   msg+='================================='+nl;
   msg+='[ทหาร] '+s.rank+' '+s.fname+' '+s.lname+nl;
   msg+='[หมู่] หมู่ '+s.squad+' | '+rLabel(s.risk)+nl;
@@ -3654,7 +3766,7 @@ function saveWBGT(){
   WBGT_DATA[date].push({time:round,temp:parseFloat(temp),humid:parseFloat(humid),wbgt:wbgt,flag:flag.key,ts:new Date().toISOString()});
   WBGT_DATA[date].sort(function(a,b){return a.time.localeCompare(b.time);});
   // Save to Firebase
-  db.ref('wbgt').set(WBGT_DATA);
+  unitRef('wbgt').set(WBGT_DATA);
   renderWBGTHistory();
   updateWBGTBadge();
   // Feedback
@@ -3795,7 +3907,7 @@ function autoFetchWeather(){
 }
 
 function loadWBGT(){
-  db.ref('wbgt').on('value',function(snap){
+  unitRef('wbgt').on('value',function(snap){
     var data=snap.val();
     if(data) WBGT_DATA=data;
     if(document.getElementById('v-wbgt').className.indexOf('on')!==-1){
@@ -4066,7 +4178,7 @@ function showAdvicePopup(no){
 }
 
 function loadHealth(){
-  db.ref('health').on('value',function(snap){
+  unitRef('health').on('value',function(snap){
     var data=snap.val();
     if(data){HEALTH=data;}
     if(document.getElementById('v-health').className.indexOf('on')!==-1){
@@ -4077,7 +4189,7 @@ function loadHealth(){
 }
 
 function saveHealth(){
-  db.ref('health').set(HEALTH);
+  unitRef('health').set(HEALTH);
 }
 
 function todayStr(){
@@ -4531,8 +4643,7 @@ function openMentalTab(btn){
   });
 }
 
-// โหลด appts/instrs จาก Firebase แล้ว re-render
-loadLS();
+// loadLS() is called by startListeners() after unit is selected
 
 // ── Mental Tab Auth Interceptor ──
 (function(){
