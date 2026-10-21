@@ -914,8 +914,15 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
   <button class="top-tab" onclick="gotoView('dashboard',this)" id="dash-tab-btn">&#128202; แดชบอร์ด</button>
   <button class="top-tab" id="mental-tab-btn" onclick="openMentalTab(this)">8Q/9Q จิตเวช <span id="qa-badge" style="font-size:10px;"></span></button>
   <button class="top-tab" onclick="gotoView('wbgt',this)">WBGT ธงสัญลักษณ์ <span id="wbgt-badge" style="font-size:10px;"></span></button>
+  <span id="live-flag-chip" onclick="gotoView('wbgt',document.querySelector('.top-tab:last-of-type'))" style="display:none;cursor:pointer;margin-left:8px;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;border:2px solid transparent;transition:all .3s;"></span>
   <span class="topbar-stat" id="nstat"></span><span class="auth-badge" id="auth-badge" onclick="handleAuthBadge()">[LOCK] เข้าสู่ระบบ</span>
 </div>
+
+<!-- WBGT ALERT BANNER -->
+<div id="wbgt-alert-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;padding:14px 20px;text-align:center;font-size:15px;font-weight:700;letter-spacing:.5px;animation:pulse-banner 1s ease-in-out infinite;"></div>
+<style>
+@keyframes pulse-banner{0%,100%{opacity:1;}50%{opacity:.8;}}
+</style>
 
 <!-- GRID VIEW (original style) -->
 <div class="view on" id="v-grid">
@@ -1710,6 +1717,7 @@ function selectUnit(uid){
   // Load soldiers from DB for current unit
   loadSoldiersFromDB();
   startListeners();
+  startLiveWBGT();
 }
 
 function loadSoldiersFromDB(){
@@ -4644,6 +4652,120 @@ function openMentalTab(btn){
 }
 
 // loadLS() is called by startListeners() after unit is selected
+
+// ════════════════════════════════════════
+// LIVE WBGT AUTO-FETCH + ALERT SYSTEM
+// ════════════════════════════════════════
+var UNIT_COORDS = {
+  'cho1pan52':     { lat: 14.0023, lon: 100.5268, name: 'ลพบุรี' },  // ช.1 พัน.52
+  'cho1pan112':    { lat: 13.7600, lon: 100.5120, name: 'กรุงเทพฯ' }, // ช.1 พัน.112
+  'phanpattana1':  { lat: 14.3500, lon: 100.5600, name: 'ลพบุรี' }   // พันพัฒนา 1
+};
+
+var _liveWBGTFlag = null;
+var _liveWBGTTimer = null;
+var _alertAudio = null;
+
+function playAlertSound(){
+  try{
+    var ctx = new (window.AudioContext||window.webkitAudioContext)();
+    [880,1100,880].forEach(function(freq,i){
+      var osc=ctx.createOscillator();
+      var gain=ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type='sine'; osc.frequency.value=freq;
+      gain.gain.setValueAtTime(0.4,ctx.currentTime+i*0.25);
+      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.25+0.2);
+      osc.start(ctx.currentTime+i*0.25);
+      osc.stop(ctx.currentTime+i*0.25+0.25);
+    });
+  }catch(e){}
+}
+
+function showWBGTAlertBanner(flag, wbgt){
+  var ban = document.getElementById('wbgt-alert-banner');
+  if(!ban) return;
+  var dangerous = (flag.key === 'red' || flag.key === 'black');
+  if(dangerous){
+    ban.style.display = 'block';
+    ban.style.background = flag.key === 'black' ? '#111' : '#C62828';
+    ban.style.color = '#fff';
+    ban.style.borderBottom = '3px solid ' + (flag.key === 'black' ? '#E53935' : '#7f0000');
+    ban.innerHTML = '⚠️ ' + flag.name.toUpperCase() + ' — WBGT ' + wbgt + '°C &nbsp;|&nbsp; ' + flag.rules[0] + ' &nbsp;<small style="opacity:.8;font-size:12px;">(คลิกเพื่อดูรายละเอียด)</small>';
+    ban.onclick = function(){ gotoView('wbgt', null); };
+    // push topbar down
+    document.querySelector('.topbar').style.paddingTop = '48px';
+  } else {
+    ban.style.display = 'none';
+    document.querySelector('.topbar').style.paddingTop = '';
+  }
+}
+
+function updateLiveFlag(flag, wbgt){
+  // Topbar chip
+  var chip = document.getElementById('live-flag-chip');
+  if(chip && flag){
+    chip.style.display = 'inline-block';
+    chip.style.background = flag.cloth || flag.bg;
+    chip.style.color = flag.key === 'black' ? '#fff' : flag.color;
+    chip.style.borderColor = flag.border;
+    chip.textContent = flag.emoji + ' ' + flag.name + ' ' + wbgt + '°C';
+  }
+  // Alert banner + sound
+  var prevKey = _liveWBGTFlag ? _liveWBGTFlag.key : null;
+  var dangerous = (flag.key === 'red' || flag.key === 'black');
+  if(dangerous && flag.key !== prevKey){
+    playAlertSound();
+  }
+  showWBGTAlertBanner(flag, wbgt);
+  _liveWBGTFlag = flag;
+  // Update WBGT inputs if on WBGT view
+  var tempEl = document.getElementById('wbgt-temp');
+  var humEl  = document.getElementById('wbgt-humid');
+  if(tempEl && !tempEl.value) tempEl.value = '';
+}
+
+function fetchLiveWBGT(){
+  if(!UNIT_ID) return;
+  var coords = UNIT_COORDS[UNIT_ID];
+  if(!coords) return;
+  var url = 'https://api.open-meteo.com/v1/forecast?latitude='+coords.lat+'&longitude='+coords.lon+
+    '&current=temperature_2m,relativehumidity_2m&timezone=Asia%2FBangkok';
+  fetch(url)
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var temp = data.current && data.current.temperature_2m;
+      var humid = data.current && data.current.relativehumidity_2m;
+      if(temp == null || humid == null) return;
+      var wbgt = calcWBGTValue(temp, humid);
+      var flag = getFlag(wbgt);
+      if(!flag) return;
+      updateLiveFlag(flag, wbgt);
+      // Pre-fill WBGT inputs
+      var tEl=document.getElementById('wbgt-temp');
+      var hEl=document.getElementById('wbgt-humid');
+      if(tEl && !tEl._userEdited) tEl.value = temp.toFixed(1);
+      if(hEl && !hEl._userEdited) hEl.value = Math.round(humid);
+      calcWBGT();
+    })
+    .catch(function(e){ console.warn('[WBGT live] fetch error', e); });
+}
+
+function startLiveWBGT(){
+  fetchLiveWBGT();
+  if(_liveWBGTTimer) clearInterval(_liveWBGTTimer);
+  _liveWBGTTimer = setInterval(fetchLiveWBGT, 15 * 60 * 1000); // every 15 min
+}
+
+// Mark inputs as user-edited so auto-fill stops
+(function(){
+  document.addEventListener('DOMContentLoaded', function(){
+    ['wbgt-temp','wbgt-humid'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el) el.addEventListener('input', function(){ this._userEdited=true; });
+    });
+  });
+})();
 
 // ── Mental Tab Auth Interceptor ──
 (function(){
