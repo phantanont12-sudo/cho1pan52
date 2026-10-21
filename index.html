@@ -793,50 +793,83 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
 .wt-stat{text-align:center;}
 .wt-stat-num{font-size:20px;font-weight:700;}
 .wt-stat-lbl{font-size:10px;color:#888;}
-/* ── WEATHER FETCH ── */
-.weather-bar{background:linear-gradient(135deg,#1a3050,#0d1b2a);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-.weather-btn{padding:8px 16px;background:#EF9F27;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;}
-.weather-btn:hover{background:#d4891f;}
-.weather-btn:disabled{opacity:.6;cursor:not-allowed;}
-.weather-info{display:flex;gap:16px;flex-wrap:wrap;flex:1;}
-.weather-stat{text-align:center;}
-.weather-stat-val{font-size:22px;font-weight:700;color:#fff;}
-.weather-stat-lbl{font-size:10px;color:#8A9BB0;margin-top:2px;}
-.weather-time{font-size:10px;color:#8A9BB0;margin-left:auto;}
-.weather-source{font-size:10px;color:#4A9FD4;}
-.auto-fill-indicator{background:#3B6D11;color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;margin-left:6px;}
-/* ── WBGT SYSTEM ── */
-.wbgt-view{padding:14px 16px;}
-.wbgt-card{background:#fff;border-radius:12px;border:1px solid #e0ddd8;padding:16px;margin-bottom:14px;}
-.wbgt-title{font-size:14px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
-.wbgt-inputs{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;}
-.wbgt-field{display:flex;flex-direction:column;gap:4px;}
-.wbgt-field label{font-size:11px;color:#888;font-weight:500;}
-.wbgt-field input{font-family:inherit;font-size:14px;border:2px solid #ddd;border-radius:8px;padding:8px 12px;outline:none;width:100px;text-align:center;}
-.wbgt-field input:focus{border-color:#1a1a1a;}
-.wbgt-calc-btn{padding:10px 20px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;}
-.flag-display{display:flex;align-items:center;gap:16px;padding:16px;border-radius:12px;margin-top:12px;border:3px solid transparent;}
+/* ── WEATHER FETCH (legacy compat) ── */
+.weather-btn{display:none;}
+.auto-fill-indicator{display:none;}
+/* ── WBGT SYSTEM v2 ── */
+.wbgt-view{padding:12px 14px;}
+.wbgt-card{background:#fff;border-radius:16px;border:1px solid #e8e5e0;padding:18px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+
+/* Hero card */
+.wbgt-hero{border-radius:20px;padding:22px 20px;margin-bottom:12px;position:relative;overflow:hidden;transition:background .4s;}
+.wbgt-hero-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;opacity:.75;margin-bottom:10px;}
+.wbgt-hero-flag-row{display:flex;align-items:center;gap:16px;}
+.wbgt-hero-emoji{font-size:52px;line-height:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,.15));}
+.wbgt-hero-info{flex:1;}
+.wbgt-hero-name{font-size:26px;font-weight:800;letter-spacing:-.3px;line-height:1.1;}
+.wbgt-hero-wbgt{font-size:14px;font-weight:500;opacity:.75;margin-top:3px;}
+.wbgt-hero-rule{font-size:12px;margin-top:8px;padding:6px 10px;border-radius:8px;background:rgba(0,0,0,.08);line-height:1.4;}
+.wbgt-hero-meta{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;}
+.wbgt-hero-stat{text-align:center;flex:1;min-width:60px;}
+.wbgt-hero-stat-val{font-size:20px;font-weight:700;}
+.wbgt-hero-stat-lbl{font-size:10px;opacity:.65;margin-top:2px;}
+.wbgt-hero-update{position:absolute;top:12px;right:14px;font-size:10px;opacity:.55;}
+.wbgt-hero-pulse{width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block;margin-right:4px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.3);}}
+
+/* Timeline */
+.wbgt-timeline{display:flex;gap:6px;margin-top:2px;}
+.wbgt-tl-slot{flex:1;border-radius:12px;padding:10px 6px;text-align:center;border:2px solid transparent;cursor:pointer;transition:all .15s;background:#f5f4f0;}
+.wbgt-tl-slot.active{border-color:#1a1a1a;box-shadow:0 0 0 3px rgba(26,26,26,.08);}
+.wbgt-tl-slot.recorded{background:var(--slot-bg,#EAF3DE);border-color:var(--slot-border,#4CAF6E);}
+.wbgt-tl-time{font-size:10px;color:#888;font-weight:500;}
+.wbgt-tl-val{font-size:13px;font-weight:700;margin-top:3px;color:#1a1a1a;}
+.wbgt-tl-flag{font-size:16px;margin-top:1px;}
+.wbgt-tl-empty{font-size:11px;color:#bbb;margin-top:4px;}
+
+/* Record form */
+.wbgt-form-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-top:12px;}
+.wbgt-form-field{display:flex;flex-direction:column;gap:4px;flex:1;min-width:80px;}
+.wbgt-form-field label{font-size:11px;color:#888;font-weight:600;letter-spacing:.3px;}
+.wbgt-form-field input,.wbgt-form-field select{font-family:inherit;font-size:15px;border:2px solid #e0ddd8;border-radius:10px;padding:9px 10px;outline:none;width:100%;text-align:center;background:#fafaf8;transition:border-color .15s;}
+.wbgt-form-field input:focus,.wbgt-form-field select:focus{border-color:#1a1a1a;background:#fff;}
+.wbgt-save-btn{padding:11px 22px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;white-space:nowrap;transition:opacity .15s;}
+.wbgt-save-btn:active{opacity:.7;}
+.wbgt-section-title{font-size:12px;font-weight:700;color:#888;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;}
+
+/* Guide accordion */
+.wbgt-guide-item{border-radius:10px;margin-bottom:6px;overflow:hidden;border:1.5px solid transparent;}
+.wbgt-guide-head{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;font-weight:600;font-size:13px;}
+.wbgt-guide-body{padding:0 12px;max-height:0;overflow:hidden;transition:max-height .25s ease,padding .25s;}
+.wbgt-guide-body.open{max-height:200px;padding:0 12px 10px;}
+.wbgt-guide-body ul{margin:0;padding-left:16px;font-size:12px;line-height:1.8;}
+
+/* History table */
+.wbgt-log-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;}
+.wbgt-log-table th{text-align:left;color:#888;font-weight:600;padding:6px 8px;border-bottom:2px solid #f0ede8;}
+.wbgt-log-table td{padding:7px 8px;border-bottom:1px solid #f5f3ef;}
+.wbgt-log-table tr:last-child td{border:none;}
+.wbgt-log-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;}
+
+/* Legacy compat - hide old elements */
+.weather-bar{display:none!important;}
+.wbgt-title{font-size:13px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;color:#888;text-transform:uppercase;letter-spacing:.4px;}
+.wbgt-inputs{display:none!important;}
+.flag-display{display:none!important;}
+.wbgt-history{display:none!important;}
+.risk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-top:4px;}
+.risk-item{border-radius:10px;padding:10px 12px;font-size:12px;}
+.risk-item-title{font-weight:700;margin-bottom:4px;font-size:13px;}
+.wbgt-hist-item{background:#f5f4f1;border-radius:8px;padding:8px 12px;font-size:11px;text-align:center;min-width:70px;}
+.wbgt-hist-time{color:#888;margin-bottom:3px;}
+.wbgt-hist-val{font-weight:600;font-size:13px;}
+/* flag compat */
 .flag-white{background:#f8f8f8;border-color:#ccc;}
 .flag-green{background:#EAF3DE;border-color:#4CAF6E;}
 .flag-yellow{background:#FFFDE7;border-color:#EF9F27;}
 .flag-red{background:#FFEBEE;border-color:#E24B4A;}
 .flag-black{background:#212121;border-color:#000;}
-.flag-pole{display:flex;flex-direction:column;align-items:center;gap:4px;}
-.flag-stick{width:4px;height:60px;background:#8B6914;border-radius:2px;}
-.flag-cloth{width:50px;height:35px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:20px;}
-.flag-info{flex:1;}
-.flag-name{font-size:18px;font-weight:700;margin-bottom:4px;}
-.flag-wbgt{font-size:13px;color:#666;margin-bottom:8px;}
-.flag-rules{font-size:12px;}
-.flag-rule{padding:3px 0;display:flex;align-items:flex-start;gap:6px;}
-.flag-rule-icon{flex-shrink:0;width:16px;text-align:center;}
-.wbgt-history{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
-.wbgt-hist-item{background:#f5f4f1;border-radius:8px;padding:8px 12px;font-size:11px;text-align:center;min-width:70px;}
-.wbgt-hist-time{color:#888;margin-bottom:3px;}
-.wbgt-hist-val{font-weight:600;font-size:13px;}
-.risk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:10px;}
-.risk-item{border-radius:8px;padding:10px 12px;font-size:12px;}
-.risk-item-title{font-weight:600;margin-bottom:4px;font-size:13px;}
+.flag-pole,.flag-stick,.flag-cloth,.flag-info,.flag-name,.flag-wbgt,.flag-rules,.flag-rule,.flag-rule-icon{display:none;}
 .timer-bar{background:#fff;border-radius:12px;border:1px solid #e0ddd8;padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
 .timer-big{font-size:36px;font-weight:700;font-family:monospace;}
 .timer-label{font-size:12px;color:#888;}
@@ -1541,31 +1574,71 @@ function sendWBGTPush(prevFlag, newFlag, wbgt) {
 <div class="view" id="v-wbgt">
   <div class="wbgt-view">
 
-    <!-- Calculator Card -->
+    <!-- 1) HERO — ธงปัจจุบัน (ภาพรวมทันที) -->
+    <div class="wbgt-hero" id="wbgt-hero" style="background:#f5f4f0;color:#1a1a1a;">
+      <div class="wbgt-hero-badge">
+        <span class="wbgt-hero-pulse" id="hero-pulse" style="color:#22c55e;"></span>
+        <span id="hero-location">📍 ราชบุรี — ค่ายบุรฉัตร</span>
+      </div>
+      <div class="wbgt-hero-flag-row">
+        <div class="wbgt-hero-emoji" id="hero-emoji">⏳</div>
+        <div class="wbgt-hero-info">
+          <div class="wbgt-hero-name" id="hero-name">กำลังโหลด...</div>
+          <div class="wbgt-hero-wbgt" id="hero-wbgt">ดึงข้อมูลสภาพอากาศ</div>
+          <div class="wbgt-hero-rule" id="hero-rule" style="display:none;"></div>
+        </div>
+      </div>
+      <div class="wbgt-hero-meta" id="hero-meta" style="display:none;">
+        <div class="wbgt-hero-stat">
+          <div class="wbgt-hero-stat-val" id="hero-temp">--</div>
+          <div class="wbgt-hero-stat-lbl">อุณหภูมิ °C</div>
+        </div>
+        <div class="wbgt-hero-stat">
+          <div class="wbgt-hero-stat-val" id="hero-humid">--</div>
+          <div class="wbgt-hero-stat-lbl">ความชื้น %</div>
+        </div>
+        <div class="wbgt-hero-stat">
+          <div class="wbgt-hero-stat-val" id="hero-feels">--</div>
+          <div class="wbgt-hero-stat-lbl">รู้สึกเหมือน °C</div>
+        </div>
+        <div class="wbgt-hero-stat">
+          <div class="wbgt-hero-stat-val" id="hero-wind">--</div>
+          <div class="wbgt-hero-stat-lbl">ลม km/h</div>
+        </div>
+      </div>
+      <div class="wbgt-hero-update" id="hero-update"></div>
+    </div>
+
+    <!-- 2) TODAY TIMELINE — 5 รอบ -->
     <div class="wbgt-card">
-      <div class="wbgt-title">
-        <span style="font-size:20px;">[TEMP]</span>
-        <span>คำนวณดัชนีความร้อน WBGT และกำหนดสีธง</span>
-        <span style="font-size:11px;color:#888;margin-left:auto;">วัด 5 ครั้ง/วัน ตามประกาศ พบ.</span>
+      <div class="wbgt-section-title">📋 บันทึกวันนี้ — <span id="wbgt-date-label"></span></div>
+      <div class="wbgt-timeline" id="wbgt-timeline">
+        <div class="wbgt-tl-slot" data-t="06:00" onclick="selectTimeSlot('06:00')"><div class="wbgt-tl-time">06:00</div><div class="wbgt-tl-flag">—</div><div class="wbgt-tl-empty">ยังไม่วัด</div></div>
+        <div class="wbgt-tl-slot" data-t="09:00" onclick="selectTimeSlot('09:00')"><div class="wbgt-tl-time">09:00</div><div class="wbgt-tl-flag">—</div><div class="wbgt-tl-empty">ยังไม่วัด</div></div>
+        <div class="wbgt-tl-slot" data-t="12:00" onclick="selectTimeSlot('12:00')"><div class="wbgt-tl-time">12:00</div><div class="wbgt-tl-flag">—</div><div class="wbgt-tl-empty">ยังไม่วัด</div></div>
+        <div class="wbgt-tl-slot" data-t="15:00" onclick="selectTimeSlot('15:00')"><div class="wbgt-tl-time">15:00</div><div class="wbgt-tl-flag">—</div><div class="wbgt-tl-empty">ยังไม่วัด</div></div>
+        <div class="wbgt-tl-slot" data-t="18:00" onclick="selectTimeSlot('18:00')"><div class="wbgt-tl-time">18:00</div><div class="wbgt-tl-flag">—</div><div class="wbgt-tl-empty">ยังไม่วัด</div></div>
       </div>
-      <div class="weather-bar">
-        <div class="weather-info" id="weather-info" style="flex:1;">
-          <div style="color:#8A9BB0;font-size:12px;align-self:center;" id="weather-loading-msg">⏳ กำลังโหลดสภาพอากาศ...</div>
+      <div id="wbgt-worst-flag" style="margin-top:8px;font-size:12px;color:#888;"></div>
+      <!-- hidden legacy -->
+      <div class="wbgt-history" id="wbgt-history-dots" style="display:none;"></div>
+    </div>
+
+    <!-- 3) RECORD FORM -->
+    <div class="wbgt-card">
+      <div class="wbgt-section-title">✏️ บันทึกการวัด</div>
+      <div class="wbgt-form-row">
+        <div class="wbgt-form-field" style="max-width:90px;">
+          <label>อุณหภูมิ °C</label>
+          <input type="number" id="wbgt-temp" step="0.1" min="20" max="50" placeholder="32.0" oninput="this._userEdited=true;calcWBGT()">
         </div>
-        <div class="weather-time" id="weather-time"></div>
-      </div>
-      <div class="wbgt-inputs">
-        <div class="wbgt-field">
-          <label>อุณหภูมิอากาศ (°C)</label>
-          <input type="number" id="wbgt-temp" step="0.1" min="20" max="50" placeholder="32.0" oninput="calcWBGT()">
+        <div class="wbgt-form-field" style="max-width:90px;">
+          <label>ความชื้น %</label>
+          <input type="number" id="wbgt-humid" step="1" min="0" max="100" placeholder="70" oninput="this._userEdited=true;calcWBGT()">
         </div>
-        <div class="wbgt-field">
-          <label>ความชื้นสัมพัทธ์ (%)</label>
-          <input type="number" id="wbgt-humid" step="1" min="0" max="100" placeholder="70" oninput="calcWBGT()">
-        </div>
-        <div class="wbgt-field">
-          <label>รอบที่</label>
-          <select id="wbgt-round" style="font-family:inherit;font-size:13px;border:2px solid #ddd;border-radius:8px;padding:8px;outline:none;">
+        <div class="wbgt-form-field" style="max-width:100px;">
+          <label>รอบเวลา</label>
+          <select id="wbgt-round">
             <option value="06:00">06:00 น.</option>
             <option value="09:00">09:00 น.</option>
             <option value="12:00">12:00 น.</option>
@@ -1573,70 +1646,59 @@ function sendWBGTPush(prevFlag, newFlag, wbgt) {
             <option value="18:00">18:00 น.</option>
           </select>
         </div>
-        <button class="wbgt-calc-btn" onclick="saveWBGT()">บันทึก</button>
-        <div class="wbgt-field">
+        <div class="wbgt-form-field" style="max-width:130px;">
           <label>วันที่</label>
-          <input type="date" id="wbgt-date" style="font-family:inherit;font-size:13px;border:2px solid #ddd;border-radius:8px;padding:8px;outline:none;" onchange="renderWBGTHistory()">
+          <input type="date" id="wbgt-date" onchange="renderWBGTHistory()">
         </div>
+        <button class="wbgt-save-btn" onclick="saveWBGT()">บันทึก</button>
       </div>
-
-      <!-- Flag Display -->
-      <div id="flag-display" class="flag-display flag-white" style="display:none;"></div>
+      <!-- preview flag -->
+      <div id="wbgt-preview" style="display:none;margin-top:12px;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;"></div>
+      <!-- hidden legacy compat -->
+      <div id="flag-display" style="display:none;"></div>
     </div>
 
-    <!-- Today Summary -->
+    <!-- 4) TRAINING GUIDE (accordion) -->
     <div class="wbgt-card">
-      <div class="wbgt-title">บันทึกประจำวัน — <span id="wbgt-date-label"></span></div>
-      <div class="wbgt-history" id="wbgt-history-dots"></div>
-      <div id="wbgt-worst-flag" style="margin-top:10px;"></div>
-    </div>
-
-    <!-- Training Rules by Flag -->
-    <div class="wbgt-card">
-      <div class="wbgt-title">แนวทางการฝึก ตามสีธง (ตามประกาศ พบ. 2569)</div>
-      <div class="risk-grid">
-        <div class="risk-item" style="background:#f8f8f8;border:1px solid #ccc;">
-          <div class="risk-item-title" style="color:#555;">⬜ ธงขาว — WBGT ≤25.6°C</div>
-          <div style="color:#444;">ฝึกได้ตามปกติทุกกิจกรรม</div>
-          <div style="color:#888;margin-top:4px;">ดื่มน้ำ 500 มล./ชม.</div>
+      <div class="wbgt-section-title">📖 แนวทางการฝึก ตามประกาศ พบ. 2569</div>
+      <div id="wbgt-guide">
+        <div class="wbgt-guide-item" style="background:#f8f8f8;border-color:#ccc;" onclick="toggleGuide(this)">
+          <div class="wbgt-guide-head" style="color:#555;">⬜ ธงขาว <span style="font-weight:400;margin-left:6px;font-size:12px;">WBGT ≤25.6°C</span></div>
+          <div class="wbgt-guide-body"><ul><li>ฝึกได้ตามปกติทุกกิจกรรม</li><li>ดื่มน้ำ 500 มล./ชม.</li></ul></div>
         </div>
-        <div class="risk-item" style="background:#EAF3DE;border:1px solid #4CAF6E;">
-          <div class="risk-item-title" style="color:#3B6D11;">ธงเขียว — WBGT 25.6–27.7°C</div>
-          <div style="color:#444;">ฝึกได้ แต่ระวังกลุ่มเสี่ยง</div>
-          <div style="color:#3B6D11;margin-top:4px;">ดื่มน้ำ 500 มล. ทุก 20 นาที</div>
+        <div class="wbgt-guide-item" style="background:#EAF3DE;border-color:#4CAF6E;" onclick="toggleGuide(this)">
+          <div class="wbgt-guide-head" style="color:#3B6D11;">🟩 ธงเขียว <span style="font-weight:400;margin-left:6px;font-size:12px;">WBGT 25.6–27.7°C</span></div>
+          <div class="wbgt-guide-body"><ul><li>ฝึกได้ แต่ระวังกลุ่มเสี่ยง</li><li>ดื่มน้ำ 500 มล. ทุก 20 นาที</li></ul></div>
         </div>
-        <div class="risk-item" style="background:#FFFDE7;border:1px solid #EF9F27;">
-          <div class="risk-item-title" style="color:#854F0B;">ธงเหลือง — WBGT 27.8–29.4°C</div>
-          <div style="color:#444;">ลดความหนักของการฝึก 30%</div>
-          <div style="color:#854F0B;margin-top:4px;">พักทุก 45 นาที / ดื่มน้ำ 750 มล./ชม.</div>
-          <div style="color:#854F0B;">งดออกกำลังสำหรับกลุ่มสีเหลือง-แดง</div>
+        <div class="wbgt-guide-item" style="background:#FFFDE7;border-color:#EF9F27;" onclick="toggleGuide(this)">
+          <div class="wbgt-guide-head" style="color:#854F0B;">🟨 ธงเหลือง <span style="font-weight:400;margin-left:6px;font-size:12px;">WBGT 27.8–29.4°C</span></div>
+          <div class="wbgt-guide-body"><ul><li>ลดความหนักของการฝึก 30%</li><li>พักทุก 45 นาที / ดื่มน้ำ 750 มล./ชม.</li><li>งดออกกำลังสำหรับกลุ่มสีเหลือง-แดง</li></ul></div>
         </div>
-        <div class="risk-item" style="background:#FFEBEE;border:1px solid #E24B4A;">
-          <div class="risk-item-title" style="color:#A32D2D;">ธงแดง — WBGT 29.4–32.2°C</div>
-          <div style="color:#444;">งดวิ่ง ลดกิจกรรมกลางแจ้ง</div>
-          <div style="color:#A32D2D;margin-top:4px;">พักทุก 30 นาที / ดื่มน้ำ 1 ลิตร/ชม.</div>
-          <div style="color:#A32D2D;">กลุ่มสีแดง: งดทุกกิจกรรม</div>
+        <div class="wbgt-guide-item" style="background:#FFEBEE;border-color:#E24B4A;" onclick="toggleGuide(this)">
+          <div class="wbgt-guide-head" style="color:#A32D2D;">🟥 ธงแดง <span style="font-weight:400;margin-left:6px;font-size:12px;">WBGT 29.4–32.2°C</span></div>
+          <div class="wbgt-guide-body"><ul><li>งดวิ่ง ลดกิจกรรมกลางแจ้ง</li><li>พักทุก 30 นาที / ดื่มน้ำ 1 ลิตร/ชม.</li><li>กลุ่มสีแดง: งดทุกกิจกรรม</li></ul></div>
         </div>
-        <div class="risk-item" style="background:#212121;border:1px solid #000;">
-          <div class="risk-item-title" style="color:#fff;">⬛ ธงดำ — WBGT ≥32.2°C</div>
-          <div style="color:#ccc;">งดฝึกกลางแจ้งทุกชนิด</div>
-          <div style="color:#EF9F27;margin-top:4px;">เฉพาะกิจกรรมในร่มเท่านั้น</div>
-          <div style="color:#E24B4A;">แจ้ง ผบ.หน่วยและแพทย์ประจำหน่วยทันที</div>
+        <div class="wbgt-guide-item" style="background:#1a1a1a;border-color:#000;" onclick="toggleGuide(this)">
+          <div class="wbgt-guide-head" style="color:#fff;">⬛ ธงดำ <span style="font-weight:400;margin-left:6px;font-size:12px;">WBGT ≥32.2°C</span></div>
+          <div class="wbgt-guide-body" style="color:#ddd;"><ul><li>งดฝึกกลางแจ้งทุกชนิด เฉพาะในร่ม</li><li>แจ้ง ผบ.หน่วยและแพทย์ประจำหน่วยทันที</li></ul></div>
         </div>
-        <div class="risk-item" style="background:#fff3f3;border:1px dashed #E24B4A;">
-          <div class="risk-item-title" style="color:#A32D2D;">ข้อห้ามทุกสีธง</div>
-          <div style="color:#444;">ห้ามดื่มน้ำเกิน 1 ลิตร/ชม.</div>
-          <div style="color:#444;">ห้ามดื่มน้ำเกิน 9 ลิตร/วัน</div>
-          <div style="color:#444;">ปัสสาวะเข้มหลังดื่มน้ำ → พบแพทย์</div>
+        <div class="wbgt-guide-item" style="background:#fff3f3;border-color:#E24B4A;border-style:dashed;" onclick="toggleGuide(this)">
+          <div class="wbgt-guide-head" style="color:#A32D2D;">⚠️ ข้อห้ามทุกสีธง</div>
+          <div class="wbgt-guide-body"><ul><li>ห้ามดื่มน้ำเกิน 1 ลิตร/ชม.</li><li>ห้ามดื่มน้ำเกิน 9 ลิตร/วัน</li><li>ปัสสาวะเข้มหลังดื่มน้ำ → พบแพทย์</li></ul></div>
         </div>
       </div>
     </div>
 
-    <!-- WBGT Log Table -->
+    <!-- 5) HISTORY TABLE -->
     <div class="wbgt-card">
-      <div class="wbgt-title">ประวัติการวัด WBGT</div>
+      <div class="wbgt-section-title">📊 ประวัติการวัด WBGT</div>
       <div id="wbgt-log-body"></div>
     </div>
+
+    <!-- hidden legacy weather elements -->
+    <div id="weather-info" style="display:none;"></div>
+    <div id="weather-time" style="display:none;"></div>
+    <div id="weather-loading-msg" style="display:none;"></div>
 
   </div>
 </div>
@@ -3781,6 +3843,85 @@ var FLAG_CONFIG = [
   }
 ];
 
+// ── WBGT UI helpers (new design) ────────────────────────────
+function toggleGuide(el){
+  var body = el.querySelector('.wbgt-guide-body');
+  if(!body) return;
+  body.classList.toggle('open');
+}
+
+function selectTimeSlot(time){
+  // set round select & highlight slot
+  var sel = document.getElementById('wbgt-round');
+  if(sel) sel.value = time;
+  // highlight
+  var slots = document.querySelectorAll('.wbgt-tl-slot');
+  slots.forEach(function(s){ s.classList.remove('active'); });
+  var target = document.querySelector('.wbgt-tl-slot[data-t="'+time+'"]');
+  if(target) target.classList.add('active');
+  // scroll to form
+  var form = document.querySelector('.wbgt-form-row');
+  if(form) form.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function updateHeroFromFlag(flag, wbgt, temp, humid, feels, wind){
+  var hero = document.getElementById('wbgt-hero');
+  if(!hero) return;
+  var colors = {
+    white:  {bg:'#f5f4f0', text:'#1a1a1a'},
+    green:  {bg:'#EAF3DE', text:'#2d5a11'},
+    yellow: {bg:'#FFFBEA', text:'#7a4500'},
+    red:    {bg:'#FFF0F0', text:'#8a1a1a'},
+    black:  {bg:'#1a1a1a', text:'#ffffff'}
+  };
+  var c = (colors[flag.key]||colors.white);
+  hero.style.background = c.bg;
+  hero.style.color = c.text;
+  document.getElementById('hero-emoji').textContent = flag.emoji;
+  document.getElementById('hero-name').textContent = flag.name;
+  document.getElementById('hero-wbgt').textContent = 'WBGT = '+wbgt+'°C';
+  var ruleEl = document.getElementById('hero-rule');
+  ruleEl.style.display = '';
+  ruleEl.style.background = flag.key==='black'?'rgba(255,255,255,.1)':'rgba(0,0,0,.07)';
+  ruleEl.textContent = flag.rules[0]||'';
+  if(temp!=null){
+    document.getElementById('hero-temp').textContent = parseFloat(temp).toFixed(1);
+    document.getElementById('hero-humid').textContent = Math.round(humid);
+    document.getElementById('hero-feels').textContent = feels!=null?parseFloat(feels).toFixed(1):'--';
+    document.getElementById('hero-wind').textContent = wind!=null?parseFloat(wind).toFixed(1):'--';
+    document.getElementById('hero-meta').style.display = '';
+  }
+  var now=new Date();
+  var t=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+' น.';
+  document.getElementById('hero-update').textContent = 'อัปเดต '+t;
+}
+
+function renderTimelineSlots(date){
+  var records = WBGT_DATA[date]||[];
+  var rounds = ['06:00','09:00','12:00','15:00','18:00'];
+  rounds.forEach(function(t){
+    var slot = document.querySelector('.wbgt-tl-slot[data-t="'+t+'"]');
+    if(!slot) return;
+    var rec = records.find(function(r){return r.time===t;});
+    if(rec){
+      var f = getFlag(rec.wbgt);
+      slot.classList.add('recorded');
+      slot.style.setProperty('--slot-bg', f.bg);
+      slot.style.setProperty('--slot-border', f.border);
+      slot.querySelector('.wbgt-tl-flag').textContent = f.emoji;
+      var emptyEl = slot.querySelector('.wbgt-tl-empty');
+      if(emptyEl) emptyEl.textContent = rec.wbgt+'°C';
+    } else {
+      slot.classList.remove('recorded');
+      slot.style.removeProperty('--slot-bg');
+      slot.style.removeProperty('--slot-border');
+      slot.querySelector('.wbgt-tl-flag').textContent = '—';
+      var emptyEl2 = slot.querySelector('.wbgt-tl-empty');
+      if(emptyEl2) emptyEl2.textContent = 'ยังไม่วัด';
+    }
+  });
+}
+
 function calcWBGTValue(temp, humid){
   // Approximate WBGT outdoor formula
   // WBGT ≈ 0.7*Twb + 0.2*Tg + 0.1*Ta
@@ -3814,6 +3955,13 @@ function calcWBGT(){
   var flag = getFlag(wbgt);
   if(!flag) return;
   renderFlagDisplay(flag, wbgt);
+  // new preview
+  var prev = document.getElementById('wbgt-preview');
+  if(prev){
+    prev.style.display='';
+    prev.style.cssText='display:block;margin-top:12px;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;background:'+flag.bg+';border:1.5px solid '+flag.border+';color:'+flag.color+';';
+    prev.textContent=flag.emoji+' '+flag.name+' — WBGT = '+wbgt+'°C';
+  }
 }
 
 function renderFlagDisplay(flag, wbgt){
@@ -3866,7 +4014,10 @@ function renderWBGTHistory(){
   var worstEl = document.getElementById('wbgt-worst-flag');
   var logEl = document.getElementById('wbgt-log-body');
 
-  // Dots
+  // New timeline slots
+  if(typeof renderTimelineSlots==='function') renderTimelineSlots(date);
+
+  // Dots (legacy hidden)
   dotsEl.innerHTML = '';
   var rounds = ['06:00','09:00','12:00','15:00','18:00'];
   rounds.forEach(function(t){
@@ -3962,6 +4113,9 @@ function fetchWeather(){
       if(tEl && !tEl._userEdited) tEl.value=temp.toFixed(1);
       if(hEl && !hEl._userEdited) hEl.value=Math.round(humid);
       calcWBGT();
+
+      // Update hero card
+      if(typeof updateHeroFromFlag==='function') updateHeroFromFlag(flag, wbgt, temp, humid, feels, wind);
 
       // Update live alert system
       if(typeof updateLiveFlag==='function') updateLiveFlag(flag, wbgt);
