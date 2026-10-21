@@ -4782,6 +4782,47 @@ function showWBGTAlertBanner(flag, wbgt){
   }
 }
 
+function sendWBGTFlagChangeTelegram(prevFlag, newFlag, wbgt){
+  try{
+    var prevName = prevFlag ? prevFlag.name : 'ไม่ทราบ';
+    var now = new Date();
+    var timeStr = now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+' น.';
+    var msg = '🚩 [WBGT] สีธงเปลี่ยนแปลง\n'+
+      '⏰ เวลา: '+timeStr+'\n'+
+      '🔁 จาก: '+prevName+'\n'+
+      '➡️ เป็น: '+newFlag.emoji+' '+newFlag.name+'\n'+
+      '🌡 WBGT: '+wbgt+'°C\n'+
+      '📋 แนวทาง: '+(newFlag.rules&&newFlag.rules[0]?newFlag.rules[0]:'—')+'\n'+
+      'หน่วย: ช.1 พัน.52';
+    fetch('https://api.telegram.org/bot'+TG_BOT_TOKEN+'/sendMessage',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:TG_CHAT_ID,text:msg})
+    }).catch(function(){});
+  }catch(e){}
+}
+
+function showFlagChangeToast(prevFlag, newFlag, wbgt){
+  var el = document.getElementById('wbgt-alert-banner');
+  if(!el) return;
+  var dangerous = (newFlag.key==='red'||newFlag.key==='black');
+  // Show banner for ALL flag changes
+  el.style.display = 'block';
+  el.style.background = dangerous ? (newFlag.key==='black'?'#111':'#C62828') : (newFlag.key==='yellow'?'#854F0B':'#2E7D32');
+  el.style.color = '#fff';
+  el.style.borderBottom = '3px solid '+(dangerous?'#7f0000':'#1B5E20');
+  var prevName = prevFlag ? prevFlag.name : '—';
+  el.innerHTML = newFlag.emoji+' ธงเปลี่ยน: '+prevName+' → <b>'+newFlag.name+'</b> (WBGT '+wbgt+'°C) &nbsp;<small style="opacity:.8;font-size:12px;">คลิกดูรายละเอียด</small>';
+  el.onclick = function(){ gotoView('wbgt', null); };
+  document.querySelector('.topbar').style.paddingTop = '48px';
+  // Auto-hide after 10 sec for non-dangerous
+  if(!dangerous){
+    setTimeout(function(){
+      el.style.display='none';
+      document.querySelector('.topbar').style.paddingTop='';
+    }, 10000);
+  }
+}
+
 function updateLiveFlag(flag, wbgt){
   // Topbar chip
   var chip = document.getElementById('live-flag-chip');
@@ -4792,13 +4833,21 @@ function updateLiveFlag(flag, wbgt){
     chip.style.borderColor = flag.border;
     chip.textContent = flag.emoji + ' ' + flag.name + ' ' + wbgt + '°C';
   }
-  // Alert banner + sound
+  // Alert on ANY flag color change
   var prevKey = _liveWBGTFlag ? _liveWBGTFlag.key : null;
-  var dangerous = (flag.key === 'red' || flag.key === 'black');
-  if(dangerous && flag.key !== prevKey){
+  if(flag.key !== prevKey){
+    // Play sound for all changes
     playAlertSound();
+    // Show toast banner
+    showFlagChangeToast(_liveWBGTFlag, flag, wbgt);
+    // Send Telegram for all changes (skip first load if prevKey is null = first fetch on page load)
+    if(prevKey !== null){
+      sendWBGTFlagChangeTelegram(_liveWBGTFlag, flag, wbgt);
+    }
+  } else {
+    // Same flag — still show banner for dangerous
+    showWBGTAlertBanner(flag, wbgt);
   }
-  showWBGTAlertBanner(flag, wbgt);
   _liveWBGTFlag = flag;
   // Update WBGT inputs if on WBGT view
   var tempEl = document.getElementById('wbgt-temp');
