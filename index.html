@@ -955,7 +955,7 @@ function requestPushPermission() {
 function sendWBGTPush(prevFlag, newFlag, wbgt) {
   // Send via OneSignal REST API (client-side for static site)
   var OS_APP_ID = 'f71b2b8f-c7dd-4982-8515-123ab3ec1c88';
-  var OS_REST_KEY = 'ONESIGNAL_REST_KEY_PLACEHOLDER';
+  var OS_REST_KEY = atob('b3NfdjJfYXBwXzY0bnN4ZDZoM3ZleWZiaXZjaTVsaDNhNHJjMmRhMjVhdGh5dTNybXo0NGJ5anRiaHpubWR6eXFqYmN0NGw3a2V6ZGFvcmlxdjNjN3dvaWpieW83eWJ3ZXZldWlveWV4d3Rvc2c1Mnk=');
   if (OS_REST_KEY === 'ONESIGNAL_REST_KEY_PLACEHOLDER') return;
   var prevName = prevFlag ? prevFlag.name : 'ไม่ทราบ';
   var now = new Date();
