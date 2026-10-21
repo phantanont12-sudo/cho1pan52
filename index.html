@@ -1549,11 +1549,8 @@ function sendWBGTPush(prevFlag, newFlag, wbgt) {
         <span style="font-size:11px;color:#888;margin-left:auto;">วัด 5 ครั้ง/วัน ตามประกาศ พบ.</span>
       </div>
       <div class="weather-bar">
-        <button class="weather-btn" id="fetch-weather-btn" onclick="fetchWeather()">
-          [FETCH] ดึงข้อมูลสภาพอากาศ ราชบุรี
-        </button>
-        <div class="weather-info" id="weather-info">
-          <div style="color:#8A9BB0;font-size:12px;align-self:center;">กด "ดึงข้อมูล" เพื่อโหลดสภาพอากาศปัจจุบัน</div>
+        <div class="weather-info" id="weather-info" style="flex:1;">
+          <div style="color:#8A9BB0;font-size:12px;align-self:center;" id="weather-loading-msg">⏳ กำลังโหลดสภาพอากาศ...</div>
         </div>
         <div class="weather-time" id="weather-time"></div>
       </div>
@@ -3938,14 +3935,11 @@ function updateWBGTBadge(){
 }
 
 function fetchWeather(){
-  var btn=document.getElementById('fetch-weather-btn');
   var infoEl=document.getElementById('weather-info');
   var timeEl=document.getElementById('weather-time');
-  if(!btn||!infoEl) return;
-  btn.disabled=true; btn.textContent='[LOAD] กำลังโหลด...';
+  if(!infoEl) return;
 
-  // ใช้พิกัดหน่วยปัจจุบัน (ถ้ายังไม่ได้เลือกหน่วย ใช้ค่า default ลพบุรี)
-  var coords = (UNIT_ID && UNIT_COORDS && UNIT_COORDS[UNIT_ID]) || {lat:14.80,lon:100.62,name:'ลพบุรี'};
+  var coords = (UNIT_ID && UNIT_COORDS && UNIT_COORDS[UNIT_ID]) || {lat:13.5282,lon:99.8134,name:'ราชบุรี'};
   var url='https://api.open-meteo.com/v1/forecast?latitude='+coords.lat+'&longitude='+coords.lon+
     '&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&timezone=Asia%2FBangkok&wind_speed_unit=kmh';
 
@@ -3963,40 +3957,37 @@ function fetchWeather(){
       if(!flag) throw new Error('คำนวณ WBGT ไม่ได้');
 
       // Auto-fill inputs
-      document.getElementById('wbgt-temp').value=temp.toFixed(1);
-      document.getElementById('wbgt-humid').value=Math.round(humid);
+      var tEl=document.getElementById('wbgt-temp');
+      var hEl=document.getElementById('wbgt-humid');
+      if(tEl && !tEl._userEdited) tEl.value=temp.toFixed(1);
+      if(hEl && !hEl._userEdited) hEl.value=Math.round(humid);
       calcWBGT();
 
       // Update live alert system
       if(typeof updateLiveFlag==='function') updateLiveFlag(flag, wbgt);
 
       // Show weather info
+      var now=new Date();
+      var timeStr=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+' น.';
       infoEl.innerHTML=
         '<div class="weather-stat"><div class="weather-stat-val">'+temp.toFixed(1)+'<span style="font-size:14px;">°C</span></div><div class="weather-stat-lbl">อุณหภูมิ</div></div>'+
         '<div class="weather-stat"><div class="weather-stat-val">'+Math.round(humid)+'<span style="font-size:14px;">%</span></div><div class="weather-stat-lbl">ความชื้น</div></div>'+
         '<div class="weather-stat"><div class="weather-stat-val">'+(feels!=null?feels.toFixed(1):'--')+'<span style="font-size:14px;">°C</span></div><div class="weather-stat-lbl">รู้สึกเหมือน</div></div>'+
         '<div class="weather-stat"><div class="weather-stat-val">'+(wind!=null?wind.toFixed(1):'--')+'<span style="font-size:12px;">km/h</span></div><div class="weather-stat-lbl">ลม</div></div>'+
-        '<div class="weather-stat"><div class="weather-stat-val" style="color:'+flag.color+';">'+wbgt+'<span style="font-size:12px;">°C</span></div><div class="weather-stat-lbl">WBGT (คำนวณ)</div></div>'+
-        '<div class="weather-stat"><div style="padding:4px 10px;background:'+flag.bg+';border:1px solid '+flag.border+';border-radius:8px;color:'+flag.color+';font-weight:700;font-size:13px;">'+flag.name+'</div><div class="weather-stat-lbl">ธงสัญลักษณ์</div></div>';
+        '<div class="weather-stat"><div class="weather-stat-val" style="color:'+flag.color+';">'+wbgt+'<span style="font-size:12px;">°C</span></div><div class="weather-stat-lbl">WBGT</div></div>'+
+        '<div class="weather-stat"><div style="padding:4px 10px;background:'+(flag.cloth||flag.bg)+';border:2px solid '+flag.border+';border-radius:8px;color:'+flag.color+';font-weight:700;font-size:14px;">'+flag.emoji+' '+flag.name+'</div><div class="weather-stat-lbl">ธงปัจจุบัน</div></div>';
 
-      var now=new Date();
-      if(timeEl) timeEl.innerHTML='อัปเดต '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+' น.<br><span class="weather-source">Open-Meteo API | '+coords.name+'</span>';
-      btn.disabled=false; btn.innerHTML='[FETCH] ดึงข้อมูลสภาพอากาศ '+coords.name+' <span class="auto-fill-indicator">ใส่ค่าอัตโนมัติแล้ว</span>';
+      if(timeEl) timeEl.innerHTML='อัปเดต '+timeStr+'<br><span class="weather-source">Open-Meteo | '+coords.name+'</span>';
     })
     .catch(function(e){
-      infoEl.innerHTML='<div style="color:#E24B4A;font-size:12px;">ไม่สามารถดึงข้อมูลได้ กรุณากรอกด้วยตนเอง<br><span style="font-size:10px;color:#888;">'+e.message+'</span></div>';
-      btn.disabled=false; btn.textContent='[FETCH] ดึงข้อมูลสภาพอากาศ';
+      infoEl.innerHTML='<div style="color:#E24B4A;font-size:12px;">โหลดข้อมูลไม่ได้ กรุณากรอกด้วยตนเอง<br><span style="font-size:10px;color:#888;">'+e.message+'</span></div>';
     });
 }
 
-// Auto-fetch weather when WBGT tab opens (delegate to live system)
+// Auto-fetch weather when WBGT tab opens
 function autoFetchWeather(){
-  if(typeof fetchLiveWBGT==='function'){ fetchLiveWBGT(); return; }
-  var lastFetch=parseInt(localStorage.getItem('wbgt_last_fetch')||'0');
-  if(Date.now()-lastFetch>30*60*1000){
-    localStorage.setItem('wbgt_last_fetch',String(Date.now()));
-    fetchWeather();
-  }
+  fetchWeather();
+  if(typeof fetchLiveWBGT==='function') fetchLiveWBGT();
 }
 
 function loadWBGT(){
@@ -4817,7 +4808,7 @@ function openMentalTab(btn){
 // LIVE WBGT AUTO-FETCH + ALERT SYSTEM
 // ════════════════════════════════════════
 var UNIT_COORDS = {
-  'cho1pan52':     { lat: 14.0023, lon: 100.5268, name: 'ลพบุรี' },  // ช.1 พัน.52
+  'cho1pan52':     { lat: 13.5282, lon: 99.8134, name: 'ราชบุรี' },  // ช.1 พัน.52 ค่ายบุรฉัตร
   'cho1pan112':    { lat: 13.7600, lon: 100.5120, name: 'กรุงเทพฯ' }, // ช.1 พัน.112
   'phanpattana1':  { lat: 14.3500, lon: 100.5600, name: 'ลพบุรี' }   // พันพัฒนา 1
 };
