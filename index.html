@@ -898,6 +898,84 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<!-- OneSignal Web Push -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+OneSignalDeferred.push(async function(OneSignal) {
+  await OneSignal.init({
+    appId: "f71b2b8f-c7dd-4982-8515-123ab3ec1c88",
+    serviceWorkerPath: "/cho1pan52/OneSignalSDKWorker.js",
+    serviceWorkerParam: { scope: "/cho1pan52/" },
+    notifyButton: { enable: false },
+    promptOptions: {
+      slidedown: {
+        prompts: [{
+          type: "push",
+          autoPrompt: false,
+          text: {
+            actionMessage: "รับแจ้งเตือนเมื่อสีธง WBGT เปลี่ยนแปลง",
+            acceptButton: "อนุญาต",
+            cancelButton: "ไม่ตอนนี้"
+          }
+        }]
+      }
+    }
+  });
+  // Check subscription state and update button
+  const permission = await OneSignal.Notifications.permission;
+  updatePushBtn(permission);
+  OneSignal.Notifications.addEventListener('permissionChange', function(p) {
+    updatePushBtn(p);
+  });
+});
+function updatePushBtn(granted) {
+  var btn = document.getElementById('push-notify-btn');
+  if (!btn) return;
+  if (granted) {
+    btn.textContent = '🔔 รับแจ้งเตือนแล้ว';
+    btn.style.background = '#22c55e';
+  } else {
+    btn.textContent = '🔕 เปิดรับแจ้งเตือน';
+    btn.style.background = '#ef4444';
+  }
+}
+function requestPushPermission() {
+  if (window.OneSignalDeferred) {
+    window.OneSignalDeferred.push(async function(OneSignal) {
+      const permission = await OneSignal.Notifications.permission;
+      if (!permission) {
+        await OneSignal.Slidedown.promptPush();
+      } else {
+        alert('✅ คุณรับแจ้งเตือนอยู่แล้วครับ');
+      }
+    });
+  }
+}
+function sendWBGTPush(prevFlag, newFlag, wbgt) {
+  // Send via OneSignal REST API (client-side for static site)
+  var OS_APP_ID = 'f71b2b8f-c7dd-4982-8515-123ab3ec1c88';
+  var OS_REST_KEY = 'ONESIGNAL_REST_KEY_PLACEHOLDER';
+  if (OS_REST_KEY === 'ONESIGNAL_REST_KEY_PLACEHOLDER') return;
+  var prevName = prevFlag ? prevFlag.name : 'ไม่ทราบ';
+  var now = new Date();
+  var timeStr = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0') + ' น.';
+  fetch('https://api.onesignal.com/notifications', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ' + OS_REST_KEY
+    },
+    body: JSON.stringify({
+      app_id: OS_APP_ID,
+      included_segments: ['All'],
+      headings: { th: newFlag.emoji + ' WBGT สีธงเปลี่ยน!' },
+      contents: { th: 'จาก ' + prevName + ' → ' + newFlag.name + ' (WBGT ' + wbgt + '°C) เวลา ' + timeStr },
+      url: 'https://phantanont12-sudo.github.io/cho1pan52/'
+    })
+  }).catch(function(){});
+}
+</script>
 </head>
 <body>
 <input type="file" accept="image/*" id="file-inp" style="display:none">
@@ -915,6 +993,7 @@ input[type=text]{padding:6px 12px;font-size:12px;border:1px solid #ddd;border-ra
   <button class="top-tab" id="mental-tab-btn" onclick="openMentalTab(this)">8Q/9Q จิตเวช <span id="qa-badge" style="font-size:10px;"></span></button>
   <button class="top-tab" onclick="gotoView('wbgt',this)">WBGT ธงสัญลักษณ์ <span id="wbgt-badge" style="font-size:10px;"></span></button>
   <span id="live-flag-chip" onclick="gotoView('wbgt',document.querySelector('.top-tab:last-of-type'))" style="display:none;cursor:pointer;margin-left:8px;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;border:2px solid transparent;transition:all .3s;"></span>
+  <button id="push-notify-btn" onclick="requestPushPermission()" style="margin-left:6px;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;border:none;color:#fff;cursor:pointer;background:#ef4444;">🔕 เปิดรับแจ้งเตือน</button>
   <span class="topbar-stat" id="nstat"></span><span class="auth-badge" id="auth-badge" onclick="handleAuthBadge()">[LOCK] เข้าสู่ระบบ</span>
 </div>
 
@@ -4843,6 +4922,7 @@ function updateLiveFlag(flag, wbgt){
     // Send Telegram for all changes (skip first load if prevKey is null = first fetch on page load)
     if(prevKey !== null){
       sendWBGTFlagChangeTelegram(_liveWBGTFlag, flag, wbgt);
+      sendWBGTPush(_liveWBGTFlag, flag, wbgt);
     }
   } else {
     // Same flag — still show banner for dangerous
