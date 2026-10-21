@@ -4221,23 +4221,60 @@ function getHRecord(date,no){
   return HEALTH[date][String(no)]||null;
 }
 
-function analyzeHealth(temp,urine){
+function analyzeHealth(temp,urine,symptoms){
   var issues=[];var level='ok';
-  // Temperature
+  // Temperature — มาตรฐานกรมแพทย์ทหารบก ผลัด 2/2569
   if(temp){
     var t=parseFloat(temp);
-    if(t>=38.5){issues.push('ไข้สูง ('+t+'°C)');level='danger';}
-    else if(t>=37.5){issues.push('มีไข้ต่ำๆ ('+t+'°C)');if(level!=='danger')level='warn';}
+    if(t>37.2){issues.push('ไข้ ('+t+'°C) งดฝึก');level='danger';}
+    else if(t>=36.8){issues.push('ไข้ต่ำ ('+t+'°C) ลดปริมาณ');if(level!=='danger')level='warn';}
   }
   // Urine color
   if(urine){
     var u=parseInt(urine);
-    if(u>=6){issues.push('ปัสสาวะสีเข้มมาก พบแพทย์ด่วน');level='danger';}
+    if(u>=6){issues.push('ปัสสาวะเข้มมาก พบแพทย์ด่วน');level='danger';}
     else if(u>=5){issues.push('ปัสสาวะสีน้ำตาล แจ้งครูฝึก');if(level!=='danger')level='warn';}
     else if(u>=4){issues.push('ดื่มน้ำเพิ่ม ปัสสาวะเข้ม');if(level==='ok')level='warn';}
   }
+  // Symptoms
+  if(symptoms){
+    if(symptoms.injury_severe){issues.push('บาดเจ็บรุนแรง');if(level!=='danger')level='warn';}
+    if(symptoms.diarrhea){issues.push('ท้องเสีย');if(level==='ok')level='warn';}
+    if(symptoms.cold){issues.push('เป็นหวัด');if(level==='ok')level='warn';}
+  }
   if(issues.length===0) return{level:'ok',text:'ปกติ'};
   return{level:level,text:issues.join(' / ')};
+}
+
+function computeTodayFlag(s,r){
+  // Auto-compute สีสัญลักษณ์แยกฝึก from today's health record
+  var flag=s.risk||'none';
+  if(!r) return flag;
+  ['am','noon','pm'].forEach(function(rnd){
+    var rd=r[rnd]||{};
+    var t=rd.temp?parseFloat(rd.temp):0;
+    var symp=rd.symptoms||{};
+    if(t>37.2||symp.injury_severe){flag='red';}
+    else if((t>=36.8)||symp.diarrhea||symp.cold){if(flag!=='red')flag='amber';}
+  });
+  return flag;
+}
+function updateTodayFlag(no){
+  var s=getS(no);if(!s)return;
+  var rc2={red:'#FCEBEB',amber:'#FAEEDA',green_watch:'#EAF3DE',none:''};
+  var rColor2={'red':'#A32D2D','amber':'#854F0B','green_watch':'#3B6D11','none':'#888'};
+  var rLabel3={'red':'🔴 งดฝึก','amber':'🟡 ลดปริมาณ','green_watch':'🟢 เฝ้าระวัง','none':'⚪ ปกติ'};
+  var flag=s.risk||'none';
+  ['am','noon','pm'].forEach(function(rnd){
+    var t=parseFloat(document.getElementById('temp-'+rnd+'-'+no)&&document.getElementById('temp-'+rnd+'-'+no).value||0);
+    var diarrhea=!!(document.getElementById('symp-diarrhea-'+rnd+'-'+no)&&document.getElementById('symp-diarrhea-'+rnd+'-'+no).checked);
+    var cold=!!(document.getElementById('symp-cold-'+rnd+'-'+no)&&document.getElementById('symp-cold-'+rnd+'-'+no).checked);
+    var injury=!!(document.getElementById('symp-injury-'+rnd+'-'+no)&&document.getElementById('symp-injury-'+rnd+'-'+no).checked);
+    if(t>37.2||injury){flag='red';}
+    else if(t>=36.8||diarrhea||cold){if(flag!=='red')flag='amber';}
+  });
+  var el=document.getElementById('flag-today-'+no);
+  if(el){el.style.background=rc2[flag];el.style.color=rColor2[flag];el.textContent=rLabel3[flag];}
 }
 
 function setHF(f,btn){
@@ -4289,7 +4326,12 @@ function renderHealthList(){
     tr.appendChild(td(s.no));
     tr.appendChild(td('<strong>'+s.fname+' '+s.lname+'</strong><br><span style="font-size:10px;color:#aaa;">'+(s.nickname&&s.nickname!=='-'?'"'+s.nickname+'"':'')+'</span>'));
     tr.appendChild(td('หมู่ '+s.squad));
-    tr.appendChild(td('<span style="font-size:11px;padding:2px 7px;border-radius:8px;background:'+rc[s.risk]+';color:'+rColor[s.risk]+';">'+rLabel2[s.risk]+'</span>'));
+    var todayFlag=computeTodayFlag(s,r);
+    var rLabel3={'red':'🔴 งดฝึก','amber':'🟡 ลดปริมาณ','green_watch':'🟢 เฝ้าระวัง','none':'⚪ ปกติ'};
+    var flagTd=document.createElement('td');
+    flagTd.innerHTML='<div style="font-size:9px;color:#888;margin-bottom:2px;">พื้นฐาน: <span style="padding:1px 5px;border-radius:5px;background:'+rc[s.risk]+';color:'+rColor[s.risk]+';">'+rLabel2[s.risk]+'</span></div>'+
+      '<div id="flag-today-'+s.no+'" style="font-size:11px;padding:2px 7px;border-radius:8px;background:'+rc[todayFlag]+';color:'+rColor[todayFlag]+';">'+rLabel3[todayFlag]+'</div>';
+    tr.appendChild(flagTd);
 
     // 3-round temperature + urine input
     var rounds=['am','noon','pm'];
@@ -4332,10 +4374,31 @@ function renderHealthList(){
       uHidden.type='hidden';uHidden.id='urine-'+round+'-'+s.no;uHidden.value=rData.urine||'';
       uWrap.appendChild(uHidden);roundTd.appendChild(uWrap);
 
+      // Symptom checkboxes
+      var sympWrap=document.createElement('div');sympWrap.style.cssText='display:flex;flex-wrap:wrap;gap:2px;margin-top:3px;';
+      var sympData=rData.symptoms||{};
+      var sympDefs=[
+        {k:'diarrhea',l:'ท้องเสีย',c:'#E24B4A'},
+        {k:'cold',l:'หวัด/ไข้',c:'#EF9F27'},
+        {k:'injury',l:'บาดเจ็บ',c:'#854F0B'}
+      ];
+      sympDefs.forEach(function(sd){
+        var lb=document.createElement('label');
+        var isChecked=!!sympData[sd.k];
+        lb.style.cssText='font-size:9px;display:flex;align-items:center;gap:2px;cursor:pointer;padding:1px 4px;border-radius:4px;border:1px solid '+(isChecked?sd.c:'#e0ddd8')+';background:'+(isChecked?sd.c+'22':'transparent')+';';
+        var inp=document.createElement('input');
+        inp.type='checkbox';inp.id='symp-'+sd.k+'-'+round+'-'+s.no;
+        inp.checked=isChecked;inp.style.cssText='width:10px;height:10px;cursor:pointer;accent-color:'+sd.c+';';
+        (function(no,rnd){inp.onchange=function(){autoAnalyzeRound(no,rnd);};})(s.no,round);
+        lb.appendChild(inp);lb.appendChild(document.createTextNode(sd.l));
+        sympWrap.appendChild(lb);
+      });
+      roundTd.appendChild(sympWrap);
+
       // Mini AI result per round
       var aiMini=document.createElement('div');aiMini.id='ana-'+round+'-'+s.no;aiMini.style.cssText='font-size:9px;margin-top:3px;';
-      if(rData.temp||rData.urine){
-        var a2=analyzeHealth(rData.temp,rData.urine);
+      if(rData.temp||rData.urine||Object.keys(sympData).some(function(k){return sympData[k];})){
+        var a2=analyzeHealth(rData.temp,rData.urine,sympData);
         aiMini.className='stat-'+a2.level;aiMini.textContent=a2.level==='ok'?'ปกติ':a2.text;
       }
       roundTd.appendChild(aiMini);
@@ -4436,12 +4499,18 @@ function autoAnalyze(no){
 function autoAnalyzeRound(no,round){
   var t=document.getElementById('temp-'+round+'-'+no)?document.getElementById('temp-'+round+'-'+no).value:'';
   var u=document.getElementById('urine-'+round+'-'+no)?document.getElementById('urine-'+round+'-'+no).value:'';
-  var a=analyzeHealth(t,u);
+  var symp={
+    diarrhea:!!(document.getElementById('symp-diarrhea-'+round+'-'+no)&&document.getElementById('symp-diarrhea-'+round+'-'+no).checked),
+    cold:!!(document.getElementById('symp-cold-'+round+'-'+no)&&document.getElementById('symp-cold-'+round+'-'+no).checked),
+    injury_severe:!!(document.getElementById('symp-injury-'+round+'-'+no)&&document.getElementById('symp-injury-'+round+'-'+no).checked)
+  };
+  var a=analyzeHealth(t,u,symp);
   var el=document.getElementById('ana-'+round+'-'+no);
   if(el){el.className='stat-'+a.level;el.textContent=a.level==='ok'?'ปกติ':a.text;}
   var tEl=document.getElementById('temp-'+round+'-'+no);
-  if(tEl){tEl.style.borderColor=parseFloat(t)>=37.5?'#E24B4A':'#ddd';}
+  if(tEl){tEl.style.borderColor=parseFloat(t)>37.2?'#E24B4A':parseFloat(t)>=36.8?'#EF9F27':'#ddd';}
   autoAnalyze(no);
+  updateTodayFlag(no);
 }
 
 function saveHealthRecord(no){
@@ -4451,8 +4520,14 @@ function saveHealthRecord(no){
   rounds2.forEach(function(rnd){
     var t=document.getElementById('temp-'+rnd+'-'+no)?document.getElementById('temp-'+rnd+'-'+no).value:'';
     var u=document.getElementById('urine-'+rnd+'-'+no)?document.getElementById('urine-'+rnd+'-'+no).value:'';
-    if(t||u){hasAny=true;roundData[rnd]={temp:t,urine:u};}
-    else roundData[rnd]={temp:'',urine:''};
+    var symp={};
+    ['diarrhea','cold','injury'].forEach(function(sk){
+      var cb=document.getElementById('symp-'+sk+'-'+rnd+'-'+no);
+      if(cb&&cb.checked) symp[sk]=true;
+    });
+    var hasSymp=Object.keys(symp).length>0;
+    if(t||u||hasSymp){hasAny=true;roundData[rnd]={temp:t,urine:u,symptoms:symp};}
+    else roundData[rnd]={temp:'',urine:'',symptoms:{}};
   });
   var note=document.getElementById('note-'+no)?document.getElementById('note-'+no).value:'';
   if(!hasAny){alert('กรุณากรอกข้อมูลอย่างน้อย 1 รอบ (เช้า/กลางวัน/เย็น)');return;}
