@@ -3862,54 +3862,60 @@ function fetchWeather(){
   var btn=document.getElementById('fetch-weather-btn');
   var infoEl=document.getElementById('weather-info');
   var timeEl=document.getElementById('weather-time');
-  btn.disabled=true;btn.textContent='[LOAD] กำลังโหลด...';
+  if(!btn||!infoEl) return;
+  btn.disabled=true; btn.textContent='[LOAD] กำลังโหลด...';
 
-  // Open-Meteo API — ราชบุรี พิกัด 13.5369, 99.8178
-  var url='https://api.open-meteo.com/v1/forecast?latitude=13.5369&longitude=99.8178&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,precipitation,weather_code&timezone=Asia%2FBangkok&wind_speed_unit=kmh';
+  // ใช้พิกัดหน่วยปัจจุบัน (ถ้ายังไม่ได้เลือกหน่วย ใช้ค่า default ลพบุรี)
+  var coords = (UNIT_ID && UNIT_COORDS && UNIT_COORDS[UNIT_ID]) || {lat:14.80,lon:100.62,name:'ลพบุรี'};
+  var url='https://api.open-meteo.com/v1/forecast?latitude='+coords.lat+'&longitude='+coords.lon+
+    '&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&timezone=Asia%2FBangkok&wind_speed_unit=kmh';
 
   fetch(url)
     .then(function(r){return r.json();})
     .then(function(data){
       var c=data.current;
+      if(!c) throw new Error('ไม่มีข้อมูล current');
       var temp=c.temperature_2m;
       var humid=c.relative_humidity_2m;
       var feels=c.apparent_temperature;
       var wind=c.wind_speed_10m;
       var wbgt=calcWBGTValue(temp,humid);
       var flag=getFlag(wbgt);
+      if(!flag) throw new Error('คำนวณ WBGT ไม่ได้');
 
       // Auto-fill inputs
-      document.getElementById('wbgt-temp').value=temp;
-      document.getElementById('wbgt-humid').value=humid;
+      document.getElementById('wbgt-temp').value=temp.toFixed(1);
+      document.getElementById('wbgt-humid').value=Math.round(humid);
       calcWBGT();
+
+      // Update live alert system
+      if(typeof updateLiveFlag==='function') updateLiveFlag(flag, wbgt);
 
       // Show weather info
       infoEl.innerHTML=
-        '<div class="weather-stat"><div class="weather-stat-val">'+temp+'<span style="font-size:14px;">°C</span></div><div class="weather-stat-lbl">อุณหภูมิ</div></div>'+
-        '<div class="weather-stat"><div class="weather-stat-val">'+humid+'<span style="font-size:14px;">%</span></div><div class="weather-stat-lbl">ความชื้น</div></div>'+
-        '<div class="weather-stat"><div class="weather-stat-val">'+feels+'<span style="font-size:14px;">°C</span></div><div class="weather-stat-lbl">รู้สึกเหมือน</div></div>'+
-        '<div class="weather-stat"><div class="weather-stat-val">'+wind+'<span style="font-size:12px;">km/h</span></div><div class="weather-stat-lbl">ลม</div></div>'+
+        '<div class="weather-stat"><div class="weather-stat-val">'+temp.toFixed(1)+'<span style="font-size:14px;">°C</span></div><div class="weather-stat-lbl">อุณหภูมิ</div></div>'+
+        '<div class="weather-stat"><div class="weather-stat-val">'+Math.round(humid)+'<span style="font-size:14px;">%</span></div><div class="weather-stat-lbl">ความชื้น</div></div>'+
+        '<div class="weather-stat"><div class="weather-stat-val">'+(feels!=null?feels.toFixed(1):'--')+'<span style="font-size:14px;">°C</span></div><div class="weather-stat-lbl">รู้สึกเหมือน</div></div>'+
+        '<div class="weather-stat"><div class="weather-stat-val">'+(wind!=null?wind.toFixed(1):'--')+'<span style="font-size:12px;">km/h</span></div><div class="weather-stat-lbl">ลม</div></div>'+
         '<div class="weather-stat"><div class="weather-stat-val" style="color:'+flag.color+';">'+wbgt+'<span style="font-size:12px;">°C</span></div><div class="weather-stat-lbl">WBGT (คำนวณ)</div></div>'+
         '<div class="weather-stat"><div style="padding:4px 10px;background:'+flag.bg+';border:1px solid '+flag.border+';border-radius:8px;color:'+flag.color+';font-weight:700;font-size:13px;">'+flag.name+'</div><div class="weather-stat-lbl">ธงสัญลักษณ์</div></div>';
 
       var now=new Date();
-      timeEl.innerHTML='อัปเดต '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+' น.<br><span class="weather-source">Open-Meteo API | ราชบุรี</span>';
-
-      btn.disabled=false;btn.innerHTML='[FETCH] ดึงข้อมูลสภาพอากาศ ราชบุรี <span class="auto-fill-indicator">ใส่ค่าอัตโนมัติแล้ว</span>';
+      if(timeEl) timeEl.innerHTML='อัปเดต '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+' น.<br><span class="weather-source">Open-Meteo API | '+coords.name+'</span>';
+      btn.disabled=false; btn.innerHTML='[FETCH] ดึงข้อมูลสภาพอากาศ '+coords.name+' <span class="auto-fill-indicator">ใส่ค่าอัตโนมัติแล้ว</span>';
     })
     .catch(function(e){
       infoEl.innerHTML='<div style="color:#E24B4A;font-size:12px;">ไม่สามารถดึงข้อมูลได้ กรุณากรอกด้วยตนเอง<br><span style="font-size:10px;color:#888;">'+e.message+'</span></div>';
-      btn.disabled=false;btn.textContent='[FETCH] ดึงข้อมูลสภาพอากาศ ราชบุรี';
+      btn.disabled=false; btn.textContent='[FETCH] ดึงข้อมูลสภาพอากาศ';
     });
 }
 
-// Auto-fetch weather when WBGT tab opens
+// Auto-fetch weather when WBGT tab opens (delegate to live system)
 function autoFetchWeather(){
+  if(typeof fetchLiveWBGT==='function'){ fetchLiveWBGT(); return; }
   var lastFetch=parseInt(localStorage.getItem('wbgt_last_fetch')||'0');
-  var now=Date.now();
-  // Auto-fetch if last fetch > 30 minutes ago
-  if(now-lastFetch>30*60*1000){
-    localStorage.setItem('wbgt_last_fetch',String(now));
+  if(Date.now()-lastFetch>30*60*1000){
+    localStorage.setItem('wbgt_last_fetch',String(Date.now()));
     fetchWeather();
   }
 }
@@ -4730,12 +4736,12 @@ function fetchLiveWBGT(){
   var coords = UNIT_COORDS[UNIT_ID];
   if(!coords) return;
   var url = 'https://api.open-meteo.com/v1/forecast?latitude='+coords.lat+'&longitude='+coords.lon+
-    '&current=temperature_2m,relativehumidity_2m&timezone=Asia%2FBangkok';
+    '&current=temperature_2m,relative_humidity_2m&timezone=Asia%2FBangkok';
   fetch(url)
     .then(function(r){ return r.json(); })
     .then(function(data){
       var temp = data.current && data.current.temperature_2m;
-      var humid = data.current && data.current.relativehumidity_2m;
+      var humid = data.current && data.current.relative_humidity_2m;
       if(temp == null || humid == null) return;
       var wbgt = calcWBGTValue(temp, humid);
       var flag = getFlag(wbgt);
